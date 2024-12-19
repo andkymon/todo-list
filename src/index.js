@@ -104,16 +104,28 @@ class ToDoStorage {
     }
 
     static moveTask(initialProjectIndex, taskIndex, targetProjectIndex) {
+        if (InputValidator.validateList(initialProjectIndex, this.projects.length) === false 
+        || InputValidator.validateList(taskIndex, this.projects[initialProjectIndex].tasks.length) === false
+        || InputValidator.validateList(initialProjectIndex, this.projects.length) === false) {
+            return;
+        }
         const task = this.projects[initialProjectIndex].tasks[taskIndex];
         this.projects[targetProjectIndex].tasks.push(task);
         this.removeTask(initialProjectIndex, taskIndex);
     }
 
     static removeTask(projectIndex, taskIndex) {
+        if (InputValidator.validateList(projectIndex, this.projects.length) === false 
+        || InputValidator.validateList(taskIndex, this.projects[projectIndex].tasks.length) === false) {
+            return;
+        }
         this.projects[projectIndex].tasks.splice(taskIndex, 1);
     }
 
     static removeProject(projectIndex) {
+        if (InputValidator.validateList(projectIndex, this.projects.length) === false) {
+            return;
+        }
         this.projects.splice(projectIndex, 1);
     }
 }
@@ -149,9 +161,9 @@ class InputValidator {
         }
     }
 
-    static validateProject(projectIndex, totalProjects) {
-        if (!Number.isInteger(projectIndex) || projectIndex < 0 || projectIndex >= totalProjects) {
-            console.error("Invalid project selected");
+    static validateList(index, total) {
+        if (!Number.isInteger(index) || index < 0 || index >= total) {
+            console.error("Invalid list item selected");
             return false;
         }
     }
@@ -162,7 +174,7 @@ class InputValidator {
                         this.validateDate(dueDate),
                         this.validateBoolean(isPriority),
                         this.validateBoolean(isComplete),
-                        this.validateProject(projectIndex, totalProjects)
+                        this.validateList(projectIndex, totalProjects)
                         ];
         for (const input of inputs) {
             if (input === false) {
