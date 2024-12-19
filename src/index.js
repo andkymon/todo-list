@@ -102,6 +102,14 @@ class ToDoStorage {
         }
         this.projects.push(new Project(name));
     }
+
+    static removeTask(projectIndex, taskIndex) {
+        this.projects[projectIndex].tasks.splice(taskIndex, 1);
+    }
+
+    static removeProject(projectIndex) {
+        this.projects.splice(projectIndex, 1);
+    }
 }
 
 class InputValidator {
@@ -192,21 +200,22 @@ class ProjectFilter {
     }
 }
 
+ToDoStorage.addProject("A");
+ToDoStorage.addProject("B");
+ToDoStorage.addProject("C");
 
 ToDoStorage.addTask("Code", "Code for 8 hours", "12-21-2024", true, true, 0);
 ToDoStorage.addTask("Eat", "Eat yummy food", "12-20-2024", false, true, 0);
 ToDoStorage.addTask("Sleep", "Sleep for 8 hours", "12-30-2024", true, false, 0);
-ToDoStorage.addTask("Sleep", "Sleep for 8 hours", "12-30-2024", true, false, 1);
+ToDoStorage.addTask("Sleepy", "Sleep for 8 hours", "12-30-2024", true, false, 1);
 
 
 ToDoStorage.addTask("Code", "Code for 8 hours", "12-21-2024", true, true, 1);
 ToDoStorage.addTask("Sleep", "Sleep for 8 hours", "12-30-2024", true, false, 2);
-ToDoStorage.addTask("Sleep", "Sleep for 8 hours", "12-30-2024", true, false, );
+ToDoStorage.addTask("Sleep", "Sleep for 8 hours", "12-30-2024", true, false, 1);
 
 
+ToDoStorage.removeProject(2);
 console.log(ToDoStorage.projects);
-console.log(ProjectFilter.filterOff(ToDoStorage.projects[0]));
-console.log(ProjectFilter.filterTasksToday(ToDoStorage.projects[0]));
-console.log(ProjectFilter.filterTasksThisWeek(ToDoStorage.projects[0]));
-console.log(ProjectFilter.filterImportantTasks(ToDoStorage.projects[0]));
-console.log(ProjectFilter.filterIncompleteTasks(ToDoStorage.projects[0]));
+
+
