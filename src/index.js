@@ -4,15 +4,13 @@ class Task {
     #name;
     #description;
     #dueDate;
-    #projectName;
     #isPriority;
     #isComplete;
 
-    constructor(name, description, dueDate, projectName, isPriority, isComplete) {
+    constructor(name, description, dueDate, isPriority, isComplete) {
         this.#name = name;
         this.#description = description;
         this.#dueDate = dueDate;
-        this.#projectName = projectName;
         this.#isPriority = isPriority;
         this.#isComplete = isComplete;
     }
@@ -45,16 +43,6 @@ class Task {
             return;
         }
         this.#dueDate = date;
-    }
-
-    get projectName() {
-        return this.#projectName;
-    }
-    set projectName(str) {
-        if (InputValidator.validateName(str) === false) {
-            return;
-        }
-        this.#projectName = str;
     }
 
     get isPriority() {
@@ -100,17 +88,12 @@ class Project {
 class ToDoStorage {
     static projects = [];
 
-    static addTask(name, description, dueDate, projectName, isPriority, isComplete) {
+    static addTask(name, description, dueDate, isPriority, isComplete, projectIndex) {
         dueDate = new Date(dueDate);
-        if (InputValidator.validateTask(name, description, dueDate, projectName, isPriority, isComplete) === false) {
+        if (InputValidator.validateTask(name, description, dueDate, isPriority, isComplete, projectIndex, this.projects.length) === false) {
             return;
         }
-        const projectNames = this.projects.map((project) => project.name);
-        if (!projectNames.includes(projectName)) {
-            projectNames.push(projectName);
-            this.addProject(projectName);
-        }
-        this.projects[projectNames.indexOf(projectName)].tasks.push(new Task(name, description, dueDate, projectName, isPriority, isComplete));
+        this.projects[projectIndex].tasks.push(new Task(name, description, dueDate, isPriority, isComplete));
     }
 
     static addProject(name) {
@@ -152,13 +135,20 @@ class InputValidator {
         }
     }
 
-    static validateTask(name, description, dueDate, projectName, isPriority, isComplete) {
+    static validateProject(projectIndex, totalProjects) {
+        if (!Number.isInteger(projectIndex) || projectIndex < 0 || projectIndex >= totalProjects) {
+            console.error("Invalid project selected");
+            return false;
+        }
+    }
+
+    static validateTask(name, description, dueDate, isPriority, isComplete, projectIndex, totalProjects) {
         const inputs = [this.validateName(name), 
                         this.validateDescription(description),
                         this.validateDate(dueDate),
-                        this.validateName(projectName),
                         this.validateBoolean(isPriority),
-                        this.validateBoolean(isComplete)
+                        this.validateBoolean(isComplete),
+                        this.validateProject(projectIndex, totalProjects)
                         ];
         for (const input of inputs) {
             if (input === false) {
@@ -202,34 +192,17 @@ class ProjectFilter {
     }
 }
 
-ToDoStorage.addTask("Code", "Code for 8 hours", "12-21-2024", "Miscellaneous", true, true);
-ToDoStorage.addTask("Eat", "Eat yummy food", "12-20-2024", "Miscellaneous", false, true);
-ToDoStorage.addTask("Sleep", "Sleep for 8 hours", "12-30-2024", "Miscellaneous", true, false);
 
-ToDoStorage.addProject("Cry");
-ToDoStorage.addProject("Cry".repeat(50));
+ToDoStorage.addTask("Code", "Code for 8 hours", "12-21-2024", true, true, 0);
+ToDoStorage.addTask("Eat", "Eat yummy food", "12-20-2024", false, true, 0);
+ToDoStorage.addTask("Sleep", "Sleep for 8 hours", "12-30-2024", true, false, 0);
+ToDoStorage.addTask("Sleep", "Sleep for 8 hours", "12-30-2024", true, false, 1);
 
-ToDoStorage.addTask("Sleep".repeat(50), "Sleep for 8 hours", "12-30-2024", "Miscellaneous", true, false);
-ToDoStorage.addTask("Sleep", "Sleep for 8 hours".repeat(255), "12-30-2024", "Miscellaneous", true, false);
-ToDoStorage.addTask("Sleep", "Sleep for 8 hours", "12-32-2024", "Miscellaneous", true, false);
-ToDoStorage.addTask("Sleep", "Sleep for 8 hours", "12-30-2024", "Miscellaneous".repeat(50), true, false);
-ToDoStorage.addTask("Sleep", "Sleep for 8 hours", "12-30-2024", "Miscellaneous", "true", false);
-ToDoStorage.addTask("Sleep", "Sleep for 8 hours", "12-30-2024", "Miscellaneous", true, "false");
 
-ToDoStorage.projects[0].name = "Misc";
-ToDoStorage.projects[0].name = "Misc".repeat(50);
+ToDoStorage.addTask("Code", "Code for 8 hours", "12-21-2024", true, true, 1);
+ToDoStorage.addTask("Sleep", "Sleep for 8 hours", "12-30-2024", true, false, 2);
+ToDoStorage.addTask("Sleep", "Sleep for 8 hours", "12-30-2024", true, false, );
 
-ToDoStorage.projects[0].tasks[0].name = "Test";
-ToDoStorage.projects[0].tasks[0].name = "Test".repeat(50);
-ToDoStorage.projects[0].tasks[0].description = "Test";
-ToDoStorage.projects[0].tasks[0].description = "Test".repeat(255);
-ToDoStorage.projects[0].tasks[0].dueDate = new Date("12-19-2024");
-ToDoStorage.projects[0].tasks[0].dueDate = "Test";
-//projectName to be fixed
-ToDoStorage.projects[0].tasks[0].isPriority = false;
-ToDoStorage.projects[0].tasks[0].isPriority = "test";
-ToDoStorage.projects[0].tasks[0].isComplete = true;
-ToDoStorage.projects[0].tasks[0].isPriority = "test";
 
 console.log(ToDoStorage.projects);
 console.log(ProjectFilter.filterOff(ToDoStorage.projects[0]));
