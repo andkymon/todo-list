@@ -124,7 +124,6 @@ class ToDoStorage {
 class InputValidator {
     static validateName(name) {
         const nameStr = name.toString();
-        console.log(nameStr);
         if (nameStr === "" || nameStr.length > 50) {
             console.error("Input must be 1 to 50 characters");
             return false;
@@ -133,7 +132,6 @@ class InputValidator {
 
     static validateDescription(description) {
         const descriptionStr = description.toString();
-        console.log(descriptionStr);
         if (descriptionStr.length > 255) {
             console.error("Input must be 0 to 255 characters");
             return false;
@@ -141,7 +139,6 @@ class InputValidator {
     }
 
     static validateDate(date) {
-        console.log(date);
         if (isNaN(date)) {
             console.error("Input format must be MM-DD-YYYY and valid");
 			return false
@@ -149,7 +146,6 @@ class InputValidator {
     }
 
     static validateBoolean(bool) {
-        console.log(bool);
         if (typeof bool !== "boolean") {
             console.error("Input must be of boolean data type");
             return false;
@@ -172,10 +168,72 @@ class InputValidator {
     }
 }
 
-ToDoStorage.addTask("ky", "hanz", "12-01-2000", "pooproject", true, true);
-ToDoStorage.projects[0].name = "1234567890123456";
-ToDoStorage.projects[0].name = "1234123456789012345612345678901234561234567890123456567890123456123456789012345612345678901234561234567890123456";
-ToDoStorage.projects[0].tasks[0].name = "1234123456789012345612345678901234561234567890123456567890123456123456789012345612345678901234561234567890123456";
-ToDoStorage.projects[0].tasks[0].name = "kyle";
+class ProjectFilter {
+    static filterOff(project) {
+        return project.tasks;
+    }
+
+    static #weekms = 604800000; //week in milliseconds
+    static #todayDate = new Date((new Date()).toDateString()); //toDateString to set time to 12 midnight of the current day
+    static #nextWeekDate = new Date(this.#todayDate.getTime() + this.#weekms);
+	    
+    static filterTasksToday(project) {
+        const allTasks = project.tasks;
+	    const todayTasks = allTasks.filter((task) => task.dueDate.getTime() === this.#todayDate.getTime());
+	    return todayTasks;
+    }
+
+    static filterTasksThisWeek(project) {
+        const allTasks = project.tasks;
+	    const weekTasks = allTasks.filter((task) => (task.dueDate >= this.#todayDate && task.dueDate < this.#nextWeekDate));
+	    return weekTasks;
+    }
+	
+    static filterImportantTasks(project) {
+        const allTasks = project.tasks;
+	    const importantTasks = allTasks.filter((task) => task.isPriority === true);
+	    return importantTasks;
+    }
+
+    static filterIncompleteTasks(project) {
+        const allTasks = project.tasks
+	    const incompleteTasks = allTasks.filter(task => task.isComplete === false);
+	    return incompleteTasks;
+    }
+}
+
+ToDoStorage.addTask("Code", "Code for 8 hours", "12-21-2024", "Miscellaneous", true, true);
+ToDoStorage.addTask("Eat", "Eat yummy food", "12-20-2024", "Miscellaneous", false, true);
+ToDoStorage.addTask("Sleep", "Sleep for 8 hours", "12-30-2024", "Miscellaneous", true, false);
+
+ToDoStorage.addProject("Cry");
+ToDoStorage.addProject("Cry".repeat(50));
+
+ToDoStorage.addTask("Sleep".repeat(50), "Sleep for 8 hours", "12-30-2024", "Miscellaneous", true, false);
+ToDoStorage.addTask("Sleep", "Sleep for 8 hours".repeat(255), "12-30-2024", "Miscellaneous", true, false);
+ToDoStorage.addTask("Sleep", "Sleep for 8 hours", "12-32-2024", "Miscellaneous", true, false);
+ToDoStorage.addTask("Sleep", "Sleep for 8 hours", "12-30-2024", "Miscellaneous".repeat(50), true, false);
+ToDoStorage.addTask("Sleep", "Sleep for 8 hours", "12-30-2024", "Miscellaneous", "true", false);
+ToDoStorage.addTask("Sleep", "Sleep for 8 hours", "12-30-2024", "Miscellaneous", true, "false");
+
+ToDoStorage.projects[0].name = "Misc";
+ToDoStorage.projects[0].name = "Misc".repeat(50);
+
+ToDoStorage.projects[0].tasks[0].name = "Test";
+ToDoStorage.projects[0].tasks[0].name = "Test".repeat(50);
+ToDoStorage.projects[0].tasks[0].description = "Test";
+ToDoStorage.projects[0].tasks[0].description = "Test".repeat(255);
+ToDoStorage.projects[0].tasks[0].dueDate = new Date("12-19-2024");
+ToDoStorage.projects[0].tasks[0].dueDate = "Test";
+//projectName to be fixed
+ToDoStorage.projects[0].tasks[0].isPriority = false;
+ToDoStorage.projects[0].tasks[0].isPriority = "test";
+ToDoStorage.projects[0].tasks[0].isComplete = true;
+ToDoStorage.projects[0].tasks[0].isPriority = "test";
 
 console.log(ToDoStorage.projects);
+console.log(ProjectFilter.filterOff(ToDoStorage.projects[0]));
+console.log(ProjectFilter.filterTasksToday(ToDoStorage.projects[0]));
+console.log(ProjectFilter.filterTasksThisWeek(ToDoStorage.projects[0]));
+console.log(ProjectFilter.filterImportantTasks(ToDoStorage.projects[0]));
+console.log(ProjectFilter.filterIncompleteTasks(ToDoStorage.projects[0]));
