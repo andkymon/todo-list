@@ -103,6 +103,12 @@ class ToDoStorage {
         this.projects.push(new Project(name));
     }
 
+    static moveTask(initialProjectIndex, taskIndex, targetProjectIndex) {
+        const task = this.projects[initialProjectIndex].tasks[taskIndex];
+        this.projects[targetProjectIndex].tasks.push(task);
+        this.removeTask(initialProjectIndex, taskIndex);
+    }
+
     static removeTask(projectIndex, taskIndex) {
         this.projects[projectIndex].tasks.splice(taskIndex, 1);
     }
@@ -204,18 +210,18 @@ ToDoStorage.addProject("A");
 ToDoStorage.addProject("B");
 ToDoStorage.addProject("C");
 
-ToDoStorage.addTask("Code", "Code for 8 hours", "12-21-2024", true, true, 0);
-ToDoStorage.addTask("Eat", "Eat yummy food", "12-20-2024", false, true, 0);
-ToDoStorage.addTask("Sleep", "Sleep for 8 hours", "12-30-2024", true, false, 0);
-ToDoStorage.addTask("Sleepy", "Sleep for 8 hours", "12-30-2024", true, false, 1);
+ToDoStorage.addTask("A", "Code for 8 hours", "12-21-2024", true, true, 0);
+ToDoStorage.addTask("B", "Eat yummy food", "12-20-2024", false, true, 0);
+ToDoStorage.addTask("C", "Sleep for 8 hours", "12-30-2024", true, false, 0);
+ToDoStorage.addTask("D", "Sleep for 8 hours", "12-30-2024", true, false, 1);
 
 
-ToDoStorage.addTask("Code", "Code for 8 hours", "12-21-2024", true, true, 1);
-ToDoStorage.addTask("Sleep", "Sleep for 8 hours", "12-30-2024", true, false, 2);
-ToDoStorage.addTask("Sleep", "Sleep for 8 hours", "12-30-2024", true, false, 1);
+ToDoStorage.addTask("E", "Code for 8 hours", "12-21-2024", true, true, 1);
+ToDoStorage.addTask("F", "Sleep for 8 hours", "12-30-2024", true, false, 2);
+ToDoStorage.addTask("G", "Sleep for 8 hours", "12-30-2024", true, false, 1);
 
 
-ToDoStorage.removeProject(2);
+ToDoStorage.moveTask(0, 2, 1);
 console.log(ToDoStorage.projects);
 
 
