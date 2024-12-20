@@ -225,19 +225,19 @@ class ProjectSort {
         return projectCopy;
     }
     static sortByImportance(project) {
-        const projectCopy = {...project};
+        const projectCopy = this.sortByDate(project);
         projectCopy.tasks.sort((a, b) => b.isPriority - a.isPriority);
         return projectCopy;
     }
 
     static sortByCompletion(project) {
-        const projectCopy = {...project};
+        const projectCopy = this.sortByDate(project);
         projectCopy.tasks.sort((a, b) => b.isComplete - a.isComplete);
         return projectCopy;
     }
 
     static sortByPending(project) {
-        const projectCopy = {...project};
+        const projectCopy = this.sortByDate(project);
         projectCopy.tasks.sort((a, b) => a.isComplete - b.isComplete);
         return projectCopy;
     }
@@ -262,7 +262,7 @@ ToDoStorage.addTask("G", "Sleep for 8 hours", "12-30-2024", true, false, 1);
 
 
 console.log(ToDoStorage.projects[0]);
-console.log(ProjectSort.sortByCompletion(ProjectSort.sortByDate(ToDoStorage.projects[0])));
+console.log(ProjectSort.sortByCompletion(ToDoStorage.projects[0]));
 console.log(ProjectFilter.filterImportantTasks(ToDoStorage.projects[0]));
 
 
