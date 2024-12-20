@@ -55,7 +55,6 @@ button:hover {
     --main-bg-color: #F5EFFF;
 }
 
-
 body {
     height: 100vh;
     display: grid;
@@ -86,6 +85,28 @@ header {
     box-shadow: var(--generic-shadow);
     text-shadow: var(--generic-shadow); 
     z-index: 1; /* To shadow all elements*/
+    position: relative;
+}
+
+#nav-toggle {
+    height: 48px;
+    width: 48px;
+    position: absolute;
+    top: 50%;
+    left:0;
+    transform: translateY(-50%);
+    margin: 0px 36px;
+    border-radius: 8px;
+    border: none;
+    background-color: var(--button-color); 
+    box-shadow: var(--add-btn-shadow); 
+    background-image: url("./assets/images/nav-toggle-icon.svg");
+    background-size: cover;
+    transition: 0.3s;
+}
+
+#nav-toggle:hover {
+    transform: translateY(-50%) scale(1.1);
 }
 
 nav {
@@ -142,7 +163,7 @@ nav #project-h2-wrapper {
     border: none;
     font-family: Montserrat, sans-serif;
     font-size: 1.5rem;
-    background-color: #8379C3; /*Var*/
+    background-color: var(--button-color); 
     color: white;
     line-height: 1;
     box-shadow: var(--add-btn-shadow); 
