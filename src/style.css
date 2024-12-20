@@ -1,0 +1,202 @@
+/*Self-Hosted Fonts*/
+@font-face {
+    font-family: Montserrat;
+    src: url("assets/fonts/Montserrat.woff2") format('woff2');
+}
+
+@font-face {
+    font-family: Fredoka;
+    src: url("assets/fonts/Fredoka.woff2") format('woff2');
+}
+
+/*
+Josh's Custom CSS Reset
+https://www.joshwcomeau.com/css/custom-css-reset/
+*/
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+* {
+    margin: 0;
+}
+body {
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+img, picture, video, canvas, svg {
+    display: inline-block;
+    max-width: 100%;
+}
+input, button, textarea, select {
+    font: inherit;
+}
+p, h1, h2, h3, h4, h5, h6 {
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+p {
+    text-wrap: pretty;
+}
+h1, h2, h3, h4, h5, h6 {
+    text-wrap: balance;
+}
+button:hover {
+    cursor: pointer;
+}
+
+/*Variables*/
+:root {
+    --header-bg-color: #cdc1ff;
+    --generic-shadow: 0px 4px 4px gray;
+    --task-nav-bg-color: #A294F9;
+    --button-color: #8379C3;
+    --add-btn-size: 36px;
+    --add-btn-shadow: 0px 2px 4px #554f7e;
+}
+
+
+body {
+    height: 100vh;
+    display: grid;
+    grid-template-areas: 
+        "header header"
+        "nav main";
+    grid-template-rows: 120px 1fr; 
+    grid-template-columns: 360px 1fr;
+}
+
+h1, h2 {
+    font-family: Fredoka, sans-serif;
+}
+
+h1 {
+    font-size: 4rem;
+}
+
+h2 {
+    font-size: 2rem;
+}
+
+header {
+    grid-area: header;
+    background-color: var(--header-bg-color); 
+    display: grid;
+    place-content: center;
+    box-shadow: var(--generic-shadow);
+    text-shadow: var(--generic-shadow); 
+    z-index: 1; /* To shadow all elements*/
+}
+
+nav {
+    grid-area: nav;
+    background-color: var(--task-nav-bg-color); 
+    color: white;
+    padding: 48px;
+}
+
+nav h2 {
+    text-shadow: var(--generic-shadow); 
+}
+
+.nav-btn {
+    display: block;
+    height: 36px;
+    width: 100%;
+    border: 0;
+    border-radius: 8px;
+    text-align: left;
+    padding: 0px 24px;
+    margin-bottom: 8px;
+    font-family: Montserrat, sans-serif;
+    background-color: inherit;
+    color: inherit;
+    font-size: 1.25rem;
+    transition: 0.3s;
+    text-shadow: var(--generic-shadow); 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.nav-btn:hover {
+    transform: scale(1.05);
+    background-color: var(--button-color);
+}
+
+nav hr {
+    margin: 24px 0px;
+}
+
+nav #project-h2-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.add-btn {
+    transition: 0.3s;
+    height: var(--add-btn-size); 
+    width: var(--add-btn-size); 
+    border-radius: 8px;
+    border: none;
+    font-family: Montserrat, sans-serif;
+    font-size: 1.5rem;
+    background-color: #8379C3; /*Var*/
+    color: white;
+    line-height: 1;
+    box-shadow: var(--add-btn-shadow); 
+}
+
+.add-btn:hover {
+    transform: scale(1.1);
+    filter: brightness(90%);
+}
+
+.add-btn:active {
+    transition: 0.1s;
+    transform: scale(0.9);
+}
+
+main {
+    background-color: #F5EFFF;/*Var*/
+    padding: 48px;
+    min-width: 480px;
+}
+
+.task {
+    height: 36px;
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    font-family: Montserrat, sans-serif;
+    background-color:var(--task-nav-bg-color); 
+    color: white;
+    box-shadow: var(--generic-shadow); 
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.task-checkbox {
+    border-radius: 8px;
+    border: none;
+    transition: 0.3s;
+}
+
+.task-checkbox:hover {
+    filter: brightness(90%);
+}
+
+.task-name {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.task button {
+    height: 24px;
+    width: 24px;
+}
