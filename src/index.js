@@ -185,36 +185,32 @@ class InputValidator {
 }
 
 class ProjectFilter {
-    static filterOff(project) {
-        return project.tasks;
-    }
-
     static #weekms = 604800000; //week in milliseconds
     static #todayDate = new Date((new Date()).toDateString()); //toDateString to set time to 12 midnight of the current day
     static #nextWeekDate = new Date(this.#todayDate.getTime() + this.#weekms);
 	    
     static filterTasksToday(project) {
-        const allTasks = project.tasks;
-	    const todayTasks = allTasks.filter((task) => task.dueDate.getTime() === this.#todayDate.getTime());
-	    return todayTasks;
+        const projectCopy = {...project};
+	    projectCopy.tasks = project.tasks.filter((task) => task.dueDate.getTime() === this.#todayDate.getTime());
+	    return projectCopy;
     }
 
     static filterTasksThisWeek(project) {
-        const allTasks = project.tasks;
-	    const weekTasks = allTasks.filter((task) => (task.dueDate >= this.#todayDate && task.dueDate < this.#nextWeekDate));
-	    return weekTasks;
+        const projectCopy = {...project};
+	    projectCopy.tasks = project.tasks.filter((task) => (task.dueDate >= this.#todayDate && task.dueDate < this.#nextWeekDate));
+	    return projectCopy;
     }
 	
     static filterImportantTasks(project) {
-        const allTasks = project.tasks;
-	    const importantTasks = allTasks.filter((task) => task.isPriority === true);
-	    return importantTasks;
+        const projectCopy = {...project};
+	    projectCopy.tasks = project.tasks.filter((task) => task.isPriority === true);
+	    return projectCopy;
     }
 
     static filterIncompleteTasks(project) {
-        const allTasks = project.tasks;
-	    const incompleteTasks = allTasks.filter(task => task.isComplete === false);
-	    return incompleteTasks;
+        const projectCopy = {...project};
+	    projectCopy.tasks = project.tasks.filter(task => task.isComplete === false);
+	    return projectCopy;
     }
 }
 
@@ -249,7 +245,7 @@ ToDoStorage.addProject("C");
 
 ToDoStorage.addTask("A", "Code for 8 hours", "12-21-2024", true, true, 0);
 ToDoStorage.addTask("B", "Eat yummy food", "12-20-2024", false, true, 0);
-ToDoStorage.addTask("X", "Eat yummy food", "12-24-2024", true, true, 0);
+ToDoStorage.addTask("X", "Eat yummy food", "12-24-2024", true, false, 0);
 ToDoStorage.addTask("Y", "Eat yummy food", "12-23-2024", false, true, 0);
 ToDoStorage.addTask("Z", "Eat yummy food", "12-28-2024", true, true, 0);
 ToDoStorage.addTask("C", "Sleep for 8 hours", "12-23-2024", true, false, 0);
