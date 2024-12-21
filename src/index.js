@@ -1,7 +1,7 @@
 import css from "./style.css"
-import { ToDoStorage } from './ToDoStorage.js';
-import { ProjectFilter } from './ProjectFilter.js';
-import { ProjectSort } from './ProjectSort.js';
+import { ToDoStorage } from './logic/ToDoStorage.js';
+import { ProjectFilter } from './logic/ProjectFilter.js';
+import { ProjectSort } from './logic/ProjectSort.js';
 
 // Example usage
 ToDoStorage.addProject("A");
