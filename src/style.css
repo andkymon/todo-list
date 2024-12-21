@@ -49,7 +49,7 @@ button:hover {
 
 /*Variables*/
 :root {
-    --header-bg-color: #cdc1ff;
+    --header-dialog-bg-color: #cdc1ff;
     --generic-shadow: 0px 4px 4px gray;
     --task-nav-bg-color: #A294F9;
     --btn-color: #8379C3;
@@ -85,7 +85,7 @@ h2 {
 
 header {
     grid-area: header;
-    background-color: var(--header-bg-color); 
+    background-color: var(--header-dialog-bg-color); 
     display: grid;
     place-content: center;
     box-shadow: var(--generic-shadow);
@@ -273,3 +273,59 @@ main {
 .delete {
     background-image: url("./assets/images/delete.svg");
 }
+
+dialog { 
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 480px;
+    height: fit-content;
+    transform: translate(-50%, -50%);
+    border: none;
+    border-radius: 8px;
+    box-shadow: var(--generic-shadow);
+    padding: 32px;
+    background-color: var(--header-dialog-bg-color);
+}
+
+.close,
+.confirm {
+    border-radius: 8px;
+    background-color: var(--btn-color);
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.close {
+    background-image: url("./assets/images/close.svg");
+}
+
+.confirm {
+    background-image: url("./assets/images/confirm.svg");
+}
+
+label { 
+    font-family: Montserrat, sans-serif;
+}
+
+input,
+textarea { 
+    width: 100%;
+    border-radius: 8px;
+    border: none;
+    resize: none;
+    margin-bottom: 8px;
+}
+
+.form-btn-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+label:has(textarea) {
+    align-items: start;
+}
+
