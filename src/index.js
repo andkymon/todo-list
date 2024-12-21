@@ -24,6 +24,19 @@ console.log(ToDoStorage.projects[0]);
 console.log(ProjectSort.sortByCompletion(ToDoStorage.projects[0]));
 console.log(ProjectFilter.filterImportantTasks(ToDoStorage.projects[0]));
 
+const navToggle = document.querySelector("#nav-toggle");
+const body = document.querySelector("body")
+body.style.gridTemplateColumns = "360px 1fr";
+function toggle() {
+    console.log(body.style.gridTemplateColumns)
+    if (body.style.gridTemplateColumns === "360px 1fr") {
+        body.style.gridTemplateColumns = "0px 1fr";
+    } else {
+        body.style.gridTemplateColumns = "360px 1fr";
+    }
+}
+
+navToggle.addEventListener("click", toggle);
 
 
 
