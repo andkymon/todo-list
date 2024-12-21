@@ -52,9 +52,11 @@ button:hover {
     --header-bg-color: #cdc1ff;
     --generic-shadow: 0px 4px 4px gray;
     --task-nav-bg-color: #A294F9;
-    --button-color: #8379C3;
-    --add-btn-size: 36px;
-    --add-btn-shadow: 0px 2px 4px #554f7e;
+    --btn-color: #8379C3;
+    --nav-toggle-size: 48px;
+    --action-btn-size: 36px;
+    --small-btn-size: 24px;
+    --btn-shadow: 0px 2px 4px #554f7e;
     --main-bg-color: #F5EFFF;
 }
 
@@ -93,8 +95,8 @@ header {
 }
 
 #nav-toggle {
-    height: 48px;
-    width: 48px;
+    height: var(--nav-toggle-size);
+    width: var(--nav-toggle-size);
     position: absolute;
     top: 50%;
     left:0;
@@ -102,8 +104,8 @@ header {
     margin: 0px 36px;
     border-radius: 8px;
     border: none;
-    background-color: var(--button-color); 
-    box-shadow: var(--add-btn-shadow); /*fix*/
+    background-color: var(--btn-color); 
+    box-shadow: var(--btn-shadow); /*fix*/
     background-image: url("./assets/images/nav-toggle-icon.svg");
     background-size: cover;
     transition: 0.3s;
@@ -155,7 +157,7 @@ nav h2 {
 
 .nav-btn:hover {
     transform: scale(1.05);
-    background-color: var(--button-color);
+    background-color: var(--btn-color);
 }
 
 .nav-btn:active {
@@ -167,23 +169,23 @@ nav .btn-wrapper {
 }
 
 .small-btn {
-    height: 24px;
-    width: 24px;
+    height: var(--small-btn-size);
+    width: var(--small-btn-size);
     background-color: inherit;
     color: inherit;
 }
 
 .action-btn {
     transition: 0.3s;
-    height: var(--add-btn-size); 
-    width: var(--add-btn-size); 
+    height: var(--action-btn-size); 
+    width: var(--action-btn-size); 
     border-radius: 8px;
     border: none;
     font-family: Montserrat, sans-serif;
     font-size: 1.5rem;
-    background-color: var(--button-color); 
+    background-color: var(--btn-color); 
     color: white;
-    box-shadow: var(--add-btn-shadow); 
+    box-shadow: var(--btn-shadow); 
 }
 
 .action-btn:hover {
@@ -225,8 +227,8 @@ main {
 }
 
 .task-checkbox {
-    height: 24px;
-    width: 24px;
+    height: var(--small-btn-size);
+    width: var(--small-btn-size);
     border-radius: 8px;
     border: none;
     transition: 0.3s;
