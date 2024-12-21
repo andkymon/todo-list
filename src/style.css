@@ -99,7 +99,7 @@ header {
     border-radius: 8px;
     border: none;
     background-color: var(--button-color); 
-    box-shadow: var(--add-btn-shadow); 
+    box-shadow: var(--add-btn-shadow); /*fix*/
     background-image: url("./assets/images/nav-toggle-icon.svg");
     background-size: cover;
     transition: 0.3s;
@@ -107,6 +107,10 @@ header {
 
 #nav-toggle:hover {
     transform: translateY(-50%) scale(1.1);
+}
+
+#nav-toggle:active {
+    transform: translateY(-50%) scale(0.8);
 }
 
 nav {
@@ -149,13 +153,13 @@ nav hr {
     margin: 24px 0px;
 }
 
-nav #project-h2-wrapper {
+.h2-wrapper {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.add-btn {
+.action-btn {
     transition: 0.3s;
     height: var(--add-btn-size); 
     width: var(--add-btn-size); 
@@ -169,12 +173,12 @@ nav #project-h2-wrapper {
     box-shadow: var(--add-btn-shadow); 
 }
 
-.add-btn:hover {
+.action-btn:hover {
     transform: scale(1.1);
     filter: brightness(90%);
 }
 
-.add-btn:active {
+.action-btn:active {
     transition: 0.1s;
     transform: scale(0.9);
 }
@@ -183,6 +187,12 @@ main {
     background-color: var(--main-bg-color);
     padding: 48px;
     min-width: 480px;
+}
+
+#btn-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .task {
