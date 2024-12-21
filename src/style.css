@@ -55,7 +55,7 @@ button:hover {
     --btn-color: #8379C3;
     --nav-toggle-size: 48px;
     --action-btn-size: 36px;
-    --small-btn-size: 24px;
+    --small-btn-size: 20px;
     --btn-shadow: 0px 2px 4px #554f7e;
     --main-bg-color: #F5EFFF;
 }
@@ -210,6 +210,13 @@ main {
     display: flex;
     align-items: center;
     gap: 8px;
+}
+
+#filter-btn {
+    background-image: url("./assets/images/filter.svg");
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .task {
