@@ -169,10 +169,12 @@ nav .btn-wrapper {
 }
 
 .small-btn {
-    height: var(--small-btn-size);
-    width: var(--small-btn-size);
+    min-height: var(--small-btn-size);
+    min-width: var(--small-btn-size);
     background-color: inherit;
     color: inherit;
+    background-size: contain;
+    border: none;
 }
 
 .action-btn {
@@ -243,4 +245,24 @@ main {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.info {
+    background-image: url("./assets/images/info.svg");
+}
+
+.important {
+    background-image: url("./assets/images/star-unclicked.svg");
+}
+
+.important.clicked {
+    background-image: url("./assets/images/star-clicked.svg");
+}
+
+.edit {
+    background-image: url("./assets/images/edit.svg");
+}
+
+.delete {
+    background-image: url("./assets/images/delete.svg");
 }
