@@ -209,6 +209,7 @@ main {
 .btn-wrapper {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
 }
 
@@ -235,7 +236,7 @@ main {
     gap: 8px;
 }
 
-.task-checkbox {
+.checkbox {
     height: var(--small-btn-size);
     width: var(--small-btn-size);
     border-radius: 8px;
@@ -243,7 +244,7 @@ main {
     transition: 0.3s;
 }
 
-.task-checkbox:hover {
+.checkbox:hover {
     filter: brightness(90%);
 }
 
@@ -254,7 +255,7 @@ main {
     text-overflow: ellipsis;
 }
 
-.info {
+.task-info {
     background-image: url("./assets/images/info.svg");
 }
 
@@ -290,8 +291,6 @@ dialog {
 
 .close,
 .confirm {
-    border-radius: 8px;
-    background-color: var(--btn-color);
     background-size: 50%;
     background-repeat: no-repeat;
     background-position: center;
@@ -305,8 +304,11 @@ dialog {
     background-image: url("./assets/images/confirm.svg");
 }
 
-label { 
+label,
+.info,
+.filter { 
     font-family: Montserrat, sans-serif;
+    font-weight: bold;
 }
 
 input,
@@ -318,14 +320,27 @@ textarea {
     margin-bottom: 8px;
 }
 
-.form-btn-wrapper {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
+dialog .btn-wrapper {
     margin-top: 16px;
 }
 
-label:has(textarea) {
-    align-items: start;
+.info {
+    margin: 16px 0px;
 }
 
+input,
+textarea,
+.info span {
+    font-weight: normal;
+}
+
+dialog:has(#filter-wrapper) {
+    width: 240px;
+}
+
+#filter-wrapper span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 16px;
+}

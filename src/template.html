@@ -31,38 +31,38 @@
             </div>
         </div>
         <div class="task">
-            <button class="task-checkbox"></button>
+            <button class="checkbox"></button>
             <span class="task-name">Task A</span>
             <span class="due-date">12-01-2000</span>
-            <button class="small-btn info"></button>
+            <button class="small-btn task-info"></button>
             <button class="small-btn important clicked"></button>
             <button class="small-btn edit"></button>
             <button class="small-btn delete"></button>
         </div>
         <div class="task">
-            <button class="task-checkbox"></button>
+            <button class="checkbox"></button>
             <span class="task-name">Task B</span>
             <span class="due-date">12-01-2000</span>
-            <button class="small-btn info"></button>
+            <button class="small-btn task-info"></button>
             <button class="small-btn important"></button>
             <button class="small-btn edit"></button>
             <button class="small-btn delete"></button>
         </div>
     </main>
-    <dialog open>
+    <dialog>
         <h2>Add a New Project</h2>
         <form method="dialog">
             <label for="project-input-name">
                 Name:
                 <input type="text" id="project-input-name" name="project-input-name">
             </label>
-            <div class="form-btn-wrapper">
+            <div class="btn-wrapper">
                 <button class="action-btn close"></button>
                 <button class="action-btn confirm"></button>
             </div>
         </form>
     </dialog>
-    <dialog>
+    <dialog open>
         <h2>Add a New Task</h2>
         <form method="dialog">
             <label for="task-input-name">
@@ -77,11 +77,52 @@
                 Due Date:
                 <input type="date" id="task-input-date" name="task-input-date">
             </label>
-            <div class="form-btn-wrapper">
+            <div class="btn-wrapper">
                 <button class="action-btn close"></button>
                 <button class="action-btn confirm"></button>
             </div>
         </form>
+    </dialog>
+    <dialog>
+        <div class="h2-wrapper">
+            <h2>Task A</h2>
+            <button class="action-btn close"></button>
+        </div>
+        <div class="info">
+            Description:
+            <br>
+            <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium amet excepturi provident optio fugit debitis blanditiis similique, molestias repellendus quidem placeat. Doloremque expedita dignissimos nesciunt minus natus architecto repellat autem.</span>
+        </div>
+        <div class="info">
+            Due Date:
+            <br>
+            <span>12-01-2000</span>
+        </div>
+    </dialog>
+    <dialog>
+        <h2>Filters</h2>
+        <div id="filter-wrapper">
+            <span class="filter">
+                <button class="checkbox"></button>
+                Today
+            </span>
+            <span class="filter">
+                <button class="checkbox"></button>
+                This Week
+            </span>
+            <span class="filter">
+                <button class="checkbox"></button>
+                Important
+            </span>
+            <span class="filter">
+                <button class="checkbox"></button>
+                Complete
+            </span>
+        </div>
+        <div class="btn-wrapper">
+            <button class="action-btn close"></button>
+            <button class="action-btn confirm"></button>
+        </div>
     </dialog>
 </body>
 </html>
