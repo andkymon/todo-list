@@ -40,6 +40,9 @@ p {
 h1, h2, h3, h4, h5, h6 {
     text-wrap: balance;
 }
+button {
+    line-height: 1;
+}
 button:hover {
     cursor: pointer;
 }
@@ -63,6 +66,7 @@ body {
         "nav main";
     grid-template-rows: 120px 1fr; 
     grid-template-columns: 360px 1fr;
+    transition: 0.3s;
 }
 
 h1, h2 {
@@ -120,6 +124,12 @@ nav {
     padding: 48px;
 }
 
+.h2-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 nav h2 {
     text-shadow: var(--generic-shadow); 
 }
@@ -132,7 +142,6 @@ nav h2 {
     border-radius: 8px;
     text-align: left;
     padding: 0px 24px;
-    margin-bottom: 8px;
     font-family: Montserrat, sans-serif;
     background-color: inherit;
     color: inherit;
@@ -149,14 +158,19 @@ nav h2 {
     background-color: var(--button-color);
 }
 
-nav hr {
-    margin: 24px 0px;
+.nav-btn:active {
+    transform: scale(0.9);
 }
 
-.h2-wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+nav .btn-wrapper {
+    margin: 8px 0px;
+}
+
+.small-btn {
+    height: 24px;
+    width: 24px;
+    background-color: inherit;
+    color: inherit;
 }
 
 .action-btn {
@@ -169,7 +183,6 @@ nav hr {
     font-size: 1.5rem;
     background-color: var(--button-color); 
     color: white;
-    line-height: 1;
     box-shadow: var(--add-btn-shadow); 
 }
 
@@ -189,7 +202,7 @@ main {
     min-width: 480px;
 }
 
-#btn-wrapper {
+.btn-wrapper {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -212,6 +225,8 @@ main {
 }
 
 .task-checkbox {
+    height: 24px;
+    width: 24px;
     border-radius: 8px;
     border: none;
     transition: 0.3s;
@@ -226,9 +241,4 @@ main {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-}
-
-.task button {
-    height: 24px;
-    width: 24px;
 }
