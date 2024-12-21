@@ -26,13 +26,17 @@ console.log(ProjectFilter.filterImportantTasks(ToDoStorage.projects[0]));
 
 const navToggle = document.querySelector("#nav-toggle");
 const body = document.querySelector("body")
+const nav = document.querySelector("nav");
 body.style.gridTemplateColumns = "360px 1fr";
+nav.style.transform = "none";
 function toggle() {
     console.log(body.style.gridTemplateColumns)
     if (body.style.gridTemplateColumns === "360px 1fr") {
         body.style.gridTemplateColumns = "0px 1fr";
+        nav.style.transform = "translateX(-360px)";
     } else {
         body.style.gridTemplateColumns = "360px 1fr";
+        nav.style.transform = "none";
     }
 }
 

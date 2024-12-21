@@ -120,10 +120,12 @@ header {
 }
 
 nav {
+    transition: 0.3s;
     grid-area: nav;
     background-color: var(--task-nav-bg-color); 
     color: white;
     padding: 48px;
+    transform: translateX(-20px);
 }
 
 .h2-wrapper {
