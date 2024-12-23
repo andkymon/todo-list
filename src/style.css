@@ -149,7 +149,7 @@ nav h2 {
     padding: 0px 24px;
     font-family: Montserrat, sans-serif;
     background-color: inherit;
-    color: inherit;
+    color: white;
     font-size: 1.25rem;
     transition: 0.3s;
     text-shadow: var(--generic-shadow); 
