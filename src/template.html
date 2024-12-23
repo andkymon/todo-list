@@ -12,14 +12,10 @@
     <nav>
         <div class="h2-wrapper">
             <h2>Projects</h2>
-            <button class="action-btn">+</button>
+            <button class="action-btn" id="add-project">+</button>
         </div>
         <div class="btn-wrapper">
             <button class="nav-btn">All</button>
-        </div>
-        <div class="btn-wrapper">
-            <button class="nav-btn">Project A</button>
-            <button class="small-btn delete"></button>
         </div>
     </nav>
     <main>
@@ -49,7 +45,7 @@
             <button class="small-btn delete"></button>
         </div>
     </main>
-    <dialog>
+    <dialog id="project-dialog">
         <h2>Add a New Project</h2>
         <form method="dialog">
             <label for="project-input-name">
@@ -62,7 +58,7 @@
             </div>
         </form>
     </dialog>
-    <dialog open>
+    <dialog>
         <h2>Add a New Task</h2>
         <form method="dialog">
             <label for="task-input-name">
