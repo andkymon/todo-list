@@ -25,6 +25,9 @@ navToggle.addEventListener("click", toggle);
 //Add Project Dialog
 const addProjectBtn = document.querySelector("#add-project");
 const addProjectDialog = document.querySelector("#project-dialog");
+const transitionTime = 300; //animation transition time in ms
+addProjectDialog.style.transition = `${transitionTime}ms`
+
 function showAddProjectDialog() {
     addProjectDialog.showModal();
     setTimeout(function() { //Wait for dialog to open before playing animation
@@ -39,7 +42,7 @@ function hideAddProjectDialog() {
     addProjectDialog.classList.remove("open");
     setTimeout(function() { //Wait for animation to play before closing dialog
         addProjectDialog.close();
-    }, 300);
+    }, transitionTime);
 }
 closeBtn.addEventListener("click", hideAddProjectDialog);
 

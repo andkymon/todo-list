@@ -290,8 +290,6 @@ dialog {
     box-shadow: var(--generic-shadow);
     padding: 32px;
     background-color: var(--header-dialog-bg-color);
-    transition: 0.3s;
-
 }
 
 dialog.open {
