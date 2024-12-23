@@ -284,12 +284,18 @@ dialog {
     left: 50%;
     width: 480px;
     height: fit-content;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(0);
     border: none;
     border-radius: 8px;
     box-shadow: var(--generic-shadow);
     padding: 32px;
     background-color: var(--header-dialog-bg-color);
+    transition: 0.3s;
+
+}
+
+dialog.open {
+    transform: translate(-50%, -50%) scale(1);
 }
 
 .close,

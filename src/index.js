@@ -27,13 +27,19 @@ const addProjectBtn = document.querySelector("#add-project");
 const addProjectDialog = document.querySelector("#project-dialog");
 function showAddProjectDialog() {
     addProjectDialog.showModal();
+    setTimeout(function() { //Wait for dialog to open before playing animation
+        addProjectDialog.classList.add("open");
+    }, 1);
 }
 addProjectBtn.addEventListener("click", showAddProjectDialog);
 
 const closeBtn = document.querySelector(".close");
 function hideAddProjectDialog() {
     clearInvalidStyles();
-    addProjectDialog.close();
+    addProjectDialog.classList.remove("open");
+    setTimeout(function() { //Wait for animation to play before closing dialog
+        addProjectDialog.close();
+    }, 300);
 }
 closeBtn.addEventListener("click", hideAddProjectDialog);
 
