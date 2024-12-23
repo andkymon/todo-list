@@ -69,6 +69,7 @@ body {
     grid-template-rows: 120px 1fr; 
     grid-template-columns: 360px 1fr;
     transition: 0.3s;
+    background-color: var(--main-bg-color);
 }
 
 h1, h2 {
