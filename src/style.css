@@ -172,6 +172,10 @@ nav .btn-wrapper {
     transition: 0.3s;
 }
 
+.removed {
+    transform: translateX(-100vw);
+}
+
 .small-btn {
     min-height: var(--small-btn-size);
     min-width: var(--small-btn-size);
@@ -295,10 +299,6 @@ dialog {
 
 dialog.open {
     transform: translate(-50%, -50%) scale(1);
-}
-
-.removed {
-    transform: translateX(-100vw);
 }
 
 .close,
