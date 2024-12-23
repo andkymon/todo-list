@@ -92,8 +92,12 @@ function updateProjects() {
         const deleteBtn = document.createElement("button");
         deleteBtn.classList.add("small-btn", "delete");
         deleteBtn.addEventListener("click", () => {
-            ToDoStorage.removeProject(index);
-            updateProjects();
+            if (confirm(`Delete ${project.name}?`) === true) {
+                ToDoStorage.removeProject(index);
+                updateProjects();
+            } else {
+                return;
+            }
         });
 
         const btnWrapper = document.createElement("div");
