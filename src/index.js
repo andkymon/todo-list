@@ -64,6 +64,10 @@ function addProject() {
     projectInputName.value = "";
     hideAddProjectDialog();
     updateProjects();
+    nav.lastChild.classList.add("removed");
+    setTimeout(function() {
+        nav.lastChild.classList.remove("removed");;
+    }, 1);
 }
 addProjectDialog.addEventListener("keypress", (event) => {
     if (event.key === "Enter") {
@@ -96,21 +100,25 @@ function updateProjects() {
     clearProjects();
     for (const [index, project] of ToDoStorage.projects.entries()) {
         const navBtn = document.createElement("button");
+        const deleteBtn = document.createElement("button");
+        const btnWrapper = document.createElement("div");
+
         navBtn.classList.add("nav-btn");
         navBtn.textContent = project.name;
-
-        const deleteBtn = document.createElement("button");
+        
         deleteBtn.classList.add("small-btn", "delete");
         deleteBtn.addEventListener("click", () => {
             if (confirm(`Delete ${project.name}?`) === true) {
                 ToDoStorage.removeProject(index);
-                updateProjects();
+                btnWrapper.classList.add("removed");
+                setTimeout(function() {
+                    updateProjects();
+                }, 300);
             } else {
                 return;
             }
         });
 
-        const btnWrapper = document.createElement("div");
         btnWrapper.classList.add("btn-wrapper");
 
         btnWrapper.append(navBtn, deleteBtn);
