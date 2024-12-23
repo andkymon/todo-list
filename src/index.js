@@ -32,6 +32,7 @@ addProjectBtn.addEventListener("click", showAddProjectDialog);
 
 const closeBtn = document.querySelector(".close");
 function hideAddProjectDialog() {
+    clearInvalidStyles();
     addProjectDialog.close();
 }
 closeBtn.addEventListener("click", hideAddProjectDialog);
@@ -42,12 +43,34 @@ const projectInputName = document.querySelector("#project-input-name");
 
 function addProject() {
     const name = projectInputName.value;
-    ToDoStorage.addProject(name);
+    const result = ToDoStorage.addProject(name);
+    if (result === false) {
+        showNameValidationError();
+        return;
+    }
     projectInputName.value = "";
-    console.log(ToDoStorage.projects);
+    hideAddProjectDialog();
     updateProjects();
 }
 projectConfirmBtn.addEventListener("click", addProject);
+
+//Validate inputs
+function showNameValidationError() {
+    const nameInput = document.querySelector(".name-input");
+    const nameValidationSpan = document.querySelector(".name-validation");
+
+    nameInput.classList.add("invalid");
+    nameValidationSpan.classList.add("invalid");
+
+    nameValidationSpan.textContent = "Input must be 1 to 50 characters";
+}
+
+function clearInvalidStyles() {
+    const invalids = document.querySelectorAll(".invalid");
+    for (const invalid of invalids) {
+        invalid.classList.remove("invalid");
+    }
+}
 
 //Display Projects
 function updateProjects() {
