@@ -44,6 +44,10 @@ function hideAddProjectDialog() {
         addProjectDialog.close();
     }, transitionTime);
 }
+addProjectDialog.addEventListener("cancel", (event) => {
+    event.preventDefault();
+    hideAddProjectDialog();
+});
 closeBtn.addEventListener("click", hideAddProjectDialog);
 
 //Add Project Button
@@ -61,6 +65,12 @@ function addProject() {
     hideAddProjectDialog();
     updateProjects();
 }
+addProjectDialog.addEventListener("keypress", (event) => {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        addProject();
+    }
+});
 projectConfirmBtn.addEventListener("click", addProject);
 
 //Validate inputs
