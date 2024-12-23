@@ -169,6 +169,7 @@ nav h2 {
 
 nav .btn-wrapper {
     margin: 8px 0px;
+    transition: 0.3s;
 }
 
 .small-btn {
@@ -294,6 +295,14 @@ dialog {
 
 dialog.open {
     transform: translate(-50%, -50%) scale(1);
+}
+
+.btn-wrapper {
+    
+}
+
+.removed {
+    transform: translateX(-100vw);
 }
 
 .close,
