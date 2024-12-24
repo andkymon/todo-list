@@ -349,7 +349,7 @@ textarea {
 }
 
 .validation.invalid {
-    display: inline;
+    display: block;
     font-weight: normal;
     color: red;
 }
