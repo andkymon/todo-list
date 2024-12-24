@@ -1,12 +1,24 @@
 export class InvalidStyling {
-    static showNameValidationError() {
-        const nameInput = document.querySelector(".name-input"); //Check this for errors, it might only select the first .name-input encountered
-        const nameValidationSpan = document.querySelector(".name-validation");
+    static showValidationError(input, type) {
+        //Target adjacent sibling .validation div
+        const validationSpan = document.querySelector("#" + input.id + " + .validation");
     
-        nameInput.classList.add("invalid");
-        nameValidationSpan.classList.add("invalid");
-    
-        nameValidationSpan.textContent = "Input must be 1 to 50 characters";
+        input.classList.add("invalid");
+        validationSpan.classList.add("invalid");
+        
+        switch (type) {
+            case "name":
+                validationSpan.textContent = "Input must be 1 to 50 characters";
+                break;
+            case "description":
+                validationSpan.textContent = "Input must be 0 to 255 characters";
+                break;
+            case "date":
+                validationSpan.textContent = "Select a date";
+                break;
+            default:
+                console.error("Invalid type selected");
+        }
     }
 
     static clearInvalidStyles() {
