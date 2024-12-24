@@ -2,6 +2,7 @@ import css from "./style.css"
 import { ToDoStorage } from './logic/ToDoStorage.js';
 import { NavToggle } from './UI/NavToggle.js';
 import { ProjectDialog } from './UI/ProjectDialog.js';
+import { TaskDialog } from './UI/TaskDialog.js';
 import { NavBar } from './UI/NavBar.js';
 
 //Nav Toggle
@@ -12,6 +13,9 @@ ProjectDialog.init();
 
 //NavBar
 NavBar.init();
+
+//Add Task Dialog
+TaskDialog.init();
 
 ToDoStorage.addProject("Kyle");
 
