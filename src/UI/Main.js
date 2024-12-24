@@ -6,12 +6,12 @@ export class Main {
         if (projectIndex === -1) { //For "all" NavBtn
             for (const project of ToDoStorage.projects) {
                 for (const task of project.tasks) {
-                    this.#addTask(task.name, task.dueDate);
+                    this.#displayTask(task.name, task.dueDate);
                 }
             }       
         } else {
             for (const task of ToDoStorage.projects[projectIndex].tasks) {
-                this.#addTask(task.name, task.dueDate);
+                this.#displayTask(task.name, task.dueDate);
             }
         }
         this.#playUpdateTaskAnimation();
@@ -24,7 +24,7 @@ export class Main {
             task.remove();
         }
     }
-    static #addTask(name, dueDate) {
+    static #displayTask(name, dueDate) {
         /*
         <div class="task">
             <button class="checkbox"></button>
