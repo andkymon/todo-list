@@ -28,7 +28,7 @@ export class ProjectDialog {
         const name = projectInputName.value;
         const result = ToDoStorage.addProject(name);
         if (result === false) {
-            InvalidStyling.showNameValidationError();
+            InvalidStyling.showValidationError(projectInputName, "name");
             return;
         }
         projectInputName.value = "";
