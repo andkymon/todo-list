@@ -171,9 +171,16 @@ nav .btn-wrapper {
     margin: 8px 0px;
 }
 
+.selected {
+    background-color: var(--btn-color);
+    border-radius: 8px;
+}
+
 .removed {
     transform: translateX(-100vw);
 }
+
+
 
 .small-btn {
     min-height: var(--small-btn-size);
