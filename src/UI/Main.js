@@ -14,9 +14,12 @@ export class Main {
                 this.#addTask(task.name, task.dueDate);
             }
         }
+        this.#playUpdateTaskAnimation();
     }
     static #clearTask() {
-        const tasks = document.querySelectorAll(".task");
+        /*Not a static variable because it has to query for an updated list 
+        everytime this method is called*/
+        const tasks = document.querySelectorAll(".task"); 
         for (const task of tasks) {
             task.remove();
         }
@@ -59,5 +62,15 @@ export class Main {
         }
         taskDiv.classList.add("task");
         main.append(taskDiv);
+    }
+    static #playUpdateTaskAnimation() {
+        /*Not a static variable because it has to query for an updated list 
+        everytime this method is called*/
+        const tasks = document.querySelectorAll(".task"); 
+        setTimeout(() => {
+            for (const task of tasks) {
+                task.classList.add("displayed");
+            }
+        }, 1);      
     }
 }
