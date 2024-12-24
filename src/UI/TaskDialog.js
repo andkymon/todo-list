@@ -1,4 +1,8 @@
+import { ToDoStorage } from '../logic/ToDoStorage.js';
+import { InputValidator } from '../logic/InputValidator.js';
 import { InvalidStyling } from './InvalidStyling.js';
+import { Main } from './Main.js';
+import { NavBar } from './NavBar.js';
 
 export class TaskDialog {
     static #taskDialog = document.querySelector("#task-dialog");
@@ -18,6 +22,36 @@ export class TaskDialog {
             this.#taskDialog.close();
         }, this.#transitionTime);
     }
+
+    static #addTask = () => {
+        const projectIndex = NavBar.getSelectedProjectIndex();
+        const taskInputName = document.querySelector("#task-input-name"); 
+        const taskInputDescription = document.querySelector("#task-input-description"); 
+        const taskInputDate = document.querySelector("#task-input-date"); 
+
+        const name = taskInputName.value;
+        const description = taskInputDescription.value;
+        const dueDate = new Date(taskInputDate.valueAsNumber);
+
+        const result = ToDoStorage.addTask(name, description, dueDate, projectIndex);
+        if (result === false) {
+            if (InputValidator.validateName(name) === false) {
+                InvalidStyling.showValidationError(taskInputName, "name");
+            }
+            if (InputValidator.validateDescription(description) === false) {
+                InvalidStyling.showValidationError(taskInputDescription, "description");
+            }
+            if (InputValidator.validateDate(dueDate) === false) {
+                InvalidStyling.showValidationError(taskInputDate, "date");
+            }
+            return;
+        }
+        taskInputName.value = "";
+        taskInputDescription.value = "";
+        taskInputDate.value = "";
+        this.#hideTaskDialog();
+        Main.updateTasks(projectIndex); 
+    }
     
     static init() {
         this.#taskDialog.style.transition = `${this.#transitionTime}ms`;
@@ -32,6 +66,17 @@ export class TaskDialog {
         this.#taskDialog.addEventListener("cancel", (event) => {
             event.preventDefault();
             this.#hideTaskDialog();
+        });
+
+        const taskConfirmBtn = document.querySelector("#task-dialog .confirm"); 
+        taskConfirmBtn.addEventListener("click", this.#addTask);
+
+        //Prevent default behavior of enter key
+        this.#taskDialog.addEventListener("keypress", (event) => {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                this.#addTask();
+            }
         });
     }
 }
