@@ -344,11 +344,11 @@ textarea {
     margin-bottom: 8px;
 }
 
-.name-validation {
+.validation {
     display: none;
 }
 
-.name-validation.invalid {
+.validation.invalid {
     display: inline;
     font-weight: normal;
     color: red;
