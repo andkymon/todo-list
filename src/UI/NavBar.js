@@ -12,6 +12,15 @@ export class NavBar {
             navBtnWrapper.remove();
         }
     }
+
+    static #resetNavBtnStyles() { 
+        /*Not a static variable because it has to query for an updated list 
+        everytime this method is called*/
+        const navBtns = document.querySelectorAll(".nav-btn");
+        for (const navBtn of navBtns) {
+            navBtn.classList.remove("selected");
+        }
+    }
     //Display projects based on ToDoStorage.projects content
     static updateProjects() {
         this.#clearProjects();
@@ -27,6 +36,7 @@ export class NavBar {
             navBtn.addEventListener("click", () => {
                 this.#resetNavBtnStyles();
                 navBtn.classList.add("selected");
+                this.getSelectedProjectIndex();
                 Main.updateTasks(index); 
             });
             
@@ -50,12 +60,18 @@ export class NavBar {
             nav.append(btnWrapper);
         }
     }
-    static #resetNavBtnStyles() { 
-        const navBtns = document.querySelectorAll(".nav-btn");
-        for (const navBtn of navBtns) {
-            navBtn.classList.remove("selected");
+    
+    static getSelectedProjectIndex() {
+        /*Not a static variable because it has to query for an updated list 
+        everytime this method is called*/
+        const navBtns = document.querySelectorAll("nav > .btn-wrapper:not(#all) > .nav-btn"); //Exclude "all" tab
+        for (const [projectIndex, navBtn] of navBtns.entries()) {
+            if (navBtn.classList.contains("selected")) {
+                return projectIndex;
+            }
         }
     }
+    
     static init() {
         //This event listener is declared here as it is only needed to be set once when document loads.
         const navBtnAll = document.querySelector("#all > .nav-btn");
