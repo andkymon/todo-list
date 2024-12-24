@@ -5,12 +5,11 @@ import { InputValidator } from './InputValidator.js';
 export class ToDoStorage {
     static projects = [];
 
-    static addTask(name, description, dueDate, isPriority, isComplete, projectIndex) {
-        dueDate = new Date(dueDate);
-        if (InputValidator.validateTask(name, description, dueDate, isPriority, isComplete, projectIndex, this.projects.length) === false) {
+    static addTask(name, description, dueDate, projectIndex) {
+        if (InputValidator.validateTask(name, description, dueDate, projectIndex, this.projects.length) === false) {
             return false;
         }
-        this.projects[projectIndex].tasks.push(new Task(name, description, dueDate, isPriority, isComplete));
+        this.projects[projectIndex].tasks.push(new Task(name, description, dueDate));
     }
 
     static addProject(name) {

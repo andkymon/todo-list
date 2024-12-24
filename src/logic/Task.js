@@ -7,12 +7,12 @@ export class Task {
     #isPriority;
     #isComplete;
 
-    constructor(name, description, dueDate, isPriority, isComplete) {
+    constructor(name, description, dueDate) {
         this.#name = name;
         this.#description = description;
         this.#dueDate = dueDate;
-        this.#isPriority = isPriority;
-        this.#isComplete = isComplete;
+        this.#isPriority = false;
+        this.#isComplete = false;
     }
 
     get name() {

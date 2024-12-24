@@ -36,12 +36,11 @@ export class InputValidator {
         }
     }
 
-    static validateTask(name, description, dueDate, isPriority, isComplete, projectIndex, totalProjects) {
+    static validateTask(name, description, dueDate, isPriority, projectIndex, totalProjects) {
         const inputs = [this.validateName(name), 
                         this.validateDescription(description),
                         this.validateDate(dueDate),
                         this.validateBoolean(isPriority),
-                        this.validateBoolean(isComplete),
                         this.validateList(projectIndex, totalProjects)
                         ];
         for (const input of inputs) {
