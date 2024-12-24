@@ -1,7 +1,7 @@
 import css from "./style.css"
 import { ToDoStorage } from './logic/ToDoStorage.js';
 import { NavToggle } from './UI/NavToggle.js';
-import { ProjectDialog } from './UI/AddProjectDialog.js';
+import { ProjectDialog } from './UI/ProjectDialog.js';
 import { NavBar } from './UI/NavBar.js';
 
 //Nav Toggle

@@ -1,14 +1,15 @@
 import { ToDoStorage } from '../logic/ToDoStorage.js';
+import { Main } from './Main.js';
 
 export class NavBar {
     //Clear Projects before displaying updated list
     static #clearProjects() {
-        const navBtns = document.querySelectorAll("nav .btn-wrapper");
-        for (const navBtn of navBtns) {
-            if (navBtn.id === "all") {
+        const navBtnWrappers = document.querySelectorAll("nav .btn-wrapper");
+        for (const navBtnWrapper of navBtnWrappers) {
+            if (navBtnWrapper.id === "all") { //"all" button is static
                 continue;
             }
-            navBtn.remove();
+            navBtnWrapper.remove();
         }
     }
     //Display projects based on ToDoStorage.projects content
@@ -23,6 +24,11 @@ export class NavBar {
 
             navBtn.classList.add("nav-btn");
             navBtn.textContent = project.name;
+            navBtn.addEventListener("click", () => {
+                this.#resetNavBtnStyles();
+                navBtn.classList.add("selected");
+                Main.updateTasks(index); 
+            });
             
             deleteBtn.classList.add("small-btn", "delete");
             deleteBtn.addEventListener("click", () => {
@@ -43,6 +49,21 @@ export class NavBar {
             btnWrapper.append(navBtn, deleteBtn);
             nav.append(btnWrapper);
         }
+    }
+    static #resetNavBtnStyles() { 
+        const navBtns = document.querySelectorAll(".nav-btn");
+        for (const navBtn of navBtns) {
+            navBtn.classList.remove("selected");
+        }
+    }
+    static init() {
+        //This event listener is declared here as it is only needed to be set once when document loads.
+        const navBtnAll = document.querySelector("#all > .nav-btn");
+        navBtnAll.addEventListener("click", () => {
+            this.#resetNavBtnStyles();
+            navBtnAll.classList.add("selected");
+            Main.updateTasks(-1); 
+        });
     }
 }
 
