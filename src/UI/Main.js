@@ -57,7 +57,7 @@ export class Main {
             span.textContent = spanTextContent[i];
             taskElements.splice(i + 1, 0, span); //Add span to index 1 and 2 of taskElements
         }
-        taskElements[2].style.color = this.#dueDateStyling(dueDate);
+        taskElements[2].style.color = this.#dueDateStyling(dueDate); //due date will be red if overdue
         for (const taskElement of taskElements) {
             taskDiv.append(taskElement);
         }
