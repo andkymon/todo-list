@@ -37,7 +37,7 @@ export class NavBar {
                 this.#resetNavBtnStyles();
                 navBtn.classList.add("selected");
                 this.#disableSelectedBtn();
-                Main.showButtons();
+                Main.showAddTaskBtn();
                 Main.updateTasks(index); 
             });
             
@@ -89,7 +89,7 @@ export class NavBar {
             this.#resetNavBtnStyles();
             navBtnAll.classList.add("selected");
             this.#disableSelectedBtn();
-            Main.hideButtons();
+            Main.hideAddTaskBtn();
             Main.updateTasks(-1); 
         });
         navBtnAll.click();

@@ -1,7 +1,7 @@
 import { ToDoStorage } from '../logic/ToDoStorage.js';
 
 export class Main {
-    static #btnWrapper = document.querySelector("main .btn-wrapper");
+    static #addTaskBtn = document.querySelector("main #add-task");
 
     static updateTasks(projectIndex) {
         this.#clearTask();
@@ -84,10 +84,10 @@ export class Main {
             return "white";
         }
     }
-    static hideButtons() {
-        this.#btnWrapper.style.display = "none";
+    static hideAddTaskBtn() {
+        this.#addTaskBtn.style.display = "none";
     }
-    static showButtons() {
-        this.#btnWrapper.style.display = "flex";
+    static showAddTaskBtn() {
+        this.#addTaskBtn.style.display = "inline-block";
     }
 }
