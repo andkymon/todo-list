@@ -1,6 +1,8 @@
 import { ToDoStorage } from '../logic/ToDoStorage.js';
 
 export class Main {
+    static #btnWrapper = document.querySelector("main .btn-wrapper");
+
     static updateTasks(projectIndex) {
         this.#clearTask();
         if (projectIndex === -1) { //For "all" NavBtn
@@ -81,5 +83,11 @@ export class Main {
         } else {
             return "white";
         }
+    }
+    static hideButtons() {
+        this.#btnWrapper.style.display = "none";
+    }
+    static showButtons() {
+        this.#btnWrapper.style.display = "flex";
     }
 }
