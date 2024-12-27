@@ -36,7 +36,7 @@ export class NavBar {
             navBtn.addEventListener("click", () => {
                 this.#resetNavBtnStyles();
                 navBtn.classList.add("selected");
-                this.getSelectedProjectIndex();
+                this.#disableSelectedBtn();
                 Main.updateTasks(index); 
             });
             
@@ -60,6 +60,15 @@ export class NavBar {
             nav.append(btnWrapper);
         }
     }
+
+    static #disableSelectedBtn() {
+        /*Not a static variable because it has to query for an updated list 
+        everytime this method is called*/
+        const navBtns = document.querySelectorAll(".nav-btn");
+        for (const [i, navBtn] of navBtns.entries()) {
+            navBtns[i].disabled = navBtns[i].classList.contains("selected");
+        }
+    }
     
     static getSelectedProjectIndex() {
         /*Not a static variable because it has to query for an updated list 
@@ -78,6 +87,7 @@ export class NavBar {
         navBtnAll.addEventListener("click", () => {
             this.#resetNavBtnStyles();
             navBtnAll.classList.add("selected");
+            this.#disableSelectedBtn();
             Main.updateTasks(-1); 
         });
     }
