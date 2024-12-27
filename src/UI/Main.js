@@ -57,6 +57,7 @@ export class Main {
             span.textContent = spanTextContent[i];
             taskElements.splice(i + 1, 0, span); //Add span to index 1 and 2 of taskElements
         }
+        taskElements[2].style.color = this.#dueDateStyling(dueDate);
         for (const taskElement of taskElements) {
             taskDiv.append(taskElement);
         }
@@ -72,5 +73,13 @@ export class Main {
                 task.classList.add("displayed");
             }
         }, 1);      
+    }
+    static #dueDateStyling(dueDate) {
+        const todayDate = new Date((new Date()).toDateString()); //toDateString to set time to 12 midnight of the current day
+        if (dueDate < todayDate) {
+            return "red";
+        } else {
+            return "white";
+        }
     }
 }
