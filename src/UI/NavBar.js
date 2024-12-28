@@ -2,25 +2,6 @@ import { ToDoStorage } from '../logic/ToDoStorage.js';
 import { Main } from './Main.js';
 
 export class NavBar {
-    //Clear Projects before displaying updated list
-    static #clearProjects() {
-        const navBtnWrappers = document.querySelectorAll("nav .btn-wrapper");
-        for (const navBtnWrapper of navBtnWrappers) {
-            if (navBtnWrapper.id === "all") { //"all" button is static
-                continue;
-            }
-            navBtnWrapper.remove();
-        }
-    }
-
-    static #resetNavBtnStyles() { 
-        /*Not a static variable because it has to query for an updated list 
-        everytime this method is called*/
-        const navBtns = document.querySelectorAll(".nav-btn");
-        for (const navBtn of navBtns) {
-            navBtn.classList.remove("selected");
-        }
-    }
     //Display projects based on ToDoStorage.projects content
     static updateProjects() {
         this.#clearProjects();
@@ -59,6 +40,26 @@ export class NavBar {
 
             btnWrapper.append(navBtn, deleteBtn);
             nav.append(btnWrapper);
+        }
+    }
+
+    //Clear Projects before displaying updated list
+    static #clearProjects() {
+        const navBtnWrappers = document.querySelectorAll("nav .btn-wrapper");
+        for (const navBtnWrapper of navBtnWrappers) {
+            if (navBtnWrapper.id === "all") { //"all" button is static
+                continue;
+            }
+            navBtnWrapper.remove();
+        }
+    }
+
+    static #resetNavBtnStyles() { 
+        /*Not a static variable because it has to query for an updated list 
+        everytime this method is called*/
+        const navBtns = document.querySelectorAll(".nav-btn");
+        for (const navBtn of navBtns) {
+            navBtn.classList.remove("selected");
         }
     }
 

@@ -4,7 +4,7 @@ export class Main {
     static #addTaskBtn = document.querySelector("main #add-task");
 
     static updateTasks(projectIndex) {
-        this.#clearTask();
+        this.#clearTasks();
         if (projectIndex === -1) { //For "all" NavBtn
             for (const project of ToDoStorage.projects) {
                 for (const task of project.tasks) {
@@ -18,7 +18,7 @@ export class Main {
         }
         this.#playUpdateTaskAnimation();
     }
-    static #clearTask() {
+    static #clearTasks() {
         /*Not a static variable because it has to query for an updated list 
         everytime this method is called*/
         const tasks = document.querySelectorAll(".task"); 
@@ -77,8 +77,8 @@ export class Main {
         }, 1);      
     }
     static #dueDateStyling(dueDate) {
-        const todayDate = new Date((new Date()).toDateString()); //toDateString to set time to 12 midnight of the current day
-        if (dueDate < todayDate) {
+        const dateToday = new Date((new Date()).toDateString()); //toDateString to set time to 12 midnight of the current day
+        if (dueDate < dateToday) {
             return "red";
         } else {
             return "white";
