@@ -26,4 +26,11 @@ export class ProjectFilter {
 	    projectCopy.tasks = project.tasks.filter(task => task.isComplete === false);
 	    return projectCopy;
     }
+
+    static filterOverdueTasks(project) {
+        const projectCopy = {...project};
+        const dateToday = new Date(new Date().toDateString());
+	    projectCopy.tasks = project.tasks.filter(task => task.dueDate < dateToday === true);
+        return projectCopy;
+    }
 }
