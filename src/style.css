@@ -60,6 +60,7 @@ button:hover {
     --main-bg-color: #F5EFFF;
 }
 
+/*General*/
 body {
     height: 100vh;
     display: grid;
@@ -84,6 +85,46 @@ h2 {
     font-size: 2rem;
 }
 
+.btn-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.small-btn {
+    min-height: var(--small-btn-size);
+    min-width: var(--small-btn-size);
+    background-color: inherit;
+    color: inherit;
+    background-size: contain;
+    border: none;
+}
+
+.action-btn {
+    transition: 0.3s;
+    height: var(--action-btn-size); 
+    width: var(--action-btn-size); 
+    border-radius: 8px;
+    border: none;
+    font-family: Montserrat, sans-serif;
+    font-size: 1.5rem;
+    background-color: var(--btn-color); 
+    color: white;
+    box-shadow: var(--btn-shadow); 
+}
+
+.action-btn:hover {
+    transform: scale(1.1);
+    filter: brightness(90%);
+}
+
+.action-btn:active {
+    transition: 0.1s;
+    transform: scale(0.9);
+}
+
+/*Header*/
 header {
     grid-area: header;
     background-color: var(--header-dialog-bg-color); 
@@ -120,6 +161,7 @@ header {
     transform: translateY(-50%) scale(0.8);
 }
 
+/*Nav*/
 nav {
     transition: 0.3s;
     grid-area: nav;
@@ -171,60 +213,20 @@ nav .btn-wrapper {
     margin: 8px 0px;
 }
 
-.selected {
+nav .selected {
     background-color: var(--btn-color);
     border-radius: 8px;
 }
 
-.removed {
+nav .removed {
     transform: translateX(-100vw);
 }
 
-
-
-.small-btn {
-    min-height: var(--small-btn-size);
-    min-width: var(--small-btn-size);
-    background-color: inherit;
-    color: inherit;
-    background-size: contain;
-    border: none;
-}
-
-.action-btn {
-    transition: 0.3s;
-    height: var(--action-btn-size); 
-    width: var(--action-btn-size); 
-    border-radius: 8px;
-    border: none;
-    font-family: Montserrat, sans-serif;
-    font-size: 1.5rem;
-    background-color: var(--btn-color); 
-    color: white;
-    box-shadow: var(--btn-shadow); 
-}
-
-.action-btn:hover {
-    transform: scale(1.1);
-    filter: brightness(90%);
-}
-
-.action-btn:active {
-    transition: 0.1s;
-    transform: scale(0.9);
-}
-
+/*Main*/
 main {
     background-color: var(--main-bg-color);
     padding: 48px;
     min-width: 480px;
-}
-
-.btn-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
 }
 
 #filter-btn {
