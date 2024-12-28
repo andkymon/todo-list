@@ -19,17 +19,6 @@ export class ToDoStorage {
         this.projects.push(new Project(name));
     }
 
-    static moveTask(initialProjectIndex, taskIndex, targetProjectIndex) {
-        if (InputValidator.validateList(initialProjectIndex, this.projects.length) === false 
-        || InputValidator.validateList(taskIndex, this.projects[initialProjectIndex].tasks.length) === false
-        || InputValidator.validateList(initialProjectIndex, this.projects.length) === false) {
-            return false;
-        }
-        const task = this.projects[initialProjectIndex].tasks[taskIndex];
-        this.projects[targetProjectIndex].tasks.push(task);
-        this.removeTask(initialProjectIndex, taskIndex);
-    }
-
     static removeTask(projectIndex, taskIndex) {
         if (InputValidator.validateList(projectIndex, this.projects.length) === false 
         || InputValidator.validateList(taskIndex, this.projects[projectIndex].tasks.length) === false) {
