@@ -297,6 +297,7 @@ main {
     background-image: url("./assets/images/delete.svg");
 }
 
+/*Dialogs*/
 dialog { 
     position: absolute;
     top: 50%;
