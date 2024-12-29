@@ -2,35 +2,43 @@ import { Task } from './Task.js';
 import { Project } from './Project.js';
 import { InputValidator } from './InputValidator.js';
 
-export class ToDoStorage {
-    static projects = [];
+export const ToDoStorage = (function() {
+    const projects = [];
 
-    static addTask(name, description, dueDate, projectIndex) {
-        if (InputValidator.validateTask(name, description, dueDate, projectIndex, this.projects.length) === false) {
+    function addTask(name, description, dueDate, projectIndex) {
+        if (InputValidator.validateTask(name, description, dueDate, projectIndex, projects.length) === false) {
             return false;
         }
-        this.projects[projectIndex].tasks.push(new Task(name, description, dueDate));
+        projects[projectIndex].tasks.push(new Task(name, description, dueDate));
     }
 
-    static addProject(name) {
+    function addProject(name) {
         if (InputValidator.validateName(name) === false) {
             return false;
         }
-        this.projects.push(new Project(name));
+        projects.push(new Project(name));
     }
 
-    static removeTask(projectIndex, taskIndex) {
-        if (InputValidator.validateList(projectIndex, this.projects.length) === false 
-        || InputValidator.validateList(taskIndex, this.projects[projectIndex].tasks.length) === false) {
+    function removeTask(projectIndex, taskIndex) {
+        if (InputValidator.validateList(projectIndex, projects.length) === false 
+        || InputValidator.validateList(taskIndex, projects[projectIndex].tasks.length) === false) {
             return false;
         }
-        this.projects[projectIndex].tasks.splice(taskIndex, 1);
+        projects[projectIndex].tasks.splice(taskIndex, 1);
     }
 
-    static removeProject(projectIndex) {
-        if (InputValidator.validateList(projectIndex, this.projects.length) === false) {
+    function removeProject(projectIndex) {
+        if (InputValidator.validateList(projectIndex, projects.length) === false) {
             return false;
         }
-        this.projects.splice(projectIndex, 1);
+        projects.splice(projectIndex, 1);
     }
-}
+
+    return {
+        projects,
+        addTask,
+        addProject,
+        removeTask,
+        removeProject
+    };
+})();
