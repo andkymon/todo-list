@@ -12,10 +12,10 @@ export class Project {
     get name() {
         return this.#name;
     }
-    set name(name) {
-        if (InputValidator.validateName(name) === false) {
+    set name(string) {
+        if (InputValidator.validateName(string) === false) {
             return;
         }
-        this.#name = name;
+        this.#name = string;
     }
 }
