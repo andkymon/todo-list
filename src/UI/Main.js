@@ -1,4 +1,4 @@
-import { ToDoStorage } from '../logic/ToDoStorage.js';
+import { ToDoStorage } from '../Logic/ToDoStorage.js';
 
 export class Main {
     static #addTaskBtn = document.querySelector("main #add-task");

@@ -1,5 +1,5 @@
 import css from "./style.css"
-import { ToDoStorage } from './logic/ToDoStorage.js';
+import { ToDoStorage } from './Logic/ToDoStorage.js';
 import { NavToggle } from './UI/NavToggle.js';
 import { ProjectDialog } from './UI/ProjectDialog.js';
 import { TaskDialog } from './UI/TaskDialog.js';

@@ -1,5 +1,5 @@
-import { ToDoStorage } from '../logic/ToDoStorage.js';
-import { InputValidator } from '../logic/InputValidator.js';
+import { ToDoStorage } from '../Logic/ToDoStorage.js';
+import { InputValidator } from '../Logic/InputValidator.js';
 import { InvalidStyling } from './InvalidStyling.js';
 import { Main } from './Main.js';
 import { NavBar } from './NavBar.js';
