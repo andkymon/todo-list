@@ -1,4 +1,4 @@
-import { ToDoStorage } from '../logic/ToDoStorage.js';
+import { ToDoStorage } from '../Logic/ToDoStorage.js';
 import { Main } from './Main.js';
 
 export class NavBar {
