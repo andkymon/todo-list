@@ -18,21 +18,21 @@ export class Task {
     get name() {
         return this.#name;
     }
-    set name(str) {
-        if (InputValidator.validateName(str) === false) {
+    set name(string) {
+        if (InputValidator.validateName(string) === false) {
             return;
         }
-        this.#name = str;
+        this.#name = string;
     }
 
     get description() {
         return this.#description;
     }
-    set description(str) {
-        if (InputValidator.validateDescription(str) === false) {
+    set description(string) {
+        if (InputValidator.validateDescription(string) === false) {
             return;
         }
-        this.#description = str;
+        this.#description = string;
     }
 
     get dueDate() {
@@ -48,20 +48,20 @@ export class Task {
     get isPriority() {
         return this.#isPriority;
     }
-    set isPriority(bool) {
-        if (InputValidator.validateBoolean(bool) === false) {
+    set isPriority(boolean) {
+        if (InputValidator.validateBoolean(boolean) === false) {
             return;
         }
-        this.#isPriority = bool;
+        this.#isPriority = boolean;
     }
 
     get isComplete() {
         return this.#isComplete;
     }
-    set isComplete(bool) {
-        if (InputValidator.validateBoolean(bool) === false) {
+    set isComplete(boolean) {
+        if (InputValidator.validateBoolean(boolean) === false) {
             return;
         }
-        this.#isComplete = bool;
+        this.#isComplete = boolean;
     }
 }
