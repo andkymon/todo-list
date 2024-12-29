@@ -2,7 +2,7 @@ import { InputValidator } from './InputValidator.js';
 
 export class Project {
     #name;
-
+    
     constructor(name) {
         this.#name = name;
     }
@@ -12,7 +12,6 @@ export class Project {
     get name() {
         return this.#name;
     }
-    
     set name(name) {
         if (InputValidator.validateName(name) === false) {
             return;
