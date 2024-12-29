@@ -1,23 +1,27 @@
-export class NavToggle {
-    static #body = document.querySelector("body");
-    static #nav = document.querySelector("nav");
+export const NavToggle = (function() {
+    const body = document.querySelector("body");
+    const nav = document.querySelector("nav");
 
-    static #toggle = () => {
-        if (this.#body.style.gridTemplateColumns === "360px 1fr") {
-            this.#body.style.gridTemplateColumns = "0px 1fr";
-            this.#nav.style.transform = "translateX(-360px)";
+    //Toggle doesn't work as intended without initializing this, as it starts off undefined
+    body.style.gridTemplateColumns = "360px 1fr";
+    nav.style.transform = "none";
+
+    function toggle() {
+        if (body.style.gridTemplateColumns === "360px 1fr") {
+            body.style.gridTemplateColumns = "0px 1fr";
+            nav.style.transform = "translateX(-360px)";
         } else {
-            this.#body.style.gridTemplateColumns = "360px 1fr";
-            this.#nav.style.transform = "none";
+            body.style.gridTemplateColumns = "360px 1fr";
+            nav.style.transform = "none";
         }
     }
 
-    static init() {
-        // Initial body and nav styling
-        this.#body.style.gridTemplateColumns = "360px 1fr";
-        this.#nav.style.transform = "none";
-
+    function init() {
         const navToggle = document.querySelector("#nav-toggle");
-        navToggle.addEventListener("click", this.#toggle);
+        navToggle.addEventListener("click", toggle);
     }
-}
+
+    return {
+        init
+    };
+})();
