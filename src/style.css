@@ -52,11 +52,11 @@ button:hover {
     --header-dialog-bg-color: #cdc1ff;
     --generic-shadow: 0px 4px 4px gray;
     --task-nav-bg-color: #A294F9;
-    --btn-color: #8379C3;
+    --button-color: #8379C3;
     --nav-toggle-size: 48px;
-    --action-btn-size: 36px;
-    --small-btn-size: 20px;
-    --btn-shadow: 0px 2px 4px #554f7e;
+    --action-button-size: 36px;
+    --small-button-size: 20px;
+    --button-shadow: 0px 2px 4px #554f7e;
     --main-bg-color: #F5EFFF;
 }
 
@@ -85,41 +85,41 @@ h2 {
     font-size: 2rem;
 }
 
-.btn-wrapper {
+.button-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
 }
 
-.small-btn {
-    min-height: var(--small-btn-size);
-    min-width: var(--small-btn-size);
+.small-button {
+    min-height: var(--small-button-size);
+    min-width: var(--small-button-size);
     background-color: inherit;
     color: inherit;
     background-size: contain;
     border: none;
 }
 
-.action-btn {
+.action-button {
     transition: 0.3s;
-    height: var(--action-btn-size); 
-    width: var(--action-btn-size); 
+    height: var(--action-button-size); 
+    width: var(--action-button-size); 
     border-radius: 8px;
     border: none;
     font-family: Montserrat, sans-serif;
     font-size: 1.5rem;
-    background-color: var(--btn-color); 
+    background-color: var(--button-color); 
     color: white;
-    box-shadow: var(--btn-shadow); 
+    box-shadow: var(--button-shadow); 
 }
 
-.action-btn:hover {
+.action-button:hover {
     transform: scale(1.1);
     filter: brightness(90%);
 }
 
-.action-btn:active {
+.action-button:active {
     transition: 0.1s;
     transform: scale(0.9);
 }
@@ -146,8 +146,8 @@ header {
     margin: 0px 36px;
     border-radius: 8px;
     border: none;
-    background-color: var(--btn-color); 
-    box-shadow: var(--btn-shadow); /*fix*/
+    background-color: var(--button-color); 
+    box-shadow: var(--button-shadow); /*fix*/
     background-image: url("./assets/images/nav-toggle-icon.svg");
     background-size: cover;
     transition: 0.3s;
@@ -181,7 +181,7 @@ nav h2 {
     text-shadow: var(--generic-shadow); 
 }
 
-.nav-btn {
+.nav-button {
     display: block;
     height: 36px;
     width: 100%;
@@ -200,21 +200,21 @@ nav h2 {
     text-overflow: ellipsis;
 }
 
-.nav-btn:hover {
+.nav-button:hover {
     transform: scale(1.05);
-    background-color: var(--btn-color);
+    background-color: var(--button-color);
 }
 
-.nav-btn:active {
+.nav-button:active {
     transform: scale(0.9);
 }
 
-nav .btn-wrapper {
+nav .button-wrapper {
     margin: 8px 0px;
 }
 
 nav .selected {
-    background-color: var(--btn-color);
+    background-color: var(--button-color);
     border-radius: 8px;
 }
 
@@ -229,7 +229,7 @@ main {
     min-width: 480px;
 }
 
-#filter-btn {
+#filter-button {
     background-image: url("./assets/images/filter.svg");
     background-size: 50%;
     background-repeat: no-repeat;
@@ -259,8 +259,8 @@ main {
 }
 
 .checkbox {
-    height: var(--small-btn-size);
-    width: var(--small-btn-size);
+    height: var(--small-button-size);
+    width: var(--small-button-size);
     border-radius: 8px;
     border: none;
     transition: 0.3s;
@@ -361,7 +361,7 @@ input.invalid {
     box-shadow: 0px 0px 4px 0px red;
 }
 
-dialog .btn-wrapper {
+dialog .button-wrapper {
     margin-top: 16px;
 }
 

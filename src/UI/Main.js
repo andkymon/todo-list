@@ -1,11 +1,11 @@
 import { ToDoStorage } from '../Logic/ToDoStorage.js';
 
 export class Main {
-    static #addTaskBtn = document.querySelector("main #add-task");
+    static #addTaskbutton = document.querySelector("main #add-task");
 
     static updateTasks(projectIndex) {
         this.#clearTasks();
-        if (projectIndex === -1) { //For "all" NavBtn
+        if (projectIndex === -1) { //For "all" Navbutton
             for (const project of ToDoStorage.projects) {
                 for (const task of project.tasks) {
                     this.#displayTask(task.name, task.dueDate);
@@ -32,26 +32,26 @@ export class Main {
             <button class="checkbox"></button>
             <span class="task-name">Task A</span>
             <span class="due-date">12-01-2000</span>
-            <button class="small-btn task-info"></button>
-            <button class="small-btn important clicked"></button>
-            <button class="small-btn edit"></button>
-            <button class="small-btn delete"></button>
+            <button class="small-button task-info"></button>
+            <button class="small-button important clicked"></button>
+            <button class="small-button edit"></button>
+            <button class="small-button delete"></button>
         </div>
         */
         const main = document.querySelector("main");
         const taskDiv = document.createElement("div");
         const taskElements = [];
-        const btnClassList = ["checkbox", "task-info", "important", "edit", "delete", "small-btn"];
+        const buttonClassList = ["checkbox", "task-info", "important", "edit", "delete", "small-button"];
         const spanClassList = ["task-name", "due-date"];
         const spanTextContent = [name, dueDate.toDateString()];
     
         for (let i = 0; i < 5; i++) {
-            const btn = document.createElement("button");
-            if (i != 0) { //Add "small-btn" class to all buttons except the first
-                btn.classList.add(btnClassList[btnClassList.length - 1]);
+            const button = document.createElement("button");
+            if (i != 0) { //Add "small-button" class to all buttons except the first
+                button.classList.add(buttonClassList[buttonClassList.length - 1]);
             }
-            btn.classList.add(btnClassList[i]);
-            taskElements.push(btn);
+            button.classList.add(buttonClassList[i]);
+            taskElements.push(button);
         }
         for (let i = 0; i < 2; i++) {
             const span = document.createElement("span");
@@ -84,10 +84,10 @@ export class Main {
             return "white";
         }
     }
-    static hideAddTaskBtn() {
-        this.#addTaskBtn.style.display = "none";
+    static hideAddTaskbutton() {
+        this.#addTaskbutton.style.display = "none";
     }
-    static showAddTaskBtn() {
-        this.#addTaskBtn.style.display = "inline-block";
+    static showAddTaskbutton() {
+        this.#addTaskbutton.style.display = "inline-block";
     }
 }
