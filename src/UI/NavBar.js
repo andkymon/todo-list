@@ -7,6 +7,13 @@ export const NavBar = (function () {
         displayCurrentProjects();
     }
 
+    /*
+        <div class="button-wrapper">
+            <button class="nav-button"></button>
+            <button class=""small-button delete"></button>
+        </div>
+    */
+
     function displayCurrentProjects() {
         for (const [projectIndex, project] of ToDoStorage.projects.entries()) {
             const projectButton = createProjectButton(project.name, projectIndex);
