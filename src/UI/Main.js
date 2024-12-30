@@ -1,11 +1,11 @@
 import { ToDoStorage } from '../Logic/ToDoStorage.js';
 
 export class Main {
-    static #addTaskbutton = document.querySelector("main #add-task");
+    static #addTaskButton = document.querySelector("main #add-task");
 
     static updateTasks(projectIndex) {
         this.#clearTasks();
-        if (projectIndex === -1) { //For "all" Navbutton
+        if (projectIndex === -1) { //For "all" Nav Button
             for (const project of ToDoStorage.projects) {
                 for (const task of project.tasks) {
                     this.#displayTask(task.name, task.dueDate);
@@ -84,10 +84,10 @@ export class Main {
             return "white";
         }
     }
-    static hideAddTaskbutton() {
-        this.#addTaskbutton.style.display = "none";
+    static hideAddTaskButton() {
+        this.#addTaskButton.style.display = "none";
     }
-    static showAddTaskbutton() {
-        this.#addTaskbutton.style.display = "inline-block";
+    static showAddTaskButton() {
+        this.#addTaskButton.style.display = "inline-block";
     }
 }
