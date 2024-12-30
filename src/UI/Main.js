@@ -1,33 +1,34 @@
 import { ToDoStorage } from '../Logic/ToDoStorage.js';
 
-export class Main {
-    static #addTaskButton = document.querySelector("main #add-task");
-
-    static updateTasks(projectIndex) {
-        this.#clearTasks();
-        if (projectIndex === -1) { //For "all" Nav Button
-            for (const project of ToDoStorage.projects) {
-                for (const task of project.tasks) {
-                    this.#displayTask(task.name, task.dueDate);
-                }
-            }       
-        } else {
-            for (const task of ToDoStorage.projects[projectIndex].tasks) {
-                this.#displayTask(task.name, task.dueDate);
-            }
-        }
-        this.#playUpdateTaskAnimation();
+export const Main = (function () {
+    function updateTaskDisplay(projectIndex) {
+        clearTaskDisplay();
+        displaySelectedProjectTasks(projectIndex);
+        playUpdateTaskTransition();
     }
-    static #clearTasks() {
-        /*Not a static variable because it has to query for an updated list 
-        everytime this method is called*/
+
+    function clearTaskDisplay() {
         const tasks = document.querySelectorAll(".task"); 
         for (const task of tasks) {
             task.remove();
         }
     }
-    static #displayTask(name, dueDate) {
-        /*
+
+    function displaySelectedProjectTasks(projectIndex) {
+        if (projectIndex === -1) { // For "all" Nav Button
+            for (const project of ToDoStorage.projects) {
+                for (const task of project.tasks) {
+                    displayTask(task.name, task.dueDate);
+                }
+            }       
+        } else {
+            for (const task of ToDoStorage.projects[projectIndex].tasks) {
+                displayTask(task.name, task.dueDate);
+            }
+        }
+    }
+
+    /*
         <div class="task">
             <button class="checkbox"></button>
             <span class="task-name">Task A</span>
@@ -37,57 +38,94 @@ export class Main {
             <button class="small-button edit"></button>
             <button class="small-button delete"></button>
         </div>
-        */
+    */
+
+    function displayTask(taskName, dueDate) {
         const main = document.querySelector("main");
         const taskDiv = document.createElement("div");
-        const taskElements = [];
-        const buttonClassList = ["checkbox", "task-info", "important", "edit", "delete", "small-button"];
-        const spanClassList = ["task-name", "due-date"];
-        const spanTextContent = [name, dueDate.toDateString()];
+        const taskElements = createTaskElements(taskName, dueDate);
+        
+        for (const taskElement of taskElements) {
+            taskDiv.append(taskElement);
+        }
+
+        taskDiv.classList.add("task");
+        main.append(taskDiv);
+    }
+
+    function createTaskElements(taskName, dueDate) {
+        const taskElements = []; 
+
+        taskElements.push(...createTaskButtons()); // Add the buttons (spread operator avoids nested arrays)
+        taskElements.splice(1, 0, ...createTaskSpans(taskName, dueDate)); // Insert spans at index 1
     
+        return taskElements; // Return the modified array
+    }
+
+    function createTaskButtons() {
+        const buttonList = []
+        const buttonClassList = ["checkbox", "task-info", "important", "edit", "delete", "small-button"];
+        
         for (let i = 0; i < 5; i++) {
             const button = document.createElement("button");
-            if (i != 0) { //Add "small-button" class to all buttons except the first
+            if (i !== 0) { // Add "small-button" class to all buttons except the first
                 button.classList.add(buttonClassList[buttonClassList.length - 1]);
             }
             button.classList.add(buttonClassList[i]);
-            taskElements.push(button);
+            buttonList.push(button);
         }
+
+        return buttonList;
+    }
+
+    function createTaskSpans(taskName, dueDate) {
+        const spanList = [];
+        const spanClassList = ["task-name", "due-date"];
+        const spanTextContent = [taskName, dueDate.toDateString()];
+
         for (let i = 0; i < 2; i++) {
             const span = document.createElement("span");
             span.classList.add(spanClassList[i]);
             span.textContent = spanTextContent[i];
-            taskElements.splice(i + 1, 0, span); //Add span to index 1 and 2 of taskElements
+            spanList.push(span);
         }
-        taskElements[2].style.color = this.#dueDateStyling(dueDate); //due date will be red if overdue
-        for (const taskElement of taskElements) {
-            taskDiv.append(taskElement);
-        }
-        taskDiv.classList.add("task");
-        main.append(taskDiv);
+        spanList[1].style.color = dueDateStyling(dueDate); //Due date will be red if overdue
+
+        return spanList;
     }
-    static #playUpdateTaskAnimation() {
-        /*Not a static variable because it has to query for an updated list 
-        everytime this method is called*/
+
+    function playUpdateTaskTransition() {
         const tasks = document.querySelectorAll(".task"); 
+        //Wait for content to load without "displayed" class, then add it after 1ms for transition to trigger
         setTimeout(() => {
             for (const task of tasks) {
                 task.classList.add("displayed");
             }
         }, 1);      
     }
-    static #dueDateStyling(dueDate) {
-        const dateToday = new Date((new Date()).toDateString()); //toDateString to set time to 12 midnight of the current day
+
+    function dueDateStyling(dueDate) {
+        const dateToday = new Date((new Date()).toDateString()); // toDateString to set time to 12 midnight of the current day
         if (dueDate < dateToday) {
             return "red";
         } else {
             return "white";
         }
     }
-    static hideAddTaskButton() {
-        this.#addTaskButton.style.display = "none";
+
+    const addTaskButton = document.querySelector("main #add-task");
+
+    function hideAddTaskButton() {
+        addTaskButton.style.display = "none";
     }
-    static showAddTaskButton() {
-        this.#addTaskButton.style.display = "inline-block";
+
+    function showAddTaskButton() {
+        addTaskButton.style.display = "inline-block";
     }
-}
+
+    return {
+        updateTaskDisplay,
+        hideAddTaskButton,
+        showAddTaskButton
+    };
+})();
