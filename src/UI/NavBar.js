@@ -63,7 +63,7 @@ export const NavBar = (function () {
         } else {
             Main.showAddTaskButton();
         }
-        Main.updateTasks(projectIndex);
+        Main.updateDisplayedTasks(projectIndex);
     }
 
     function deleteProjectClickEventHandler(deleteButton, projectName, projectIndex) {
