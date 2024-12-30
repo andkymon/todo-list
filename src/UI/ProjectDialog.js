@@ -33,7 +33,7 @@ export class ProjectDialog {
         }
         projectInputName.value = "";
         this.#hideProjectDialog();
-        NavBar.updateProjects(); 
+        NavBar.updateProjectDisplay(); 
         //Transition
         nav.lastChild.classList.add("removed");
         setTimeout(() => { //Wait for nav.lastChild to be set to the left non-visible area for 1ms before transitioning

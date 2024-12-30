@@ -50,7 +50,7 @@ export class TaskDialog {
         taskInputDescription.value = "";
         taskInputDate.value = "";
         this.#hideTaskDialog();
-        Main.updateTasks(projectIndex); 
+        Main.updateTaskDisplay(projectIndex); 
     }
     
     static init() {
