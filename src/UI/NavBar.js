@@ -2,8 +2,12 @@ import { ToDoStorage } from '../Logic/ToDoStorage.js';
 import { Main } from './Main.js';
 
 export const NavBar = (function () {
-    function updateProjects() {
-        clearProjects();
+    function updateProjectDisplay() {
+        clearProjectDisplay();
+        displayCurrentProjects();
+    }
+
+    function displayCurrentProjects() {
         for (const [projectIndex, project] of ToDoStorage.projects.entries()) {
             const projectButton = createProjectButton(project.name, projectIndex);
             const deleteButton = createDeleteButton(project.name, projectIndex);
@@ -16,7 +20,7 @@ export const NavBar = (function () {
         }
     }
 
-    function clearProjects() {
+    function clearProjectDisplay() {
         const navButtonWrappers = document.querySelectorAll("nav .button-wrapper");
 
         for (const navButtonWrapper of navButtonWrappers) {
@@ -113,7 +117,7 @@ export const NavBar = (function () {
     }
 
     return {
-        updateProjects,
+        updateProjectDisplay,
         getSelectedProjectIndex,
         init,
     };
