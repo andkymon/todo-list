@@ -1,102 +1,120 @@
 import { ToDoStorage } from '../Logic/ToDoStorage.js';
 import { Main } from './Main.js';
 
-export class NavBar {
-    //Display projects based on ToDoStorage.projects content
-    static updateProjects() {
-        this.#clearProjects();
-        for (const [index, project] of ToDoStorage.projects.entries()) {
-            const navBtn = document.createElement("button");
-            const deleteBtn = document.createElement("button");
-            const btnWrapper = document.createElement("div");
+export const NavBar = (function () {
+    function updateProjects() {
+        clearProjects();
+        for (const [projectIndex, project] of ToDoStorage.projects.entries()) {
+            const projectButton = createProjectButton(project.name, projectIndex);
+            const deleteButton = createDeleteButton(project.name, projectIndex);
+            const buttonWrapper = document.createElement("div");
             const nav = document.querySelector("nav");
-            const transitionTime = 300;
-
-            navBtn.classList.add("nav-btn");
-            navBtn.textContent = project.name;
-            navBtn.addEventListener("click", () => {
-                this.#resetNavBtnStyles();
-                navBtn.classList.add("selected");
-                this.#disableSelectedBtn();
-                Main.showAddTaskBtn();
-                Main.updateTasks(index); 
-            });
             
-            deleteBtn.classList.add("small-btn", "delete");
-            deleteBtn.addEventListener("click", () => {
-                if (confirm(`Delete ${project.name}?`) === true) {
-                    ToDoStorage.removeProject(index);
-                    btnWrapper.classList.add("removed");
-                    setTimeout(() => {
-                        this.updateProjects();
-                    }, transitionTime);
-                } else {
-                    return;
-                }
-            });
-
-            btnWrapper.classList.add("btn-wrapper");
-            btnWrapper.style.transition = `${transitionTime}ms`;
-
-            btnWrapper.append(navBtn, deleteBtn);
-            nav.append(btnWrapper);
+            buttonWrapper.classList.add("button-wrapper");
+            buttonWrapper.append(projectButton, deleteButton);
+            nav.append(buttonWrapper);
         }
     }
 
-    //Clear Projects before displaying updated list
-    static #clearProjects() {
-        const navBtnWrappers = document.querySelectorAll("nav .btn-wrapper");
-        for (const navBtnWrapper of navBtnWrappers) {
-            if (navBtnWrapper.id === "all") { //"all" button is static
+    function clearProjects() {
+        const navButtonWrappers = document.querySelectorAll("nav .button-wrapper");
+
+        for (const navButtonWrapper of navButtonWrappers) {
+            if (navButtonWrapper.id === "all") {
                 continue;
             }
-            navBtnWrapper.remove();
+            navButtonWrapper.remove();
         }
     }
 
-    static #resetNavBtnStyles() { 
-        /*Not a static variable because it has to query for an updated list 
-        everytime this method is called*/
-        const navBtns = document.querySelectorAll(".nav-btn");
-        for (const navBtn of navBtns) {
-            navBtn.classList.remove("selected");
+    function createProjectButton(projectName, projectIndex) {
+        const projectButton = document.createElement("button");
+
+        projectButton.classList.add("nav-button");
+        projectButton.textContent = projectName;
+        projectButton.addEventListener("click", () => {
+            navButtonClickEventHandler(projectButton, projectIndex);
+        });
+
+        return projectButton;
+    }
+
+    function createDeleteButton(projectName, projectIndex) {
+        const deleteButton = document.createElement("button");
+
+        deleteButton.classList.add("small-button", "delete");
+        deleteButton.addEventListener("click", () => {
+            deleteProjectClickEventHandler(deleteButton, projectName, projectIndex);
+        });
+
+        return deleteButton;
+    }
+
+    function navButtonClickEventHandler(navButton, projectIndex) {
+        resetNavButtonStyles();
+        navButton.classList.add("selected");
+        disableSelectedButton();
+        if (projectIndex === -1) {
+            Main.hideAddTaskButton();
+        } else {
+            Main.showAddTaskButton();
+        }
+        Main.updateTasks(projectIndex);
+    }
+
+    function deleteProjectClickEventHandler(deleteButton, projectName, projectIndex) {
+        const transitionTime = 300;
+
+        if (confirm(`Delete ${projectName}?`) === true) {
+            ToDoStorage.removeProject(projectIndex);
+            deleteProjectTransition(deleteButton, transitionTime);
+            //Update project entries after delete transition
+            setTimeout(() => {
+                updateProjects();
+            }, transitionTime);
         }
     }
 
-    static #disableSelectedBtn() {
-        /*Not a static variable because it has to query for an updated list 
-        everytime this method is called*/
-        const navBtns = document.querySelectorAll(".nav-btn");
-        for (const [i, navBtn] of navBtns.entries()) {
-            navBtns[i].disabled = navBtns[i].classList.contains("selected");
+    function resetNavButtonStyles() {
+        const navButtons = document.querySelectorAll(".nav-button");
+        for (const navButton of navButtons) {
+            navButton.classList.remove("selected");
+        }
+    }
+
+    function disableSelectedButton() {
+        const navButtons = document.querySelectorAll(".nav-button");
+        for (const navButton of navButtons) {
+            navButton.disabled = navButton.classList.contains("selected");
         }
     }
     
-    static getSelectedProjectIndex() {
-        /*Not a static variable because it has to query for an updated list 
-        everytime this method is called*/
-        const navBtns = document.querySelectorAll("nav > .btn-wrapper:not(#all) > .nav-btn"); //Exclude "all" tab
-        for (const [projectIndex, navBtn] of navBtns.entries()) {
-            if (navBtn.classList.contains("selected")) {
+    function deleteProjectTransition(deleteButton, transitionTime) {
+        const buttonWrapper = deleteButton.parentElement; 
+        buttonWrapper.classList.add("removed");
+        buttonWrapper.style.transition = `${transitionTime}ms`;
+    }
+
+    function getSelectedProjectIndex() {
+        const projectButtons = document.querySelectorAll("nav > .button-wrapper:not(#all) > .nav-button");
+        for (const [projectIndex, projectButton] of projectButtons.entries()) {
+            if (projectButton.classList.contains("selected")) {
                 return projectIndex;
             }
         }
     }
-    
-    static init() {
-        //This event listener is declared here as it is only needed to be set once when document loads.
-        const navBtnAll = document.querySelector("#all > .nav-btn");
-        navBtnAll.addEventListener("click", () => {
-            this.#resetNavBtnStyles();
-            navBtnAll.classList.add("selected");
-            this.#disableSelectedBtn();
-            Main.hideAddTaskBtn();
-            Main.updateTasks(-1); 
+
+    function init() {
+        const allButton = document.querySelector("#all > .nav-button");
+        allButton.addEventListener("click", () => {
+            navButtonClickEventHandler(allButton, -1);
         });
-        navBtnAll.click();
+        allButton.click();
     }
-}
 
-
-
-
+    return {
+        updateProjects,
+        getSelectedProjectIndex,
+        init,
+    };
+})();
