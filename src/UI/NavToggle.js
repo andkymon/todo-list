@@ -6,7 +6,7 @@ export const NavToggle = (function() {
     body.style.gridTemplateColumns = "360px 1fr";
     nav.style.transform = "none";
 
-    function toggle() {
+    function toggleNavVisibility() {
         if (body.style.gridTemplateColumns === "360px 1fr") {
             body.style.gridTemplateColumns = "0px 1fr";
             nav.style.transform = "translateX(-360px)";
@@ -18,7 +18,7 @@ export const NavToggle = (function() {
 
     function init() {
         const navToggle = document.querySelector("#nav-toggle");
-        navToggle.addEventListener("click", toggle);
+        navToggle.addEventListener("click", toggleNavVisibility);
     }
 
     return {
