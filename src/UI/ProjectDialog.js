@@ -15,7 +15,7 @@ export const ProjectDialog = (function () {
             InvalidStyling.showValidationError(projectNameInput, "name");
             return;
         }
-        projectNameInput.value = "";
+        dialog.clearInputs();
         dialog.hideDialog();
         NavBar.updateProjectDisplay(); 
     }
