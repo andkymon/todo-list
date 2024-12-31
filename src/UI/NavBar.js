@@ -115,17 +115,15 @@ export const NavBar = (function () {
         }
     }
 
-    function init() {
-        const allButton = document.querySelector("#all > .nav-button");
-        allButton.addEventListener("click", () => {
-            navButtonClickEventHandler(allButton, -1);
-        });
-        allButton.click();
-    }
+    const allButton = document.querySelector("#all > .nav-button");
+    allButton.addEventListener("click", () => {
+        navButtonClickEventHandler(allButton, -1);
+    });
+    allButton.click();
+    
 
     return {
         updateProjectDisplay,
         getSelectedProjectIndex,
-        init,
     };
 })();

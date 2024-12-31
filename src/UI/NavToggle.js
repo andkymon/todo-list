@@ -16,12 +16,6 @@ export const NavToggle = (function() {
         }
     }
 
-    function init() {
-        const navToggle = document.querySelector("#nav-toggle");
-        navToggle.addEventListener("click", toggleNavVisibility);
-    }
-
-    return {
-        init
-    };
+    const navToggle = document.querySelector("#nav-toggle");
+    navToggle.addEventListener("click", toggleNavVisibility);
 })();
