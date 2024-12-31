@@ -2,10 +2,12 @@ import { InvalidStyling } from './InvalidStyling.js';
 
 export class Dialog {
     #transitionTime = 300; //Transition time in ms
+    #dialogSelector;
     #dialog;
     #openDialogButton;
 
     constructor(dialogSelector, openDialogButtonSelector, confirmButtonFunction) {
+        this.#dialogSelector = dialogSelector;
         this.#dialog = document.querySelector(dialogSelector);
         this.#openDialogButton = document.querySelector(openDialogButtonSelector);
         this.#dialog.style.transition = `${this.#transitionTime}ms`;
@@ -21,6 +23,7 @@ export class Dialog {
 
     hideDialog = () => {
         InvalidStyling.clearInvalidStyles();
+        this.clearInputs();
         this.#dialog.classList.remove("open");
         setTimeout(() => { //Wait for transition before closing dialog
             this.#dialog.close();
@@ -49,7 +52,7 @@ export class Dialog {
     }
 
     #confirmDialogEventListeners(confirmButtonFunction) {
-        const confirmButton = document.querySelector("#" + this.#dialog.id + " .confirm"); 
+        const confirmButton = document.querySelector(this.#dialogSelector + " .confirm"); 
         confirmButton.addEventListener("click", confirmButtonFunction);
     
         //Prevent default behavior of enter key
@@ -60,4 +63,13 @@ export class Dialog {
             }
         });
     }
+
+    clearInputs() {
+        const allInputsSelector = this.#dialogSelector + " input";
+        const allTextareasSelector = this.#dialogSelector + " textarea";
+        const inputs = document.querySelectorAll(allInputsSelector + ", " + allTextareasSelector);
+        for (const input of inputs) {
+            input.value = "";
+        }
+   }
 }
