@@ -68,8 +68,8 @@ export const Main = (function () {
         
         for (let i = 0; i < 5; i++) {
             const button = document.createElement("button");
-            if (i === 0 || i === 2) { //First and third button are used as a checkbox, default checkboxes are hard to style
-                createCustomCheckbox(button);
+            if (i === 0) { //First button is used as a checkbox, default checkboxes are hard to style
+                createTaskCheckbox(button);
             } 
             if (i !== 0) { // Add "small-button" class to all buttons except the first
                 button.classList.add(buttonClassList[buttonClassList.length - 1]);
@@ -116,12 +116,25 @@ export const Main = (function () {
         }
     }
 
-    function createCustomCheckbox(button) { //For custom checkbox styling, appends an invisible checkbox inside a button passed as argument
+    function createTaskCheckbox(button) { //For custom checkbox styling, appends an invisible checkbox inside a button passed as argument
         const checkbox = document.createElement("input");
         checkbox.setAttribute("type", "checkbox");
         button.append(checkbox);
         button.classList.add("checkbox");
+        button.addEventListener("click", () => {
+            toggleInnerCheckbox(button);
+        });
     } 
+
+    function toggleInnerCheckbox(checkboxButton) {
+        //Default checkbox inside button acting as the checkbox
+        const innerCheckbox = checkboxButton.firstChild;
+        if (innerCheckbox.checked === false) {
+            innerCheckbox.checked = true;
+        } else {
+            innerCheckbox.checked = false;
+        }
+    }
 
     const addTaskButton = document.querySelector("main #add-task");
 
