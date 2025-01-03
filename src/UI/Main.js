@@ -64,7 +64,7 @@ export const Main = (function () {
 
     function createTaskButtons() {
         const buttonList = []
-        const buttonClassList = ["checkbox", "task-info", "important", "edit", "delete", "small-button"];
+        const buttonClassList = ["task-checkbox", "task-info", "important", "edit", "delete", "small-button"];
         
         for (let i = 0; i < 5; i++) {
             const button = document.createElement("button");
@@ -120,6 +120,7 @@ export const Main = (function () {
         const checkbox = document.createElement("input");
         checkbox.setAttribute("type", "checkbox");
         button.append(checkbox);
+        button.classList.add("checkbox");
     } 
 
     const addTaskButton = document.querySelector("main #add-task");
