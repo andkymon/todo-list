@@ -21,13 +21,13 @@ export const TaskDialog = (function () {
         const result = ToDoStorage.addTask(name, description, dueDate, projectIndex);
         if (result === false) {
             if (InputValidator.validateName(name) === false) {
-                InvalidStyling.showValidationError(taskInputName, "name");
+                InvalidStyling.showValidationError(taskNameInput, "name");
             }
             if (InputValidator.validateDescription(description) === false) {
-                InvalidStyling.showValidationError(taskInputDescription, "description");
+                InvalidStyling.showValidationError(taskDescriptionInput, "description");
             }
             if (InputValidator.validateDate(dueDate) === false) {
-                InvalidStyling.showValidationError(taskInputDate, "date");
+                InvalidStyling.showValidationError(taskDateInput, "date");
             }
             return;
         }
