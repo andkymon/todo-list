@@ -16,14 +16,14 @@ export const Main = (function () {
 
     function displaySelectedProjectTasks(projectIndex) {
         if (projectIndex === -1) { // For "all" Nav Button
-            for (const project of ToDoStorage.projects) {
-                for (const task of project.tasks) {
-                    displayTask(task.name, task.dueDate);
+            for (const [projectIndex, project] of ToDoStorage.projects.entries()) {
+                for (const [taskIndex, task] of project.tasks.entries()) {
+                    displayTask(task.name, task.dueDate, taskIndex, projectIndex);
                 }
             }       
         } else {
-            for (const task of ToDoStorage.projects[projectIndex].tasks) {
-                displayTask(task.name, task.dueDate);
+            for (const [taskIndex, task] of ToDoStorage.projects[projectIndex].tasks.entries()) {
+                displayTask(task.name, task.dueDate, taskIndex, projectIndex);
             }
         }
     }
@@ -40,10 +40,10 @@ export const Main = (function () {
         </div>
     */
 
-    function displayTask(taskName, dueDate) {
+    function displayTask(taskName, dueDate, taskIndex, projectIndex) {
         const main = document.querySelector("main");
         const taskDiv = document.createElement("div");
-        const taskElements = createTaskElements(taskName, dueDate);
+        const taskElements = createTaskElements(taskName, dueDate, taskIndex, projectIndex);
         
         for (const taskElement of taskElements) {
             taskDiv.append(taskElement);
@@ -53,23 +53,23 @@ export const Main = (function () {
         main.append(taskDiv);
     }
 
-    function createTaskElements(taskName, dueDate) {
+    function createTaskElements(taskName, dueDate, taskIndex, projectIndex) {
         const taskElements = []; 
 
-        taskElements.push(...createTaskButtons()); // Add the buttons (spread operator avoids nested arrays)
+        taskElements.push(...createTaskButtons(taskIndex, projectIndex)); // Add the buttons (spread operator avoids nested arrays)
         taskElements.splice(1, 0, ...createTaskSpans(taskName, dueDate)); // Insert spans at index 1
     
         return taskElements; // Return the modified array
     }
 
-    function createTaskButtons() {
+    function createTaskButtons(taskIndex, projectIndex) {
         const buttonList = []
         const buttonClassList = ["task-checkbox", "task-info", "important", "edit", "delete", "small-button"];
         
         for (let i = 0; i < 5; i++) {
             const button = document.createElement("button");
             if (i === 0) { //First button is used as a checkbox, default checkboxes are hard to style
-                createTaskCheckbox(button);
+                createTaskCheckbox(button, taskIndex, projectIndex);
             } 
             if (i !== 0) { // Add "small-button" class to all buttons except the first
                 button.classList.add(buttonClassList[buttonClassList.length - 1]);
@@ -116,13 +116,18 @@ export const Main = (function () {
         }
     }
 
-    function createTaskCheckbox(button) { //For custom checkbox styling, appends an invisible checkbox inside a button passed as argument
-        const checkbox = document.createElement("input");
-        checkbox.setAttribute("type", "checkbox");
-        button.append(checkbox);
+    //TASK CHECKBOX
+    //SET TASK EVENT LISTENERS
+    //
+    function createTaskCheckbox(button, taskIndex, projectIndex) { //For custom checkbox styling, appends an invisible checkbox inside a button passed as argument
+        const taskCheckbox = document.createElement("input");
+        taskCheckbox.setAttribute("type", "checkbox");
+        button.append(taskCheckbox);
         button.classList.add("checkbox");
         button.addEventListener("click", () => {
+            console.log(ToDoStorage.projects);
             toggleInnerCheckbox(button);
+            taskCheckboxEventHandler(button, taskIndex, projectIndex);
         });
     } 
 
@@ -133,6 +138,17 @@ export const Main = (function () {
             innerCheckbox.checked = true;
         } else {
             innerCheckbox.checked = false;
+        }
+    }
+
+    function taskCheckboxEventHandler(checkboxButton, taskIndex, projectIndex) {
+        //Default checkbox inside button acting as the checkbox
+        const innerCheckbox = checkboxButton.firstChild;
+        const task = ToDoStorage.projects[projectIndex].tasks[taskIndex];
+        if (innerCheckbox.checked === false) {
+            task.isComplete = false;
+        } else {
+            task.isComplete = true;
         }
     }
 
