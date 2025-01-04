@@ -374,14 +374,3 @@ textarea,
 .info span {
     font-weight: normal;
 }
-
-dialog:has(#filter-wrapper) {
-    width: 240px;
-}
-
-#filter-wrapper span {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 16px;
-}
