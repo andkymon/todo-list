@@ -47,8 +47,6 @@ export class TaskCard {
         return taskElements; // Return the modified array
     }
 
-    
-
     #createTaskButtons() {
         const buttonList = [];
         const buttonClassList = ["task-checkbox", "task-info", "important", "edit", "delete", "small-button"];
@@ -93,7 +91,6 @@ export class TaskCard {
         }
     }
 
-    //Button specific functions
     //Generic Checkbox
     //For custom checkbox styling, checkbox input wrapped/hidden by a button
     #appendCheckbox(checkboxButton) { 
