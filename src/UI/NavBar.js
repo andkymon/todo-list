@@ -107,10 +107,10 @@ export const NavBar = (function () {
     }
 
     function getSelectedProjectIndex() {
-        const projectButtons = document.querySelectorAll("nav > .button-wrapper:not(#all) > .nav-button");
-        for (const [projectIndex, projectButton] of projectButtons.entries()) {
-            if (projectButton.classList.contains("selected")) {
-                return projectIndex;
+        const navButtons = document.querySelectorAll("nav > .button-wrapper > .nav-button");
+        for (const [navButtonIndex, navButton] of navButtons.entries()) {
+            if (navButton.classList.contains("selected")) {
+                return navButtonIndex - 1; //'All' button has index of -1, project buttons start with 0
             }
         }
     }
