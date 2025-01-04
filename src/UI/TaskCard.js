@@ -15,9 +15,7 @@ export class TaskCard {
 
     /*
         <div class="task">
-            <button class="task-checkbox">
-                <input type="checkbox">
-            </button>
+            <button class="task-checkbox"></button>
             <span class="task-name">Task A</span>
             <span class="due-date">12-01-2000</span>
             <button class="small-button task-info"></button>
@@ -49,14 +47,16 @@ export class TaskCard {
         return taskElements; // Return the modified array
     }
 
+    
+
     #createTaskButtons() {
-        const buttonList = []
+        const buttonList = [];
         const buttonClassList = ["task-checkbox", "task-info", "important", "edit", "delete", "small-button"];
         
         for (let i = 0; i < 5; i++) {
             const button = document.createElement("button");
-            if (i === 0) { //First button is used as a checkbox, default checkboxes are hard to style
-                this.#createTaskCheckbox(button);
+            if (i === 0 || i === 2) { //First and third button is used as a checkbox, default checkboxes are hard to style
+                this.#appendCheckbox(button);
             } 
             if (i !== 0) { // Add "small-button" class to all buttons except the first
                 button.classList.add(buttonClassList[buttonClassList.length - 1]);
@@ -94,17 +94,17 @@ export class TaskCard {
     }
 
     //Button specific functions
-    //Task Checkbox
-    #createTaskCheckbox(button) { //For custom checkbox styling, checkbox input wrapped/hidden by a button
-        const taskCheckbox = document.createElement("input");
-        taskCheckbox.setAttribute("type", "checkbox");
-        button.append(taskCheckbox);
-        button.classList.add("checkbox");
-        button.addEventListener("click", () => {
-            this.#toggleInnerCheckbox(button);
-            this.#taskCheckboxEventHandler(button);
+    //Generic Checkbox
+    //For custom checkbox styling, checkbox input wrapped/hidden by a button
+    #appendCheckbox(checkboxButton) { 
+        const checkbox = document.createElement("input");
+        checkbox.setAttribute("type", "checkbox");
+        checkboxButton.classList.add("checkbox");
+        checkboxButton.append(checkbox);
+        checkboxButton.addEventListener("click", () => {
+            this.#toggleInnerCheckbox(checkboxButton);
         });
-    } 
+    }
 
     #toggleInnerCheckbox(checkboxButton) {
         //Inner checkbox wrapped/hidden by a checkbox button
@@ -113,17 +113,6 @@ export class TaskCard {
             innerCheckbox.checked = true;
         } else {
             innerCheckbox.checked = false;
-        }
-    }
-
-    #taskCheckboxEventHandler(checkboxButton) {
-        //Default checkbox inside button acting as the checkbox
-        const innerCheckbox = checkboxButton.firstChild;
-        const task = ToDoStorage.projects[this.#projectIndex].tasks[this.#taskIndex];
-        if (innerCheckbox.checked === false) {
-            task.isComplete = false;
-        } else {
-            task.isComplete = true;
         }
     }
 }
