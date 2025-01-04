@@ -81,7 +81,7 @@ export const NavBar = (function () {
             deleteProjectTransition(deleteButton, transitionTime);
             //Update project entries after delete transition
             setTimeout(() => {
-                updateProjects();
+                updateProjectDisplay();
             }, transitionTime);
         }
     }
