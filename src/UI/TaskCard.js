@@ -1,4 +1,6 @@
 import { ToDoStorage } from '../Logic/ToDoStorage.js';
+import { Main } from './Main.js';
+import { NavBar } from './NavBar.js';
 
 export class TaskCard {
     #taskName;
@@ -47,8 +49,9 @@ export class TaskCard {
         return taskElements; // Return the modified array
     }
 
+    #buttonList = [];
+
     #createTaskButtons() {
-        const buttonList = [];
         const buttonClassList = ["task-checkbox", "task-info", "important", "edit", "delete", "small-button"];
         
         for (let i = 0; i < 5; i++) {
@@ -60,10 +63,10 @@ export class TaskCard {
                 button.classList.add(buttonClassList[buttonClassList.length - 1]);
             }
             button.classList.add(buttonClassList[i]);
-            buttonList.push(button);
+            this.#buttonList.push(button);
         }
 
-        return buttonList;
+        return this.#buttonList;
     }
 
     #createTaskSpans() {
@@ -110,6 +113,52 @@ export class TaskCard {
             innerCheckbox.checked = true;
         } else {
             innerCheckbox.checked = false;
+        }
+        console.log(ToDoStorage.projects);
+    }
+
+    //Add task button click event handlers
+    addTaskButtonClickEventHandlers() {
+        const events = [this.#taskCheckboxEventHandler, this.#infoButtonEventHandler, this.#starButtonEventHandler, this.#editButtonEventHandler, this.#deleteButtonEventHandler];
+        for (const [index, button] of this.#buttonList.entries()) {
+            button.addEventListener("click", events[index]);
+        }
+    }
+
+    #taskCheckboxEventHandler = () => {
+        //Default checkbox inside task checkbox button
+        const taskCheckboxInnerCheckbox = this.#buttonList[0].firstChild;
+        const task = ToDoStorage.projects[this.#projectIndex].tasks[this.#taskIndex];
+        if (taskCheckboxInnerCheckbox.checked === false) {
+            task.isComplete = false;
+        } else {
+            task.isComplete = true;
+        }
+    }
+
+    #infoButtonEventHandler = () => {
+        InfoDialog.showModal();
+    }
+
+    #editButtonEventHandler = () => {
+        EditDialog.showModal();
+    }
+
+    #starButtonEventHandler = () => {
+        //Default checkbox inside task checkbox button
+        const taskCheckboxInnerCheckbox = this.#buttonList[2].firstChild;
+        const task = ToDoStorage.projects[this.#projectIndex].tasks[this.#taskIndex];
+        if (taskCheckboxInnerCheckbox.checked === false) {
+            task.isPriority = false;
+        } else {
+            task.isPriority = true;
+        }
+    }
+
+    #deleteButtonEventHandler = () => {
+        if (confirm(`Delete ${this.#taskName}?`) === true) {
+            ToDoStorage.removeTask(this.#projectIndex, this.#taskIndex);
+            Main.updateTaskDisplay(NavBar.getSelectedProjectIndex());
         }
     }
 }
