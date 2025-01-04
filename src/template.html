@@ -64,20 +64,28 @@
             <button class="action-button confirm"></button>
         </div>
     </dialog>
-    <dialog>
-        <div class="h2-wrapper">
-            <h2>Task A</h2>
+    <dialog id="edit-task-dialog">
+        <h2>Edit Task</h2>
+        <form method="dialog">
+            <label for="task-name-input">
+                Name:
+                <input type="text" id="task-name-input" name="task-name-input">
+                <div class="validation"></div>
+            </label>
+            <label for="task-description-input">
+                Description:
+                <textarea id="task-description-input"></textarea>
+                <div class="validation"></div>
+            </label>
+            <label for="task-date-input">
+                Due Date:
+                <input type="date" id="task-date-input">
+                <div class="validation"></div>
+            </label>
+        </form>
+        <div class="button-wrapper">
             <button class="action-button close"></button>
-        </div>
-        <div class="info">
-            Description:
-            <br>
-            <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium amet excepturi provident optio fugit debitis blanditiis similique, molestias repellendus quidem placeat. Doloremque expedita dignissimos nesciunt minus natus architecto repellat autem.</span>
-        </div>
-        <div class="info">
-            Due Date:
-            <br>
-            <span>12-01-2000</span>
+            <button class="action-button confirm"></button>
         </div>
     </dialog>
 </body>
