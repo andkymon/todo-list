@@ -3,8 +3,14 @@ import { TaskCard } from './TaskCard.js';
 import PubSub from 'pubsub-js'
 
 export const Main = (function () {
-    //Update task display when a nav button is cliced
-    PubSub.subscribe('navButtonClicked', (msg, navButtonIndex) => {
+    let navButtonIndex;
+    //Update task display when a nav button is clicked
+    PubSub.subscribe("navButtonClicked", (msg, index) => {
+        navButtonIndex = index;
+        updateTaskDisplay(navButtonIndex);
+    });
+    //Update task display when a task is added to selected nav button
+    PubSub.subscribe("TasksUpdated", (msg, data) => {
         updateTaskDisplay(navButtonIndex);
     });
 
@@ -59,7 +65,16 @@ export const Main = (function () {
         addTaskButton.style.display = "inline-block";
     }
 
+    function init() {  
+        //#add-task button initialization
+        const addTaskButton = document.querySelector("#add-task");
+        addTaskButton.addEventListener("click", () => {
+            //
+            PubSub.publish("taskDialogOpened", null);
+        });
+    }
+
     return {
-        updateTaskDisplay
+        init
     };
 })();

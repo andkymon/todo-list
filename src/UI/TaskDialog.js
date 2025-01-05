@@ -1,16 +1,17 @@
-/*import { Dialog } from './Dialog.js';
+import { Dialog } from './Dialog.js';
 import { InputValidator } from '../Logic/InputValidator.js';
 import { InvalidStyling } from './InvalidStyling.js';
 import PubSub from 'pubsub-js'
 
 export const TaskDialog = (function () {
     const taskDialog = new Dialog("#task-dialog");
+    let projectIndex;
 
     PubSub.subscribe("taskDialogOpened", (msg, data) => {
         taskDialog.showDialog();
     })
     PubSub.subscribe("navButtonClicked", (msg, selectedNavButtonIndex) => {
-        taskDialog.projectIndex = selectedNavButtonIndex;
+        projectIndex = selectedNavButtonIndex;
     });
 
     function addTask() {
@@ -22,19 +23,22 @@ export const TaskDialog = (function () {
         const description = taskDescriptionInput.value;
         const dueDate = new Date(taskDateInput.valueAsNumber); //Convert to ms to instantiate a Date object 
 
-        if (result === false) {
-            if (InputValidator.validateName(name) === false) {
-                InvalidStyling.showValidationError(taskNameInput, "name");
-            }
-            if (InputValidator.validateDescription(description) === false) {
-                InvalidStyling.showValidationError(taskDescriptionInput, "description");
-            }
-            if (InputValidator.validateDate(dueDate) === false) {
-                InvalidStyling.showValidationError(taskDateInput, "date");
-            }
-            return;
+        let inputIsInvalid;
+        if (InputValidator.validateName(name) === false) {
+            InvalidStyling.showValidationError(taskNameInput, "name");
+            inputIsInvalid = true;
         }
-        PubSub.publish("taskAdded", [name, description, dueDate, taskDialog.projectIndex]);
+        if (InputValidator.validateDescription(description) === false) {
+            InvalidStyling.showValidationError(taskDescriptionInput, "description");
+            inputIsInvalid = true;
+        }
+        if (InputValidator.validateDate(dueDate) === false) {
+            InvalidStyling.showValidationError(taskDateInput, "date");
+            inputIsInvalid = true;
+        }
+        if (inputIsInvalid === true) return;
+    
+        PubSub.publish("taskAdded", [name, description, dueDate, projectIndex]);
         taskDialog.clearInputs();
         taskDialog.hideDialog();
     }
@@ -61,4 +65,3 @@ export const TaskDialog = (function () {
         init
     }
 })();
-*/

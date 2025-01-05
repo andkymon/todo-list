@@ -7,6 +7,9 @@ export const ToDoStorage = (function() {
     const projects = [];
 
     //Topic subscriptions
+    PubSub.subscribe("taskAdded", (msg, taskInfoArray) => {
+        addTask(...taskInfoArray);
+    });
     PubSub.subscribe("projectAdded", (msg, projectName) => {
         addProject(projectName);
     });
@@ -19,6 +22,8 @@ export const ToDoStorage = (function() {
             return false;
         }
         projects[projectIndex].tasks.push(new Task(name, description, dueDate));
+        //Publish topic for Main to update displayed tasks
+        PubSub.publish("TasksUpdated", null);
     }
 
     function addProject(name) {

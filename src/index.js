@@ -4,11 +4,14 @@ import { NavToggle } from './UI/NavToggle.js';
 import { NavBar } from './UI/NavBar.js';
 import { ProjectDialog } from './UI/ProjectDialog.js';
 import { Main } from './UI/Main.js';
+import { TaskDialog } from './UI/TaskDialog.js';
 
 
 NavToggle.init();
 NavBar.init();
 ProjectDialog.init();
+Main.init();
+TaskDialog.init();
 
 
 
