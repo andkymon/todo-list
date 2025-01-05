@@ -1,4 +1,4 @@
-import { InvalidStyling } from '../Utils/InvalidStyling.js';
+import { InvalidStyling } from '../../Utils/InvalidStyling.js';
 
 export class Dialog {
     #dialogSelector

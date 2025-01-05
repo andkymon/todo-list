@@ -1,4 +1,4 @@
-import { ToDoStorage } from '../Logic/ToDoStorage.js';
+import { ToDoStorage } from '../../Logic/ToDoStorage.js';
 import { TaskCard } from './TaskCard.js';
 import PubSub from 'pubsub-js'
 
