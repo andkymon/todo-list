@@ -9,7 +9,7 @@ export const TaskDialog = (function () {
     const dialog = new Dialog("#task-dialog", "#add-task", addTask);
 
     function addTask() {
-        const projectIndex = NavBar.getSelectedProjectIndex();
+        const projectIndex = NavBar.getSelectedNavButtonIndex();
         const taskNameInput = document.querySelector("#task-name-input"); 
         const taskDescriptionInput = document.querySelector("#task-description-input"); 
         const taskDateInput = document.querySelector("#task-date-input"); 

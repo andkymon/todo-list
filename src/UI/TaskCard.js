@@ -158,7 +158,7 @@ export class TaskCard {
     #deleteButtonEventHandler = () => {
         if (confirm(`Delete ${this.#taskName}?`) === true) {
             ToDoStorage.removeTask(this.#projectIndex, this.#taskIndex);
-            Main.updateTaskDisplay(NavBar.getSelectedProjectIndex());
+            Main.updateTaskDisplay(NavBar.getSelectedNavButtonIndex());
         }
     }
 }
