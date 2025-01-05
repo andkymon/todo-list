@@ -48,7 +48,6 @@ export const ToDoStorage = (function() {
             return false;
         }
         projects.splice(projectIndex, 1);
-        PubSub.publish("projectsUpdated", projects);
     }
 
     return {

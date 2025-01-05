@@ -71,18 +71,20 @@ export const NavBar = (function () {
         navButton.classList.add("selected");
         disableSelectedButton();
         //Publish topic for Main to update displayed tasks
-        PubSub.publish('navButtonClicked', getSelectedNavButtonIndex());
+        PubSub.publish("navButtonClicked", getSelectedNavButtonIndex());
     }
 
     function deleteProjectButtonClickEventHandler(deleteButton, projectName, projectIndex) {
-        const transitionTime = 300;
+        const transitionTime = 300; //transition time in ms
+        const buttonWrapper = deleteButton.parentElement;
 
         if (confirm(`Delete ${projectName}?`) === true) {
             clickAllButtonWhenSelectedProjectIsDeleted(projectIndex);
-            playDeleteProjectTransition(deleteButton, transitionTime);
-            //Publish topic for ToDoStorage to delete project after delete transition is done
+            playDeleteProjectTransition(buttonWrapper, transitionTime);
+            //Wait for transition to finish before announcing project deletion and removing its respective button wrapper
             setTimeout(() => {
                 PubSub.publish("projectDeleted", projectIndex);
+                buttonWrapper.remove();
             }, transitionTime);
         }
         //Do nothing and return undefined when confirm() is cancelled
@@ -109,8 +111,7 @@ export const NavBar = (function () {
         }
     }
     
-    function playDeleteProjectTransition(deleteButton, transitionTime) {
-        const buttonWrapper = deleteButton.parentElement; 
+    function playDeleteProjectTransition(buttonWrapper, transitionTime) {
         buttonWrapper.classList.add("removed");
         buttonWrapper.style.transition = `${transitionTime}ms`;
     }
