@@ -65,7 +65,7 @@ export const NavBar = (function () {
         resetNavButtonStyles();
         navButton.classList.add("selected");
         disableSelectedButton();
-        PubSub.publish('navButtonClicked', getSelectedProjectIndex());
+        PubSub.publish('navButtonClicked', getSelectedNavButtonIndex());
     }
 
     function deleteProjectClickEventHandler(deleteButton, projectName, projectIndex) {
@@ -101,7 +101,7 @@ export const NavBar = (function () {
         buttonWrapper.style.transition = `${transitionTime}ms`;
     }
 
-    function getSelectedProjectIndex() {
+    function getSelectedNavButtonIndex() {
         const navButtons = document.querySelectorAll("nav > .button-wrapper > .nav-button");
         for (const [navButtonIndex, navButton] of navButtons.entries()) {
             if (navButton.classList.contains("selected")) {
@@ -119,6 +119,6 @@ export const NavBar = (function () {
 
     return {
         updateProjectDisplay,
-        getSelectedProjectIndex,
+        getSelectedNavButtonIndex,
     };
 })();
