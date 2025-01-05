@@ -16,7 +16,7 @@ export const NavBar = (function () {
 
     function displayCurrentProjects() {
         for (const [projectIndex, project] of ToDoStorage.projects.entries()) {
-            const projectButton = createProjectButton(project.name, projectIndex);
+            const projectButton = createProjectButton(project.name);
             const deleteButton = createDeleteButton(project.name, projectIndex);
             const buttonWrapper = document.createElement("div");
             const nav = document.querySelector("nav");
@@ -38,13 +38,13 @@ export const NavBar = (function () {
         }
     }
 
-    function createProjectButton(projectName, projectIndex) {
+    function createProjectButton(projectName) {
         const projectButton = document.createElement("button");
 
         projectButton.classList.add("nav-button");
         projectButton.textContent = projectName;
         projectButton.addEventListener("click", () => {
-            navButtonClickEventHandler(projectButton, projectIndex);
+            navButtonClickEventHandler(projectButton);
         });
 
         return projectButton;
@@ -61,11 +61,11 @@ export const NavBar = (function () {
         return deleteButton;
     }
 
-    function navButtonClickEventHandler(navButton, projectIndex) {
+    function navButtonClickEventHandler(navButton) {
         resetNavButtonStyles();
         navButton.classList.add("selected");
         disableSelectedButton();
-        //Publish topic to update displayed tasks
+        //Publish topic for Main to update displayed tasks
         PubSub.publish('navButtonClicked', getSelectedNavButtonIndex());
     }
 
@@ -74,19 +74,14 @@ export const NavBar = (function () {
 
         if (confirm(`Delete ${projectName}?`) === true) {
             ToDoStorage.removeProject(projectIndex);
-            clickAllWhenSelectedProjectDeleted(projectIndex);
-            deleteProjectTransition(deleteButton, transitionTime);
+            clickAllButtonWhenSelectedProjectIsDeleted(projectIndex);
+            playDeleteProjectTransition(deleteButton, transitionTime);
             //Update project entries after delete transition
             setTimeout(() => {
                 updateProjectDisplay();
             }, transitionTime);
         }
-    }
-
-    function clickAllWhenSelectedProjectDeleted(deletedProjectIndex) {
-        if (deletedProjectIndex === getSelectedNavButtonIndex()) {
-            allButton.click();
-        }
+        //Do nothing and return undefined when confirm() is cancelled
     }
 
     function resetNavButtonStyles() {
@@ -102,8 +97,15 @@ export const NavBar = (function () {
             navButton.disabled = navButton.classList.contains("selected");
         }
     }
+
+    function clickAllButtonWhenSelectedProjectIsDeleted(deletedProjectIndex) {
+        const allTasksButton = document.querySelector("#all > .nav-button");
+        if (deletedProjectIndex === getSelectedNavButtonIndex()) {
+            allTasksButton.click();
+        }
+    }
     
-    function deleteProjectTransition(deleteButton, transitionTime) {
+    function playDeleteProjectTransition(deleteButton, transitionTime) {
         const buttonWrapper = deleteButton.parentElement; 
         buttonWrapper.classList.add("removed");
         buttonWrapper.style.transition = `${transitionTime}ms`;
@@ -113,20 +115,22 @@ export const NavBar = (function () {
         const navButtons = document.querySelectorAll("nav > .button-wrapper > .nav-button");
         for (const [navButtonIndex, navButton] of navButtons.entries()) {
             if (navButton.classList.contains("selected")) {
-                return navButtonIndex - 1; //'All' button has index of -1, project buttons start with 0
+                return navButtonIndex - 1; //'All Tasks' button has index of -1, project buttons start with 0
             }
         }
     }
 
-    const allButton = document.querySelector("#all > .nav-button");
-    allButton.addEventListener("click", () => {
-        navButtonClickEventHandler(allButton, -1);
-    });
-    allButton.click();
+    function init() {
+        const allTasksButton = document.querySelector("#all > .nav-button");
+        allTasksButton.addEventListener("click", () => {
+            navButtonClickEventHandler(allTasksButton);
+        });
+        allTasksButton.click();
+    }
     
-
     return {
         updateProjectDisplay,
         getSelectedNavButtonIndex,
+        init
     };
 })();
