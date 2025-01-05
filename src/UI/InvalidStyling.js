@@ -14,7 +14,7 @@ export const InvalidStyling = (function () {
                 validationSpan.textContent = "Input must be 0 to 255 characters";
                 break;
             case "date":
-                validationSpan.textContent = "Select a date";
+                validationSpan.textContent = "Select a valid date";
                 break;
             default:
                 console.error("Invalid type selected");
