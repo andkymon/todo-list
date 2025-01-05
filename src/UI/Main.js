@@ -3,16 +3,16 @@ import { TaskCard } from './TaskCard.js';
 import PubSub from 'pubsub-js'
 
 export const Main = (function () {
+    //Update task display when a nav button is cliced
+    PubSub.subscribe('navButtonClicked', (msg, navButtonIndex) => {
+        updateTaskDisplay(navButtonIndex);
+    });
+
     function updateTaskDisplay(navButtonIndex) {
         clearTaskDisplay();
         displaySelectedProjectTasks(navButtonIndex);
         playUpdateTaskTransition();
     }
-
-    // Subscribe to nav button click event
-    PubSub.subscribe('navButtonClicked', (msg, navButtonIndex) => {
-        updateTaskDisplay(navButtonIndex);
-    });
 
     function clearTaskDisplay() {
         const tasks = document.querySelectorAll(".task"); 

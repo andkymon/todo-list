@@ -1,9 +1,9 @@
 import PubSub from 'pubsub-js'
 
 export const NavBar = (function () {
-    //Update displayed projects when a project is added
+    //Update displayed projects when a project is added to/removed from ToDoStorage.projects
     //Based on current state of 'projects' array from ToDoStorage.js
-    PubSub.subscribe("ToDoStorageUpdated", (msg, projectsArray) => {
+    PubSub.subscribe("ProjectsUpdated", (msg, projectsArray) => {
         updateProjectDisplay(projectsArray);
     });
 
@@ -80,7 +80,7 @@ export const NavBar = (function () {
         if (confirm(`Delete ${projectName}?`) === true) {
             clickAllButtonWhenSelectedProjectIsDeleted(projectIndex);
             playDeleteProjectTransition(deleteButton, transitionTime);
-            //Delete project after delete transition is done
+            //Publish topic for ToDoStorage to delete project after delete transition is done
             setTimeout(() => {
                 PubSub.publish("projectDeleted", projectIndex);
             }, transitionTime);
@@ -142,6 +142,7 @@ export const NavBar = (function () {
         //#add-project button initialization
         const addProjectButton = document.querySelector("#add-project");
         addProjectButton.addEventListener("click", () => {
+            //
             PubSub.publish("projectDialogOpened", null);
         });
     }

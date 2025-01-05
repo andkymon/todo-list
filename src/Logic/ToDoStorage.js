@@ -7,11 +7,7 @@ export const ToDoStorage = (function() {
     const projects = [];
 
     //Topic subscriptions
-    /*PubSub.subscribe("taskAdded", (msg, taskInfoArray) => {
-        addTask(...taskInfoArray);
-    });*/
     PubSub.subscribe("projectAdded", (msg, projectName) => {
-        console.log(projects);
         addProject(projectName);
     });
     PubSub.subscribe("projectDeleted", (msg, deletedProjectIndex) => {
@@ -31,7 +27,7 @@ export const ToDoStorage = (function() {
         }
         projects.push(new Project(name));
         //Publish topic for NavBar to update displayed projects
-        PubSub.publish("ToDoStorageUpdated", projects);
+        PubSub.publish("ProjectsUpdated", projects);
     }
 
     function removeTask(projectIndex, taskIndex) {
@@ -47,7 +43,7 @@ export const ToDoStorage = (function() {
             return false;
         }
         projects.splice(projectIndex, 1);
-        PubSub.publish("ToDoStorageUpdated", projects);
+        PubSub.publish("ProjectsUpdated", projects);
     }
 
     return {

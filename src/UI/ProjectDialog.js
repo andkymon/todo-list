@@ -5,7 +5,7 @@ import PubSub from 'pubsub-js'
 
 export const ProjectDialog = (function () {
     const projectDialog = new Dialog("#project-dialog");
-
+    //Show dialog when a button publishes this topic
     PubSub.subscribe("projectDialogOpened", (msg, data) => {
         projectDialog.showDialog();
     })
@@ -18,6 +18,7 @@ export const ProjectDialog = (function () {
             InvalidStyling.showValidationError(projectNameInput, "name");
             return;
         }
+        //Publish topic for ToDoStorage to add a new project using the input value
         PubSub.publish("projectAdded", name);
         projectDialog.clearInputs();
         projectDialog.hideDialog();
