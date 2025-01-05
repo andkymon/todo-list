@@ -1,6 +1,6 @@
 import { Task } from './Task.js';
 import { Project } from './Project.js';
-import { InputValidator } from './InputValidator.js';
+import { InputValidator } from '../Utils/InputValidator.js';
 import PubSub from 'pubsub-js'
 
 export const ToDoStorage = (function() {

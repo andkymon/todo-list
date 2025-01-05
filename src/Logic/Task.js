@@ -1,4 +1,4 @@
-import { InputValidator } from './InputValidator.js';
+import { InputValidator } from '../Utils/InputValidator.js';
 
 export class Task {
     #name;
