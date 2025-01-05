@@ -9,8 +9,8 @@ export const Main = (function () {
         playUpdateTaskTransition();
     }
 
-     // Subscribe to nav button click event
-     PubSub.subscribe('navButtonClicked', (msg, navButtonIndex) => {
+    // Subscribe to nav button click event
+    PubSub.subscribe('navButtonClicked', (msg, navButtonIndex) => {
         updateTaskDisplay(navButtonIndex);
     });
 
@@ -28,12 +28,14 @@ export const Main = (function () {
                     const taskCard = new TaskCard(task.name, task.dueDate, taskIndex, projectIndex);
                     taskCard.displayTask();
                 }
-            }       
+            }     
+            hideAddTaskButton();  
         } else {
             for (const [taskIndex, task] of ToDoStorage.projects[projectIndex].tasks.entries()) {
                 const taskCard = new TaskCard(task.name, task.dueDate, taskIndex, projectIndex);
                 taskCard.displayTask();
             }
+            showAddTaskButton();
         }
     }
 
@@ -58,8 +60,6 @@ export const Main = (function () {
     }
 
     return {
-        updateTaskDisplay,
-        hideAddTaskButton,
-        showAddTaskButton
+        updateTaskDisplay
     };
 })();
