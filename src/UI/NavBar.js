@@ -1,5 +1,5 @@
 import { ToDoStorage } from '../Logic/ToDoStorage.js';
-import { Main } from './Main.js';
+import PubSub from 'pubsub-js'
 
 export const NavBar = (function () {
     function updateProjectDisplay() {
@@ -65,12 +65,7 @@ export const NavBar = (function () {
         resetNavButtonStyles();
         navButton.classList.add("selected");
         disableSelectedButton();
-        if (projectIndex === -1) {
-            Main.hideAddTaskButton();
-        } else {
-            Main.showAddTaskButton();
-        }
-        Main.updateTaskDisplay(projectIndex);
+        PubSub.publish('navButtonClicked', getSelectedProjectIndex());
     }
 
     function deleteProjectClickEventHandler(deleteButton, projectName, projectIndex) {

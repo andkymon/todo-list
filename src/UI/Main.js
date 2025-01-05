@@ -1,12 +1,18 @@
 import { ToDoStorage } from '../Logic/ToDoStorage.js';
 import { TaskCard } from './TaskCard.js';
+import PubSub from 'pubsub-js'
 
 export const Main = (function () {
-    function updateTaskDisplay(projectIndex) {
+    function updateTaskDisplay(navButtonIndex) {
         clearTaskDisplay();
-        displaySelectedProjectTasks(projectIndex);
+        displaySelectedProjectTasks(navButtonIndex);
         playUpdateTaskTransition();
     }
+
+     // Subscribe to nav button click event
+     PubSub.subscribe('navButtonClicked', (msg, navButtonIndex) => {
+        updateTaskDisplay(navButtonIndex);
+    });
 
     function clearTaskDisplay() {
         const tasks = document.querySelectorAll(".task"); 
