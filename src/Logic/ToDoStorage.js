@@ -6,6 +6,14 @@ import PubSub from 'pubsub-js'
 export const ToDoStorage = (function() {
     const projects = [];
 
+    //Topic subscriptions
+    /*PubSub.subscribe("taskAdded", (msg, taskInfoArray) => {
+        addTask(...taskInfoArray);
+    });*/
+    PubSub.subscribe("projectAdded", (msg, projectName) => {
+        console.log(projects);
+        addProject(projectName);
+    });
     PubSub.subscribe("projectDeleted", (msg, deletedProjectIndex) => {
         removeProject(deletedProjectIndex);
     });

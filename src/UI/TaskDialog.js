@@ -1,15 +1,19 @@
-import { Dialog } from './Dialog.js';
-import { ToDoStorage } from '../Logic/ToDoStorage.js';
+/*import { Dialog } from './Dialog.js';
 import { InputValidator } from '../Logic/InputValidator.js';
 import { InvalidStyling } from './InvalidStyling.js';
-import { Main } from './Main.js';
-import { NavBar } from './NavBar.js';
+import PubSub from 'pubsub-js'
 
 export const TaskDialog = (function () {
-    const dialog = new Dialog("#task-dialog", "#add-task", addTask);
+    const taskDialog = new Dialog("#task-dialog");
+
+    PubSub.subscribe("taskDialogOpened", (msg, data) => {
+        taskDialog.showDialog();
+    })
+    PubSub.subscribe("navButtonClicked", (msg, selectedNavButtonIndex) => {
+        taskDialog.projectIndex = selectedNavButtonIndex;
+    });
 
     function addTask() {
-        const projectIndex = NavBar.getSelectedNavButtonIndex();
         const taskNameInput = document.querySelector("#task-name-input"); 
         const taskDescriptionInput = document.querySelector("#task-description-input"); 
         const taskDateInput = document.querySelector("#task-date-input"); 
@@ -18,7 +22,6 @@ export const TaskDialog = (function () {
         const description = taskDescriptionInput.value;
         const dueDate = new Date(taskDateInput.valueAsNumber); //Convert to ms to instantiate a Date object 
 
-        const result = ToDoStorage.addTask(name, description, dueDate, projectIndex);
         if (result === false) {
             if (InputValidator.validateName(name) === false) {
                 InvalidStyling.showValidationError(taskNameInput, "name");
@@ -31,9 +34,31 @@ export const TaskDialog = (function () {
             }
             return;
         }
-        //This is invoked here because it should only execute when this function doesn't return early
-        dialog.clearInputs();
-        dialog.hideDialog();
-        Main.updateTaskDisplay(projectIndex); 
+        PubSub.publish("taskAdded", [name, description, dueDate, taskDialog.projectIndex]);
+        taskDialog.clearInputs();
+        taskDialog.hideDialog();
+    }
+
+    function init() {
+        confirmButtonInitialization();
+        enterKeyInitialization();
+    }
+
+    function confirmButtonInitialization() {
+        const confirmButton = document.querySelector("#task-dialog .confirm"); 
+        confirmButton.addEventListener("click", addTask);
+    }
+
+    function enterKeyInitialization() {
+        taskDialog.dialog.addEventListener("keypress", (event) => {
+            if (event.key === "Enter") {
+                addTask();
+            }
+        });
+    }
+
+    return {
+        init
     }
 })();
+*/

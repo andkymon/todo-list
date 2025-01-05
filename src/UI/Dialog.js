@@ -1,43 +1,35 @@
 import { InvalidStyling } from './InvalidStyling.js';
 
 export class Dialog {
+    #dialogSelector
     #transitionTime = 300; //Transition time in ms
-    #dialogSelector;
-    #dialog;
-    #openDialogButton;
 
-    constructor(dialogSelector, openDialogButtonSelector, confirmButtonFunction) {
+    constructor(dialogSelector) {
         this.#dialogSelector = dialogSelector;
-        this.#dialog = document.querySelector(dialogSelector);
-        this.#openDialogButton = document.querySelector(openDialogButtonSelector);
-        this.#dialog.style.transition = `${this.#transitionTime}ms`;
-        this.#addDialogEventListeners(confirmButtonFunction); //Instance specific confirm button event handling
+        this.dialog = document.querySelector(dialogSelector);
+        this.dialog.style.transition = `${this.#transitionTime}ms`;
+        this.#addDialogEventListeners();
     }
 
-    #showDialog = () => {
-        this.#dialog.showModal();
+    showDialog = () => {
+        this.dialog.showModal();
         setTimeout(() => { //Wait for dialog to open before transition
-            this.#dialog.classList.add("open");
+            this.dialog.classList.add("open");
         }, 1);
     }
 
     hideDialog = () => {
         InvalidStyling.clearInvalidStyles();
         this.clearInputs();
-        this.#dialog.classList.remove("open");
+        this.dialog.classList.remove("open");
         setTimeout(() => { //Wait for transition before closing dialog
-            this.#dialog.close();
+            this.dialog.close();
         }, this.#transitionTime);
     }
 
-    #addDialogEventListeners(confirmButtonFunction) {
-        this.#addOpenDialogEventListeners();
+    #addDialogEventListeners() {
         this.#addCloseDialogEventListeners();
-        this.#confirmDialogEventListeners(confirmButtonFunction);
-    }
-
-    #addOpenDialogEventListeners() {
-        this.#openDialogButton.addEventListener("click", this.#showDialog);
+        this.#enterButtonEventListener();
     }
 
     #addCloseDialogEventListeners() {
@@ -45,21 +37,17 @@ export class Dialog {
         closeBtn.addEventListener("click", this.hideDialog);
 
         //Prevent default behavior of escape key
-        this.#dialog.addEventListener("cancel", (event) => {
+        this.dialog.addEventListener("cancel", (event) => {
             event.preventDefault();
             this.hideDialog();
         });
     }
 
-    #confirmDialogEventListeners(confirmButtonFunction) {
-        const confirmButton = document.querySelector(this.#dialogSelector + " .confirm"); 
-        confirmButton.addEventListener("click", confirmButtonFunction);
-    
+    #enterButtonEventListener() {    
         //Prevent default behavior of enter key
-        this.#dialog.addEventListener("keypress", (event) => {
+        this.dialog.addEventListener("keypress", (event) => {
             if (event.key === "Enter") {
                 event.preventDefault();
-                confirmButtonFunction();
             }
         });
     }

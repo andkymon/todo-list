@@ -1,25 +1,50 @@
 import { Dialog } from './Dialog.js';
-import { ToDoStorage } from '../Logic/ToDoStorage.js';
+import { InputValidator } from '../Logic/InputValidator.js';
 import { InvalidStyling } from './InvalidStyling.js';
-import { NavBar } from './NavBar.js';
+import PubSub from 'pubsub-js'
 
 export const ProjectDialog = (function () {
-    const dialog = new Dialog("#project-dialog", "#add-project", addProject);
+    const projectDialog = new Dialog("#project-dialog");
+
+    PubSub.subscribe("projectDialogOpened", (msg, data) => {
+        projectDialog.showDialog();
+    })
 
     function addProject() {
         const projectNameInput = document.querySelector("#project-name-input"); 
         const name = projectNameInput.value;
-        const result = ToDoStorage.addProject(name);
-
-        if (result === false) {
+        
+        if (InputValidator.validateName(name) === false) {
             InvalidStyling.showValidationError(projectNameInput, "name");
             return;
         }
-        dialog.clearInputs();
-        dialog.hideDialog();
+        PubSub.publish("projectAdded", name);
+        projectDialog.clearInputs();
+        projectDialog.hideDialog();
     }
 
-    return dialog;
+    function init() {
+        confirmButtonInitialization();
+        enterKeyInitialization();
+    }
+
+    function confirmButtonInitialization() {
+        const confirmButton = document.querySelector("#project-dialog .confirm"); 
+        confirmButton.addEventListener("click", addProject);
+    }
+
+    function enterKeyInitialization() {
+        projectDialog.dialog.addEventListener("keypress", (event) => {
+            if (event.key === "Enter") {
+                addProject();
+            }
+        });
+    }
+
+    //Add specific methods to projectDialog instance
+    projectDialog.init = init;
+
+    return projectDialog;
 })();
    
     

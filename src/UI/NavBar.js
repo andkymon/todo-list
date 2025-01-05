@@ -125,11 +125,25 @@ export const NavBar = (function () {
     }
 
     function init() {
+        initializeAllTasksButton();
+        initializeAddProjectButton(); 
+    }   
+
+    function initializeAllTasksButton() {
+        //#all-tasks button initialization
         const allTasksButton = document.querySelector("#all-tasks > .nav-button");
         allTasksButton.addEventListener("click", () => {
             navButtonClickEventHandler(allTasksButton);
         });
         allTasksButton.click();
+    }
+
+    function initializeAddProjectButton() {
+        //#add-project button initialization
+        const addProjectButton = document.querySelector("#add-project");
+        addProjectButton.addEventListener("click", () => {
+            PubSub.publish("projectDialogOpened", null);
+        });
     }
     
     return {
