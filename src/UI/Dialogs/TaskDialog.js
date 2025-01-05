@@ -1,6 +1,6 @@
 import { Dialog } from './Dialog.js';
-import { InputValidator } from '../Logic/InputValidator.js';
-import { InvalidStyling } from './InvalidStyling.js';
+import { InputValidator } from '../../Utils/InputValidator.js';
+import { InvalidStyling } from '../../Utils/InvalidStyling.js';
 import PubSub from 'pubsub-js'
 
 export const TaskDialog = (function () {

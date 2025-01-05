@@ -1,6 +1,6 @@
 import { ToDoStorage } from '../../Logic/ToDoStorage.js';
 import { Main } from './Main.js';
-import { NavBar } from '../NavBar.js';
+import { NavBar } from '../Nav/NavBar.js';
 
 export class TaskCard {
     #taskName;
