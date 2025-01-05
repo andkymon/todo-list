@@ -3,7 +3,7 @@ import PubSub from 'pubsub-js'
 export const NavBar = (function () {
     //Update displayed projects when a project is added to/removed from ToDoStorage.projects
     //Based on current state of 'projects' array from ToDoStorage.js
-    PubSub.subscribe("ProjectsUpdated", (msg, projectsArray) => {
+    PubSub.subscribe("projectsUpdated", (msg, projectsArray) => {
         updateProjectDisplay(projectsArray);
     });
 

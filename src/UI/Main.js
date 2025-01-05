@@ -10,7 +10,7 @@ export const Main = (function () {
         updateTaskDisplay(navButtonIndex);
     });
     //Update task display when a task is added to selected nav button
-    PubSub.subscribe("TasksUpdated", (msg, data) => {
+    PubSub.subscribe("tasksUpdated", (msg, data) => {
         updateTaskDisplay(navButtonIndex);
     });
 

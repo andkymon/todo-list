@@ -23,7 +23,7 @@ export const ToDoStorage = (function() {
         }
         projects[projectIndex].tasks.push(new Task(name, description, dueDate));
         //Publish topic for Main to update displayed tasks
-        PubSub.publish("TasksUpdated", null);
+        PubSub.publish("tasksUpdated", null);
     }
 
     function addProject(name) {
@@ -32,7 +32,7 @@ export const ToDoStorage = (function() {
         }
         projects.push(new Project(name));
         //Publish topic for NavBar to update displayed projects
-        PubSub.publish("ProjectsUpdated", projects);
+        PubSub.publish("projectsUpdated", projects);
     }
 
     function removeTask(projectIndex, taskIndex) {
@@ -48,7 +48,7 @@ export const ToDoStorage = (function() {
             return false;
         }
         projects.splice(projectIndex, 1);
-        PubSub.publish("ProjectsUpdated", projects);
+        PubSub.publish("projectsUpdated", projects);
     }
 
     return {
