@@ -31,7 +31,7 @@ export const NavBar = (function () {
         const navButtonWrappers = document.querySelectorAll("nav .button-wrapper");
 
         for (const navButtonWrapper of navButtonWrappers) {
-            if (navButtonWrapper.id === "all") {
+            if (navButtonWrapper.id === "all-tasks") {
                 continue;
             }
             navButtonWrapper.remove();
@@ -99,7 +99,7 @@ export const NavBar = (function () {
     }
 
     function clickAllButtonWhenSelectedProjectIsDeleted(deletedProjectIndex) {
-        const allTasksButton = document.querySelector("#all > .nav-button");
+        const allTasksButton = document.querySelector("#all-tasks > .nav-button");
         if (deletedProjectIndex === getSelectedNavButtonIndex()) {
             allTasksButton.click();
         }
@@ -121,7 +121,7 @@ export const NavBar = (function () {
     }
 
     function init() {
-        const allTasksButton = document.querySelector("#all > .nav-button");
+        const allTasksButton = document.querySelector("#all-tasks > .nav-button");
         allTasksButton.addEventListener("click", () => {
             navButtonClickEventHandler(allTasksButton);
         });
