@@ -6,6 +6,10 @@ import PubSub from 'pubsub-js'
 export const ToDoStorage = (function() {
     const projects = [];
 
+    PubSub.subscribe("projectDeleted", (msg, deletedProjectIndex) => {
+        removeProject(deletedProjectIndex);
+    });
+
     function addTask(name, description, dueDate, projectIndex) {
         if (InputValidator.validateTask(name, description, dueDate, projectIndex, projects.length) === false) {
             return false;
@@ -19,7 +23,7 @@ export const ToDoStorage = (function() {
         }
         projects.push(new Project(name));
         //Publish topic for NavBar to update displayed projects
-        PubSub.publish("projectAdded", projects);
+        PubSub.publish("ToDoStorageUpdated", projects);
     }
 
     function removeTask(projectIndex, taskIndex) {
@@ -35,6 +39,7 @@ export const ToDoStorage = (function() {
             return false;
         }
         projects.splice(projectIndex, 1);
+        PubSub.publish("ToDoStorageUpdated", projects);
     }
 
     return {

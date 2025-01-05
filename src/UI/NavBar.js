@@ -1,10 +1,9 @@
-import { ToDoStorage } from '../Logic/ToDoStorage.js';
 import PubSub from 'pubsub-js'
 
 export const NavBar = (function () {
     //Update displayed projects when a project is added
     //Based on current state of 'projects' array from ToDoStorage.js
-    PubSub.subscribe("projectAdded", (msg, projectsArray) => {
+    PubSub.subscribe("ToDoStorageUpdated", (msg, projectsArray) => {
         updateProjectDisplay(projectsArray);
     });
 
@@ -61,7 +60,7 @@ export const NavBar = (function () {
 
         deleteButton.classList.add("small-button", "delete");
         deleteButton.addEventListener("click", () => {
-            deleteProjectClickEventHandler(deleteButton, projectName, projectIndex);
+            deleteProjectButtonClickEventHandler(deleteButton, projectName, projectIndex);
         });
 
         return deleteButton;
@@ -75,16 +74,15 @@ export const NavBar = (function () {
         PubSub.publish('navButtonClicked', getSelectedNavButtonIndex());
     }
 
-    function deleteProjectClickEventHandler(deleteButton, projectName, projectIndex) {
+    function deleteProjectButtonClickEventHandler(deleteButton, projectName, projectIndex) {
         const transitionTime = 300;
 
         if (confirm(`Delete ${projectName}?`) === true) {
-            ToDoStorage.removeProject(projectIndex);
             clickAllButtonWhenSelectedProjectIsDeleted(projectIndex);
             playDeleteProjectTransition(deleteButton, transitionTime);
-            //Update project entries after delete transition
+            //Delete project after delete transition is done
             setTimeout(() => {
-                updateProjectDisplay();
+                PubSub.publish("projectDeleted", projectIndex);
             }, transitionTime);
         }
         //Do nothing and return undefined when confirm() is cancelled
@@ -135,7 +133,6 @@ export const NavBar = (function () {
     }
     
     return {
-        updateProjectDisplay,
         getSelectedNavButtonIndex,
         init
     };
