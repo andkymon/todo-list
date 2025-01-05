@@ -17,7 +17,6 @@ export const ProjectDialog = (function () {
         }
         dialog.clearInputs();
         dialog.hideDialog();
-        NavBar.updateProjectDisplay(); 
     }
 
     return dialog;

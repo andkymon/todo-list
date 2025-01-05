@@ -2,9 +2,15 @@ import { ToDoStorage } from '../Logic/ToDoStorage.js';
 import PubSub from 'pubsub-js'
 
 export const NavBar = (function () {
-    function updateProjectDisplay() {
+    //Update displayed projects when a project is added
+    //Based on current state of 'projects' array from ToDoStorage.js
+    PubSub.subscribe("projectAdded", (msg, projectsArray) => {
+        updateProjectDisplay(projectsArray);
+    });
+
+    function updateProjectDisplay(projectsArray) {
         clearProjectDisplay();
-        displayCurrentProjects();
+        displayProjects(projectsArray);
     }
 
     /*
@@ -14,8 +20,8 @@ export const NavBar = (function () {
         </div>
     */
 
-    function displayCurrentProjects() {
-        for (const [projectIndex, project] of ToDoStorage.projects.entries()) {
+    function displayProjects(projectsArray) {
+        for (const [projectIndex, project] of projectsArray.entries()) {
             const projectButton = createProjectButton(project.name);
             const deleteButton = createDeleteButton(project.name, projectIndex);
             const buttonWrapper = document.createElement("div");

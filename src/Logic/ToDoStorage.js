@@ -1,6 +1,7 @@
 import { Task } from './Task.js';
 import { Project } from './Project.js';
 import { InputValidator } from './InputValidator.js';
+import PubSub from 'pubsub-js'
 
 export const ToDoStorage = (function() {
     const projects = [];
@@ -17,6 +18,8 @@ export const ToDoStorage = (function() {
             return false;
         }
         projects.push(new Project(name));
+        //Publish topic for NavBar to update displayed projects
+        PubSub.publish("projectAdded", projects);
     }
 
     function removeTask(projectIndex, taskIndex) {
