@@ -65,6 +65,7 @@ export const NavBar = (function () {
         resetNavButtonStyles();
         navButton.classList.add("selected");
         disableSelectedButton();
+        //Publish topic to update displayed tasks
         PubSub.publish('navButtonClicked', getSelectedNavButtonIndex());
     }
 
@@ -73,11 +74,18 @@ export const NavBar = (function () {
 
         if (confirm(`Delete ${projectName}?`) === true) {
             ToDoStorage.removeProject(projectIndex);
+            clickAllWhenSelectedProjectDeleted(projectIndex);
             deleteProjectTransition(deleteButton, transitionTime);
             //Update project entries after delete transition
             setTimeout(() => {
                 updateProjectDisplay();
             }, transitionTime);
+        }
+    }
+
+    function clickAllWhenSelectedProjectDeleted(deletedProjectIndex) {
+        if (deletedProjectIndex === getSelectedNavButtonIndex()) {
+            allButton.click();
         }
     }
 
