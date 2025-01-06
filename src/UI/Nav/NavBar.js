@@ -83,7 +83,6 @@ export const NavBar = (function () {
             playDeleteProjectTransition(buttonWrapper, transitionTime);
             //Wait for transition to finish before announcing project deletion and removing its respective button wrapper
             setTimeout(() => {
-                console.log(getDeletedNavButtonIndex());
                 PubSub.publish("projectDeleted", getDeletedNavButtonIndex());
                 buttonWrapper.remove();
             }, transitionTime);
