@@ -60,7 +60,7 @@ export const NavBar = (function () {
 
         deleteButton.classList.add("small-button", "delete");
         deleteButton.addEventListener("click", () => {
-            deleteProjectButtonClickEventHandler(deleteButton, projectName, projectIndex);
+            deleteProjectButtonClickEventHandler(deleteButton, projectName);
         });
 
         return deleteButton;
@@ -74,16 +74,17 @@ export const NavBar = (function () {
         PubSub.publish("navButtonClicked", getSelectedNavButtonIndex());
     }
 
-    function deleteProjectButtonClickEventHandler(deleteButton, projectName, projectIndex) {
+    function deleteProjectButtonClickEventHandler(deleteButton, projectName) {
         const transitionTime = 300; //transition time in ms
         const buttonWrapper = deleteButton.parentElement;
 
         if (confirm(`Delete ${projectName}?`) === true) {
-            clickAllButtonWhenSelectedProjectIsDeleted(projectIndex);
+            clickAllButtonWhenSelectedProjectIsDeleted();
             playDeleteProjectTransition(buttonWrapper, transitionTime);
             //Wait for transition to finish before announcing project deletion and removing its respective button wrapper
             setTimeout(() => {
-                PubSub.publish("projectDeleted", projectIndex);
+                console.log(getDeletedNavButtonIndex());
+                PubSub.publish("projectDeleted", getDeletedNavButtonIndex());
                 buttonWrapper.remove();
             }, transitionTime);
         }
@@ -104,9 +105,9 @@ export const NavBar = (function () {
         }
     }
 
-    function clickAllButtonWhenSelectedProjectIsDeleted(deletedProjectIndex) {
+    function clickAllButtonWhenSelectedProjectIsDeleted() {
         const allTasksButton = document.querySelector("#all-tasks > .nav-button");
-        if (deletedProjectIndex === getSelectedNavButtonIndex()) {
+        if (getDeletedNavButtonIndex() === getSelectedNavButtonIndex()) {
             allTasksButton.click();
         }
     }
@@ -114,6 +115,15 @@ export const NavBar = (function () {
     function playDeleteProjectTransition(buttonWrapper, transitionTime) {
         buttonWrapper.classList.add("removed");
         buttonWrapper.style.transition = `${transitionTime}ms`;
+    }
+
+    function getDeletedNavButtonIndex() {
+        const projectButtonWrappers = document.querySelectorAll("nav > .button-wrapper:not(#all-tasks)");
+        for (const [projectButtonWrapperIndex, projectButtonWrapper] of projectButtonWrappers.entries()) {
+            if (projectButtonWrapper.classList.contains("removed")) {
+                return projectButtonWrapperIndex;
+            }
+        }
     }
 
     function getSelectedNavButtonIndex() {
