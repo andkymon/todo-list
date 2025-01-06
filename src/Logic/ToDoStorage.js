@@ -31,8 +31,6 @@ export const ToDoStorage = (function() {
             return false;
         }
         projects.push(new Project(name));
-        //Publish topic for NavBar to update displayed projects
-        PubSub.publish("projectsUpdated", projects);
     }
 
     function removeTask(projectIndex, taskIndex) {
