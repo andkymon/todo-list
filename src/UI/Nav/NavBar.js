@@ -1,16 +1,10 @@
 import PubSub from 'pubsub-js'
 
 export const NavBar = (function () {
-    //Update displayed projects when a project is added to/removed from ToDoStorage.projects
-    //Based on current state of 'projects' array from ToDoStorage.js
-    PubSub.subscribe("projectsUpdated", (msg, projectsArray) => {
-        updateProjectDisplay(projectsArray);
+    //Display project in NavBar as a nav button when a project is added
+    PubSub.subscribe("projectAdded", (msg, projectName) => {
+        displayProject(projectName);
     });
-
-    function updateProjectDisplay(projectsArray) {
-        clearProjectDisplay();
-        displayProjects(projectsArray);
-    }
 
     /*
         <div class="button-wrapper">
@@ -19,28 +13,15 @@ export const NavBar = (function () {
         </div>
     */
 
-    function displayProjects(projectsArray) {
-        for (const [projectIndex, project] of projectsArray.entries()) {
-            const projectButton = createProjectButton(project.name);
-            const deleteButton = createDeleteButton(project.name, projectIndex);
-            const buttonWrapper = document.createElement("div");
-            const nav = document.querySelector("nav");
-            
-            buttonWrapper.classList.add("button-wrapper");
-            buttonWrapper.append(projectButton, deleteButton);
-            nav.append(buttonWrapper);
-        }
-    }
-
-    function clearProjectDisplay() {
-        const navButtonWrappers = document.querySelectorAll("nav .button-wrapper");
-
-        for (const navButtonWrapper of navButtonWrappers) {
-            if (navButtonWrapper.id === "all-tasks") {
-                continue;
-            }
-            navButtonWrapper.remove();
-        }
+    function displayProject(projectName) {
+        const projectButton = createProjectButton(projectName);
+        const deleteButton = createDeleteButton();
+        const buttonWrapper = document.createElement("div");
+        const nav = document.querySelector("nav");
+        
+        buttonWrapper.classList.add("button-wrapper");
+        buttonWrapper.append(projectButton, deleteButton);
+        nav.append(buttonWrapper);
     }
 
     function createProjectButton(projectName) {
@@ -55,12 +36,12 @@ export const NavBar = (function () {
         return projectButton;
     }
 
-    function createDeleteButton(projectName, projectIndex) {
+    function createDeleteButton() {
         const deleteButton = document.createElement("button");
 
         deleteButton.classList.add("small-button", "delete");
         deleteButton.addEventListener("click", () => {
-            deleteProjectButtonClickEventHandler(deleteButton, projectName);
+            deleteProjectButtonClickEventHandler(deleteButton);
         });
 
         return deleteButton;
@@ -70,20 +51,22 @@ export const NavBar = (function () {
         resetNavButtonStyles();
         navButton.classList.add("selected");
         disableSelectedButton();
-        //Publish topic for Main to update displayed tasks
+        //Publish topic for Main to update displayed tasks based on currently selected nav button
         PubSub.publish("navButtonClicked", getSelectedNavButtonIndex());
     }
 
-    function deleteProjectButtonClickEventHandler(deleteButton, projectName) {
+    function deleteProjectButtonClickEventHandler(deleteButton) {
         const transitionTime = 300; //transition time in ms
         const buttonWrapper = deleteButton.parentElement;
+        const projectName = buttonWrapper.firstChild.textContent;
 
         if (confirm(`Delete ${projectName}?`) === true) {
-            clickAllButtonWhenSelectedProjectIsDeleted();
+            clickAllTasksButtonIfSelectedProjectIsDeleted();
             playDeleteProjectTransition(buttonWrapper, transitionTime);
             //Wait for transition to finish before announcing project deletion and removing its respective button wrapper
             setTimeout(() => {
-                PubSub.publish("projectDeleted", getDeletedNavButtonIndex());
+                //Inform subscribers that a project has been deleted and pass the index of the deleted project
+                PubSub.publish("projectDeleted", getDeletedProjectButtonIndex());
                 buttonWrapper.remove();
             }, transitionTime);
         }
@@ -103,10 +86,10 @@ export const NavBar = (function () {
             navButton.disabled = navButton.classList.contains("selected");
         }
     }
-
-    function clickAllButtonWhenSelectedProjectIsDeleted() {
+    //Selects the 'All Tasks' nav button if currently selected project is deleted
+    function clickAllTasksButtonIfSelectedProjectIsDeleted() {
         const allTasksButton = document.querySelector("#all-tasks > .nav-button");
-        if (getDeletedNavButtonIndex() === getSelectedNavButtonIndex()) {
+        if (getDeletedProjectButtonIndex() === getSelectedNavButtonIndex()) {
             allTasksButton.click();
         }
     }
@@ -116,8 +99,8 @@ export const NavBar = (function () {
         buttonWrapper.style.transition = `${transitionTime}ms`;
     }
 
-    function getDeletedNavButtonIndex() {
-        const projectButtonWrappers = document.querySelectorAll("nav > .button-wrapper:not(#all-tasks)");
+    function getDeletedProjectButtonIndex() {
+        const projectButtonWrappers = document.querySelectorAll("nav > .button-wrapper:not(#all-tasks)"); //'All Tasks' nav button cannot be deleted
         for (const [projectButtonWrapperIndex, projectButtonWrapper] of projectButtonWrappers.entries()) {
             if (projectButtonWrapper.classList.contains("removed")) {
                 return projectButtonWrapperIndex;
@@ -129,7 +112,7 @@ export const NavBar = (function () {
         const navButtons = document.querySelectorAll("nav > .button-wrapper > .nav-button");
         for (const [navButtonIndex, navButton] of navButtons.entries()) {
             if (navButton.classList.contains("selected")) {
-                return navButtonIndex - 1; //'All Tasks' button has index of -1, project buttons start with 0
+                return navButtonIndex - 1; //'All Tasks' button has index of -1, project buttons start with 0 to be identical with the ToDoStorage.projects array
             }
         }
     }
@@ -152,7 +135,7 @@ export const NavBar = (function () {
         //#add-project button initialization
         const addProjectButton = document.querySelector("#add-project");
         addProjectButton.addEventListener("click", () => {
-            //
+            //Publish this topic to open the add project dialog 
             PubSub.publish("projectDialogOpened", null);
         });
     }
