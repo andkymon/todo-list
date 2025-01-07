@@ -1,17 +1,15 @@
-import { ToDoStorage } from '../../Logic/ToDoStorage.js';
+import PubSub from 'pubsub-js'
 import { Main } from './Main.js';
 import { NavBar } from '../Nav/NavBar.js';
 
 export class TaskCard {
     #taskName;
     #dueDate;
-    #taskIndex;
     #projectIndex;
 
-    constructor(taskName, dueDate, taskIndex, projectIndex) {
+    constructor(taskName, dueDate, projectIndex) {
         this.#taskName = taskName;
         this.#dueDate = dueDate;
-        this.#taskIndex = taskIndex;
         this.#projectIndex = projectIndex;
     }
 
@@ -65,7 +63,7 @@ export class TaskCard {
             button.classList.add(buttonClassList[i]);
             this.#buttonList.push(button);
         }
-
+        this.addTaskButtonClickEventHandlers();
         return this.#buttonList;
     }
 
@@ -114,25 +112,24 @@ export class TaskCard {
         } else {
             innerCheckbox.checked = false;
         }
-        console.log(ToDoStorage.projects);
     }
 
     //Add task button click event handlers
     addTaskButtonClickEventHandlers() {
-        const events = [this.#taskCheckboxEventHandler, this.#infoButtonEventHandler, this.#starButtonEventHandler, this.#editButtonEventHandler, this.#deleteButtonEventHandler];
-        for (const [index, button] of this.#buttonList.entries()) {
-            button.addEventListener("click", events[index]);
-        }
+        const deleteButton = this.#buttonList[4];
+        deleteButton.addEventListener("click", () => {
+            this.#deleteTaskButtonClickEventHandler(deleteButton);
+        });
     }
 
+    /*
     #taskCheckboxEventHandler = () => {
         //Default checkbox inside task checkbox button
         const taskCheckboxInnerCheckbox = this.#buttonList[0].firstChild;
-        const task = ToDoStorage.projects[this.#projectIndex].tasks[this.#taskIndex];
         if (taskCheckboxInnerCheckbox.checked === false) {
-            task.isComplete = false;
+            PubSub.publish("taskCompletion", false, this.#projectIndex, taskIndex);
         } else {
-            task.isComplete = true;
+            PubSub.publish("taskCompletion", true);
         }
     }
 
@@ -147,18 +144,30 @@ export class TaskCard {
     #starButtonEventHandler = () => {
         //Default checkbox inside task checkbox button
         const taskCheckboxInnerCheckbox = this.#buttonList[2].firstChild;
-        const task = ToDoStorage.projects[this.#projectIndex].tasks[this.#taskIndex];
         if (taskCheckboxInnerCheckbox.checked === false) {
             task.isPriority = false;
         } else {
             task.isPriority = true;
         }
     }
+    */
 
-    #deleteButtonEventHandler = () => {
+    #deleteTaskButtonClickEventHandler = (deleteButton) => {
         if (confirm(`Delete ${this.#taskName}?`) === true) {
-            ToDoStorage.removeTask(this.#projectIndex, this.#taskIndex);
-            Main.updateTaskDisplay(NavBar.getSelectedNavButtonIndex());
+            const taskCard = deleteButton.parentElement;
+            taskCard.classList.add("removed");
+            //Inform subscribers that a project has been deleted and pass the index of the deleted project
+            PubSub.publish("taskDeleted", [this.#projectIndex, this.#getDeletedTaskCardIndex()]);
+            taskCard.remove();
+        }
+    }
+
+    #getDeletedTaskCardIndex() {
+        const taskCards = document.querySelectorAll("main > .task");
+        for (const [taskCardIndex, taskCard] of taskCards.entries()) {
+            if (taskCard.classList.contains("removed")) {
+                return taskCardIndex; 
+            }
         }
     }
 }
