@@ -1,22 +1,25 @@
-import { ToDoStorage } from '../../Logic/ToDoStorage.js';
 import { TaskCard } from './TaskCard.js';
 import PubSub from 'pubsub-js'
 
 export const Main = (function () {
-    let navButtonIndex;
     //Update task display when a nav button is clicked
+    let navButtonIndex;
     PubSub.subscribe("navButtonClicked", (msg, index) => {
         navButtonIndex = index;
-        updateTaskDisplay(navButtonIndex);
+        updateTaskDisplay();
     });
-    //Update task display when a task is added to selected nav button
-    PubSub.subscribe("tasksUpdated", (msg, data) => {
-        updateTaskDisplay(navButtonIndex);
+    //Display a new task card when a task is added to selected project
+    PubSub.subscribe("taskAdded", (msg, taskInfoArray) => {
+        const taskName = taskInfoArray[0];
+        const taskDueDate = taskInfoArray[1];
+        const projectIndex = navButtonIndex;
+        const taskCard = new TaskCard(taskName, taskDueDate, projectIndex); //TODO
+        taskCard.displayTask();
     });
 
-    function updateTaskDisplay(navButtonIndex) {
+    function updateTaskDisplay() {
         clearTaskDisplay();
-        displaySelectedProjectTasks(navButtonIndex);
+        displaySelectedProjectTasks();
         playUpdateTaskTransition();
     }
 
@@ -27,22 +30,36 @@ export const Main = (function () {
         }
     }
 
-    function displaySelectedProjectTasks(projectIndex) {
-        if (projectIndex === -1) { // For "all" Nav Button
-            for (const [projectIndex, project] of ToDoStorage.projects.entries()) {
-                for (const [taskIndex, task] of project.tasks.entries()) {
-                    const taskCard = new TaskCard(task.name, task.dueDate, taskIndex, projectIndex);
+    function displaySelectedProjectTasks() {
+        //Publish the event requesting the projects array
+        PubSub.publish('getProjects', null);
+
+        let allProjects;
+        //Subscribe to the event that provides the projectsArray
+        PubSub.subscribe('projects', (msg, projectsArray) => {
+            allProjects = projectsArray;
+
+            if (navButtonIndex === -1) { //For "All Tasks" Nav Button
+                for (const [projectIndex, project] of allProjects.entries()) {
+                    for (const task of project.tasks) {
+                        const taskCard = new TaskCard(task.name, task.dueDate, projectIndex); //TODO
+                        taskCard.displayTask();
+                    }
+                }     
+                //Disable task addition for "All Tasks" Nav Button
+                hideAddTaskButton();  
+            } else { //For Project Nav Buttons
+                const projectIndex = navButtonIndex;
+                for (const task of allProjects[projectIndex].tasks) {
+                    const taskCard = new TaskCard(task.name, task.dueDate, projectIndex); //TODO
                     taskCard.displayTask();
                 }
-            }     
-            hideAddTaskButton();  
-        } else {
-            for (const [taskIndex, task] of ToDoStorage.projects[projectIndex].tasks.entries()) {
-                const taskCard = new TaskCard(task.name, task.dueDate, taskIndex, projectIndex);
-                taskCard.displayTask();
+                //Enable task addition for project buttons
+                showAddTaskButton();
             }
-            showAddTaskButton();
-        }
+        });
+    
+        
     }
 
     function playUpdateTaskTransition() {
@@ -69,7 +86,7 @@ export const Main = (function () {
         //#add-task button initialization
         const addTaskButton = document.querySelector("#add-task");
         addTaskButton.addEventListener("click", () => {
-            //
+            //Publish this topic to open the add task dialog 
             PubSub.publish("taskDialogOpened", null);
         });
     }
