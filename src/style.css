@@ -282,6 +282,15 @@ main {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    /*Name cross-out has transition from transparent to white after 0.3s*/
+    text-decoration-color: transparent;
+    transition: 0.3s;
+}
+
+/*Cross out name of completed tasks*/
+.task:has(.task-checkbox.checked) .task-name {
+    text-decoration-color: white;
+    text-decoration: line-through;
 }
 
 .task-info {
