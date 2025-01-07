@@ -73,7 +73,11 @@ body {
     background-color: var(--main-bg-color);
 }
 
-h1, h2 {
+span {
+    font-family: Montserrat, sans-serif;
+}
+
+h1, h2, h3 {
     font-family: Fredoka, sans-serif;
 }
 
@@ -83,6 +87,10 @@ h1 {
 
 h2 {
     font-size: 2rem;
+}
+
+h3 {
+    font-size: 1.5rem;
 }
 
 .button-wrapper {
