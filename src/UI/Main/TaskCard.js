@@ -25,17 +25,19 @@ export class TaskCard {
         </div>
     */
 
+    //Accessed by event listeners
+    taskCard = document.createElement("div");
+
     displayTask() {
         const main = document.querySelector("main");
-        const taskDiv = document.createElement("div");
         const taskElements = this.#createTaskElements();
         
         for (const taskElement of taskElements) {
-            taskDiv.append(taskElement);
+            this.taskCard.append(taskElement);
         }
 
-        taskDiv.classList.add("task");
-        main.append(taskDiv);
+        this.taskCard.classList.add("task");
+        main.append(this.taskCard);
     }
 
     #createTaskElements() {
@@ -116,23 +118,30 @@ export class TaskCard {
 
     //Add task button click event handlers
     addTaskButtonClickEventHandlers() {
+        const taskCheckbox = this.#buttonList[0];
+        taskCheckbox.addEventListener("click", () => {
+            this.#taskCheckboxEventHandler();
+        });
+
         const deleteButton = this.#buttonList[4];
         deleteButton.addEventListener("click", () => {
-            this.#deleteTaskButtonClickEventHandler(deleteButton);
+            this.#deleteTaskButtonClickEventHandler();
         });
     }
-
-    /*
+    
     #taskCheckboxEventHandler = () => {
         //Default checkbox inside task checkbox button
         const taskCheckboxInnerCheckbox = this.#buttonList[0].firstChild;
+        this.taskCard.classList.add("clicked");
+        const taskIndex = this.#getClickedTaskCardIndex();
+
         if (taskCheckboxInnerCheckbox.checked === false) {
-            PubSub.publish("taskCompletion", false, this.#projectIndex, taskIndex);
+            PubSub.publish("taskCompleted", [false, this.#projectIndex, taskIndex]);
         } else {
-            PubSub.publish("taskCompletion", true);
+            PubSub.publish("taskCompleted", [true, this.#projectIndex, taskIndex]);
         }
     }
-
+    /*
     #infoButtonEventHandler = () => {
         InfoDialog.showModal();
     }
@@ -152,20 +161,21 @@ export class TaskCard {
     }
     */
 
-    #deleteTaskButtonClickEventHandler = (deleteButton) => {
+    #deleteTaskButtonClickEventHandler = () => {
         if (confirm(`Delete ${this.#taskName}?`) === true) {
-            const taskCard = deleteButton.parentElement;
-            taskCard.classList.add("removed");
-            //Inform subscribers that a project has been deleted and pass the index of the deleted project
-            PubSub.publish("taskDeleted", [this.#projectIndex, this.#getDeletedTaskCardIndex()]);
-            taskCard.remove();
+            this.taskCard.classList.add("clicked");
+            //Inform subscribers that a task has been deleted and pass the project index and task index of the deleted task
+            const taskIndex = this.#getClickedTaskCardIndex();
+            PubSub.publish("taskDeleted", [this.#projectIndex, taskIndex]);
+            this.taskCard.remove();
         }
     }
 
-    #getDeletedTaskCardIndex() {
+    #getClickedTaskCardIndex() {
         const taskCards = document.querySelectorAll("main > .task");
         for (const [taskCardIndex, taskCard] of taskCards.entries()) {
-            if (taskCard.classList.contains("removed")) {
+            if (taskCard.classList.contains("clicked")) {
+                taskCard.classList.remove("clicked");
                 return taskCardIndex; 
             }
         }

@@ -10,6 +10,9 @@ export const ToDoStorage = (function() {
     PubSub.subscribe("taskAdded", (msg, taskInfoArray) => {
         addTask(...taskInfoArray);
     });
+    PubSub.subscribe("taskCompleted", (msg, [isComplete, projectIndex, taskindex]) => {
+        projects[projectIndex].tasks[taskindex].isComplete = isComplete;
+    });
     PubSub.subscribe("taskDeleted", (msg, [projectIndex, taskIndex]) => {
         removeTask(projectIndex, taskIndex);
     });
@@ -19,8 +22,8 @@ export const ToDoStorage = (function() {
     PubSub.subscribe("projectDeleted", (msg, deletedProjectIndex) => {
         removeProject(deletedProjectIndex);
     });
-    PubSub.subscribe('getProjects', (msg, data) => {
-        PubSub.publish('projects', getProjects());  // Publish the list of todos when requested
+    PubSub.subscribe("getProjects", (msg, data) => {
+        PubSub.publish("projects", getProjects());  // Publish the list of todos when requested
     });
 
     function getProjects() {
