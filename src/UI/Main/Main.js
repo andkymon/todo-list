@@ -38,7 +38,7 @@ export const Main = (function () {
         //Subscribe to the event that provides the projectsArray
         PubSub.subscribe('projects', (msg, projectsArray) => {
             allProjects = projectsArray;
-
+            //Logic is inside this function because when outside, it does not wait for the projectsArray to be received
             if (navButtonIndex === -1) { //For "All Tasks" Nav Button
                 for (const [projectIndex, project] of allProjects.entries()) {
                     for (const task of project.tasks) {
@@ -58,8 +58,6 @@ export const Main = (function () {
                 showAddTaskButton();
             }
         });
-    
-        
     }
 
     function playUpdateTaskTransition() {
