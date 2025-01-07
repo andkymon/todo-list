@@ -19,7 +19,7 @@ export class TaskCard {
             <span class="task-name">Task A</span>
             <span class="due-date">12-01-2000</span>
             <button class="small-button task-info"></button>
-            <button class="small-button important clicked"></button>
+            <button class="small-button star"></button>
             <button class="small-button edit"></button>
             <button class="small-button delete"></button>
         </div>
@@ -52,7 +52,7 @@ export class TaskCard {
     #buttonList = [];
 
     #createTaskButtons() {
-        const buttonClassList = ["task-checkbox", "task-info", "important", "edit", "delete", "small-button"];
+        const buttonClassList = ["task-checkbox", "task-info", "star", "edit", "delete", "small-button"];
         
         for (let i = 0; i < 5; i++) {
             const button = document.createElement("button");

@@ -276,11 +276,11 @@ main {
     background-image: url("./assets/images/info.svg");
 }
 
-.important {
+.star {
     background-image: url("./assets/images/star-unclicked.svg");
 }
 
-.important.clicked {
+.star.clicked {
     background-image: url("./assets/images/star-clicked.svg");
 }
 
