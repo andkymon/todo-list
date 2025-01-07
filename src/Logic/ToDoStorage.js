@@ -10,12 +10,23 @@ export const ToDoStorage = (function() {
     PubSub.subscribe("taskAdded", (msg, taskInfoArray) => {
         addTask(...taskInfoArray);
     });
+    PubSub.subscribe("taskDeleted", (msg, [projectIndex, taskIndex]) => {
+        removeTask(projectIndex, taskIndex);
+    });
     PubSub.subscribe("projectAdded", (msg, projectName) => {
         addProject(projectName);
     });
     PubSub.subscribe("projectDeleted", (msg, deletedProjectIndex) => {
         removeProject(deletedProjectIndex);
     });
+    PubSub.subscribe('getProjects', (msg, data) => {
+        PubSub.publish('projects', getProjects());  // Publish the list of todos when requested
+      });
+
+    function getProjects() {
+        const projectsCopy = [...projects];
+        return projectsCopy;
+    }
 
     function addTask(name, description, dueDate, projectIndex) {
         if (InputValidator.validateTask(name, description, dueDate, projectIndex, projects.length) === false) {
@@ -23,7 +34,6 @@ export const ToDoStorage = (function() {
         }
         projects[projectIndex].tasks.push(new Task(name, description, dueDate));
         //Publish topic for Main to update displayed tasks
-        PubSub.publish("tasksUpdated", null);
     }
 
     function addProject(name) {
@@ -49,10 +59,6 @@ export const ToDoStorage = (function() {
     }
 
     return {
-        projects,
-        addTask,
-        addProject,
-        removeTask,
-        removeProject
+        getProjects
     };
 })();
