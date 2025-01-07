@@ -2,6 +2,7 @@ import { Task } from './Task.js';
 import { Project } from './Project.js';
 import { InputValidator } from '../Utils/InputValidator.js';
 import PubSub from 'pubsub-js'
+import { ProjectSort } from '../Utils/ProjectSort.js';
 
 export const ToDoStorage = (function() {
     const projects = [];
@@ -39,6 +40,7 @@ export const ToDoStorage = (function() {
             return false;
         }
         projects[projectIndex].tasks.push(new Task(name, description, dueDate));
+        ProjectSort.sortByDate(projects[projectIndex]);
     }
 
     function addProject(name) {
