@@ -11,7 +11,7 @@ export const Main = (function () {
     //Display a new task card when a task is added to selected project
     PubSub.subscribe("taskAdded", (msg, taskInfoArray) => {
         const taskName = taskInfoArray[0];
-        const taskDueDate = taskInfoArray[1];
+        const taskDueDate = taskInfoArray[2];
         const projectIndex = navButtonIndex;
         const taskCard = new TaskCard(taskName, taskDueDate, projectIndex); //TODO
         taskCard.displayTask();
@@ -35,7 +35,7 @@ export const Main = (function () {
 
         let allProjects;
         //Subscribe to the event that provides the projectsArray
-        PubSub.subscribe('projects', (msg, projectsArray) => {
+        const token = PubSub.subscribe('projects', (msg, projectsArray) => {
             allProjects = projectsArray;
             //Logic is inside this function because when outside, it does not wait for the projectsArray to be received
             if (navButtonIndex === -1) { //For "All Tasks" Nav Button
@@ -56,7 +56,8 @@ export const Main = (function () {
                 //Enable task addition for project buttons
                 showAddTaskButton();
             }
-            playUpdateTaskTransition();
+            // Unsubscribe to prevent multiple subscriptions
+            PubSub.unsubscribe(token);
         });
     }
 
@@ -68,16 +69,6 @@ export const Main = (function () {
 
     function showAddTaskButton() {
         addTaskButton.style.display = "inline-block";
-    }
-
-    function playUpdateTaskTransition() {
-        const tasks = document.querySelectorAll(".task"); 
-        //Wait for content to load without "displayed" class, then add it after 1ms for transition to trigger
-        setTimeout(() => {
-            for (const task of tasks) {
-                task.classList.add("displayed");
-            }
-        }, 1);      
     }
 
     function init() {  

@@ -250,11 +250,6 @@ main {
     align-items: center;
     justify-content: space-between;
     gap: 8px;
-    opacity: 0;
-    transition: 0.3s;
-}
-
-.displayed {
     opacity: 1;
 }
 
