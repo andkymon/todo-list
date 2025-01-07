@@ -13,6 +13,9 @@ export const ToDoStorage = (function() {
     PubSub.subscribe("taskCompleted", (msg, [isComplete, projectIndex, taskindex]) => {
         projects[projectIndex].tasks[taskindex].isComplete = isComplete;
     });
+    PubSub.subscribe("taskStarred", (msg, [isPriority, projectIndex, taskindex]) => {
+        projects[projectIndex].tasks[taskindex].isPriority = isPriority;
+    });
     PubSub.subscribe("taskDeleted", (msg, [projectIndex, taskIndex]) => {
         removeTask(projectIndex, taskIndex);
     });

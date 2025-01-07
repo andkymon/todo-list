@@ -123,6 +123,11 @@ export class TaskCard {
             this.#taskCheckboxEventHandler();
         });
 
+        const starButton = this.#buttonList[2];
+        starButton.addEventListener("click", () => {
+            this.#starButtonEventHandler();
+        });
+
         const deleteButton = this.#buttonList[4];
         deleteButton.addEventListener("click", () => {
             this.#deleteTaskButtonClickEventHandler();
@@ -150,16 +155,19 @@ export class TaskCard {
         EditDialog.showModal();
     }
 
+    */
     #starButtonEventHandler = () => {
         //Default checkbox inside task checkbox button
-        const taskCheckboxInnerCheckbox = this.#buttonList[2].firstChild;
-        if (taskCheckboxInnerCheckbox.checked === false) {
-            task.isPriority = false;
+        const starButtonInnerCheckbox = this.#buttonList[2].firstChild;
+        this.taskCard.classList.add("clicked");
+        const taskIndex = this.#getClickedTaskCardIndex();
+
+        if (starButtonInnerCheckbox.checked === false) {
+            PubSub.publish("taskStarred", [false, this.#projectIndex, taskIndex]);
         } else {
-            task.isPriority = true;
+            PubSub.publish("taskStarred", [true, this.#projectIndex, taskIndex]);
         }
     }
-    */
 
     #deleteTaskButtonClickEventHandler = () => {
         if (confirm(`Delete ${this.#taskName}?`) === true) {
