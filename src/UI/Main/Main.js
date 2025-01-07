@@ -20,7 +20,6 @@ export const Main = (function () {
     function updateTaskDisplay() {
         clearTaskDisplay();
         displaySelectedProjectTasks();
-        playUpdateTaskTransition();
     }
 
     function clearTaskDisplay() {
@@ -57,17 +56,8 @@ export const Main = (function () {
                 //Enable task addition for project buttons
                 showAddTaskButton();
             }
+            playUpdateTaskTransition();
         });
-    }
-
-    function playUpdateTaskTransition() {
-        const tasks = document.querySelectorAll(".task"); 
-        //Wait for content to load without "displayed" class, then add it after 1ms for transition to trigger
-        setTimeout(() => {
-            for (const task of tasks) {
-                task.classList.add("displayed");
-            }
-        }, 1);      
     }
 
     const addTaskButton = document.querySelector("main #add-task");
@@ -78,6 +68,16 @@ export const Main = (function () {
 
     function showAddTaskButton() {
         addTaskButton.style.display = "inline-block";
+    }
+
+    function playUpdateTaskTransition() {
+        const tasks = document.querySelectorAll(".task"); 
+        //Wait for content to load without "displayed" class, then add it after 1ms for transition to trigger
+        setTimeout(() => {
+            for (const task of tasks) {
+                task.classList.add("displayed");
+            }
+        }, 1);      
     }
 
     function init() {  
