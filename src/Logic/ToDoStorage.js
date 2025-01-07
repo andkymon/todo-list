@@ -33,7 +33,6 @@ export const ToDoStorage = (function() {
             return false;
         }
         projects[projectIndex].tasks.push(new Task(name, description, dueDate));
-        //Publish topic for Main to update displayed tasks
     }
 
     function addProject(name) {
