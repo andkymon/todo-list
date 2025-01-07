@@ -141,8 +141,10 @@ export class TaskCard {
         const taskIndex = this.#getClickedTaskCardIndex();
 
         if (taskCheckboxInnerCheckbox.checked === false) {
+            this.#buttonList[0].classList.remove("checked");
             PubSub.publish("taskCompleted", [false, this.#projectIndex, taskIndex]);
         } else {
+            this.#buttonList[0].classList.add("checked");
             PubSub.publish("taskCompleted", [true, this.#projectIndex, taskIndex]);
         }
     }
@@ -163,8 +165,10 @@ export class TaskCard {
         const taskIndex = this.#getClickedTaskCardIndex();
 
         if (starButtonInnerCheckbox.checked === false) {
+            this.#buttonList[2].classList.remove("checked");
             PubSub.publish("taskStarred", [false, this.#projectIndex, taskIndex]);
         } else {
+            this.#buttonList[2].classList.add("checked");
             PubSub.publish("taskStarred", [true, this.#projectIndex, taskIndex]);
         }
     }

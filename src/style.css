@@ -93,12 +93,15 @@ h2 {
 }
 
 .small-button {
-    min-height: var(--small-button-size);
-    min-width: var(--small-button-size);
+    height: var(--small-button-size);
+    width: var(--small-button-size);
     background-color: inherit;
     color: inherit;
     background-size: contain;
+    background-repeat: no-repeat;
     border: none;
+    transition: 0.3s;
+    border-radius: 4px;
 }
 
 .action-button {
@@ -253,16 +256,25 @@ main {
     opacity: 1;
 }
 
-.checkbox {
+.task-checkbox {
     height: var(--small-button-size);
     width: var(--small-button-size);
     border-radius: 8px;
     border: none;
     transition: 0.3s;
+    background-image: url("./assets/images/check.svg");
+    background-size: 0%;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
-.checkbox:hover {
+.task-checkbox:hover,
+.small-button:hover {
     filter: brightness(90%);
+}
+
+.task-checkbox.checked {
+    background-size: 80%;
 }
 
 .task-name {
@@ -280,7 +292,7 @@ main {
     background-image: url("./assets/images/star-unclicked.svg");
 }
 
-.star.clicked {
+.star.checked {
     background-image: url("./assets/images/star-clicked.svg");
 }
 
@@ -290,6 +302,11 @@ main {
 
 .delete {
     background-image: url("./assets/images/delete.svg");
+}
+
+/*Hide inner checkbox of checkbox type buttons*/
+.checkbox > input[type="checkbox"] {
+    display: none;
 }
 
 /*Dialogs*/
