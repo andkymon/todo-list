@@ -21,7 +21,7 @@ export const ToDoStorage = (function() {
     });
     PubSub.subscribe('getProjects', (msg, data) => {
         PubSub.publish('projects', getProjects());  // Publish the list of todos when requested
-      });
+    });
 
     function getProjects() {
         const projectsCopy = [...projects];
