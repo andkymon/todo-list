@@ -9,12 +9,8 @@ export const Main = (function () {
         updateTaskDisplay();
     });
     //Display a new task card when a task is added to selected project
-    PubSub.subscribe("taskAdded", (msg, taskInfoArray) => {
-        const taskName = taskInfoArray[0];
-        const taskDueDate = taskInfoArray[2];
-        const projectIndex = navButtonIndex;
-        const taskCard = new TaskCard(taskName, taskDueDate, projectIndex); //TODO
-        taskCard.displayTask();
+    PubSub.subscribe("taskAdded", (msg, data) => {
+        updateTaskDisplay();
     });
 
     function updateTaskDisplay() {
