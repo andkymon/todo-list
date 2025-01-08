@@ -42,7 +42,7 @@ export const Main = (function () {
                 for (const [projectIndex, project] of allProjects.entries()) {
                     generateProjectHeading(project.name);
                     for (const task of project.tasks) {
-                        const taskCard = new TaskCard(task.isComplete, task.name, task.dueDate, task.isPriority, projectIndex); //TODO
+                        const taskCard = new TaskCard(task.name, task.description, task.dueDate, task.isPriority, task.isComplete, projectIndex); 
                         taskCard.displayTask();
                     }
                 }     
@@ -51,7 +51,7 @@ export const Main = (function () {
             } else { //For Project Nav Buttons
                 const projectIndex = navButtonIndex;
                 for (const task of allProjects[projectIndex].tasks) {
-                    const taskCard = new TaskCard(task.isComplete, task.name, task.dueDate, task.isPriority, projectIndex); //TODO
+                    const taskCard = new TaskCard(task.name, task.description, task.dueDate, task.isPriority, task.isComplete, projectIndex); 
                     taskCard.displayTask();
                 }
                 //Enable task addition for project buttons

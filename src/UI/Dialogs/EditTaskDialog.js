@@ -5,14 +5,29 @@ import PubSub from 'pubsub-js'
 
 export const EditTaskDialog = (function () {
     const editTaskDialog = new Dialog("#edit-task-dialog");
+    let taskName;
+    let taskDescription;
+    let taskDate;
     let projectIndex;
     let taskIndex;
 
-    PubSub.subscribe("editTaskDialogOpened", (msg, [projectIndexValue, taskIndexValue]) => {
-        editTaskDialog.showDialog();
+    PubSub.subscribe("editTaskDialogOpened", (msg, [name, description, dueDate, projectIndexValue, taskIndexValue]) => {
         projectIndex = projectIndexValue;
         taskIndex = taskIndexValue;
+
+        editTaskDialog.showDialog();
+        setInputValues(name, description, dueDate);
     });
+
+    const editTaskNameInput = document.querySelector("#edit-task-name-input"); 
+    const editTaskDescriptionInput = document.querySelector("#edit-task-description-input"); 
+    const editTaskDateInput = document.querySelector("#edit-task-date-input"); 
+
+    function setInputValues(taskName, taskDescription, taskDate) {
+        editTaskNameInput.value = taskName;
+        editTaskDescriptionInput.value = taskDescription;
+        editTaskDateInput.value = taskDate;
+    }
 
     function editTask() {
         const editTaskNameInput = document.querySelector("#edit-task-name-input"); 

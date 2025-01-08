@@ -3,22 +3,24 @@ import { Main } from './Main.js';
 import { NavBar } from '../Nav/NavBar.js';
 
 export class TaskCard {
-    #isComplete;
     #taskName;
-    #dueDate;
-    #projectIndex;
+    #taskDescription;
+    #taskDueDate;
     #isPriority;
-
+    #isComplete;
+    #projectIndex;
+    
     #taskCheckbox;
     #starButton;
     #editButton;
     #deleteButton;
     
-    constructor(isComplete, taskName, dueDate, isPriority, projectIndex) {
-        this.#isComplete = isComplete;
+    constructor(taskName, taskDescription, taskDueDate, isPriority, isComplete, projectIndex) {
         this.#taskName = taskName;
-        this.#dueDate = dueDate;
+        this.#taskDescription = taskDescription;
+        this.#taskDueDate = taskDueDate;
         this.#isPriority = isPriority;
+        this.#isComplete = isComplete;
         this.#projectIndex = projectIndex;
     }
 
@@ -87,7 +89,7 @@ export class TaskCard {
     #createTaskSpans() {
         const spanList = [];
         const spanClassList = ["task-name", "due-date"];
-        const spanTextContent = [this.#taskName, this.#dueDate.toDateString()];
+        const spanTextContent = [this.#taskName, this.#taskDueDate.toDateString()];
 
         for (let i = 0; i < 2; i++) {
             const span = document.createElement("span");
@@ -95,14 +97,14 @@ export class TaskCard {
             span.textContent = spanTextContent[i];
             spanList.push(span);
         }
-        spanList[1].style.color = this.#dueDateStyling(this.#dueDate); //Due date will be red if overdue
+        spanList[1].style.color = this.#dueDateStyling(); //Due date will be red if overdue
 
         return spanList;
     }
 
-    #dueDateStyling(dueDate) {
+    #dueDateStyling() {
         const dateToday = new Date((new Date()).toDateString()); // toDateString to set time to 12 midnight of the current day
-        if (dueDate < dateToday) {
+        if (this.#taskDueDate < dateToday) {
             return "red";
         } else {
             return "white";
@@ -193,7 +195,7 @@ export class TaskCard {
         this.#taskCard.classList.add("clicked");
         const taskIndex = this.#getClickedTaskCardIndex();
         //Publish this topic to open the edit task dialog 
-        PubSub.publish("editTaskDialogOpened", [this.#projectIndex, taskIndex]);
+        PubSub.publish("editTaskDialogOpened", [this.#taskName, this.#taskDescription, this.#taskDueDate, this.#projectIndex, taskIndex]);
     }
 
     
