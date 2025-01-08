@@ -1,9 +1,13 @@
 import PubSub from 'pubsub-js'
 
 export const NavBar = (function () {
+    //transition time in ms, used for add and delete transitions
+    const transitionTime = 300; 
+
     //Display project in NavBar as a nav button when a project is added
     PubSub.subscribe("projectAdded", (msg, projectName) => {
         displayProject(projectName);
+        playAddProjectTransition();
     });
     PubSub.subscribe("projectEdited", (msg, [projectName, projectIndex]) => {
         renameProject(projectName, projectIndex);
@@ -31,6 +35,17 @@ export const NavBar = (function () {
         buttonWrapper.classList.add("button-wrapper");
         buttonWrapper.append(projectButton, editButton, deleteButton);
         nav.append(buttonWrapper);
+    }
+
+    function playAddProjectTransition() {
+        const newProject = document.querySelector("nav").lastElementChild;
+        //Set new project outside visible area
+        newProject.classList.add("removed");
+        newProject.style.transition = `${transitionTime}ms`
+        //Wait for 5ms before setting it to desired position
+        setTimeout(() => {
+            newProject.classList.remove("removed");
+        }, 5);
     }
 
     function renameProject(projectName, projectIndex) {
@@ -91,13 +106,12 @@ export const NavBar = (function () {
     }
 
     function deleteProjectButtonEventHandler(deleteButton) {
-        const transitionTime = 300; //transition time in ms
         const buttonWrapper = deleteButton.parentElement;
         const projectName = buttonWrapper.firstChild.textContent;
 
         if (confirm(`Delete ${projectName}?`) === true) {
             clickAllTasksButtonIfSelectedProjectIsDeleted();
-            playDeleteProjectTransition(buttonWrapper, transitionTime);
+            playDeleteProjectTransition(buttonWrapper);
             //Wait for transition to finish before announcing project deletion and removing its respective button wrapper
             setTimeout(() => {
                 const projectIndex = getDeletedProjectButtonIndex();
@@ -150,7 +164,7 @@ export const NavBar = (function () {
         }
     }
     
-    function playDeleteProjectTransition(buttonWrapper, transitionTime) {
+    function playDeleteProjectTransition(buttonWrapper) {
         buttonWrapper.classList.add("removed");
         buttonWrapper.style.transition = `${transitionTime}ms`;
     }
