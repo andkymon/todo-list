@@ -33,7 +33,7 @@ export class Dialog {
     }
 
     #addCloseDialogEventListeners() {
-        const closeBtn = document.querySelector(".close");
+        const closeBtn = document.querySelector(this.#dialogSelector + " .close");
         closeBtn.addEventListener("click", this.hideDialog);
 
         //Prevent default behavior of escape key
