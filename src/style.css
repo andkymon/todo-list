@@ -360,9 +360,7 @@ dialog.open {
     background-image: url("./assets/images/confirm.svg");
 }
 
-label,
-.info,
-.filter { 
+label { 
     font-family: Montserrat, sans-serif;
     font-weight: bold;
 }
@@ -394,12 +392,14 @@ dialog .button-wrapper {
     margin-top: 16px;
 }
 
-.info {
-    margin: 16px 0px;
-}
-
 input,
 textarea,
-.info span {
+.task-info-content {
     font-weight: normal;
+}
+
+
+#task-info-dialog label {
+    display: inline-block;
+    margin: 8px 0;
 }
