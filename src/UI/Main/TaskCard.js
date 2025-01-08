@@ -50,8 +50,9 @@ export class TaskCard {
         for (const taskElement of taskElements) {
             this.#taskCard.append(taskElement);
         }
-
-        this.#taskCard.classList.add("task");
+        //projectIndex necessary to determine which project a task belongs to in 'All Tasks' tab
+        //"project" necessary as class names cannot start with number
+        this.#taskCard.classList.add("task", "project" + this.#projectIndex);
         main.append(this.#taskCard);
     }
 
@@ -239,7 +240,7 @@ export class TaskCard {
     }
 
     #getClickedTaskCardIndex() {
-        const taskCards = document.querySelectorAll("main > .task");
+        const taskCards = document.querySelectorAll("main > .task" + ".project" + this.#projectIndex);
         for (const [taskCardIndex, taskCard] of taskCards.entries()) {
             if (taskCard.classList.contains("clicked")) {
                 taskCard.classList.remove("clicked");
