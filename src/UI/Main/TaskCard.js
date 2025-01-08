@@ -231,11 +231,15 @@ export class TaskCard {
 
     #deleteTaskButtonEventHandler = () => {
         if (confirm(`Delete ${this.#taskName}?`) === true) {
-            this.#taskCard.classList.add("clicked");
+            const transitionTime = 300; //transition time in ms
             //Inform subscribers that a task has been deleted and pass the project index and task index of the deleted task
             const taskIndex = this.#getClickedTaskCardIndex();
             PubSub.publish("taskDeleted", [this.#projectIndex, taskIndex]);
-            this.#taskCard.remove();
+            this.#playDeleteTaskAnimation();
+            //Wait for transition to finish before removing the deleted task from the display
+            setTimeout(() => {
+                this.#taskCard.remove();
+            }, transitionTime);
         }
     }
 
@@ -247,5 +251,10 @@ export class TaskCard {
                 return taskCardIndex; 
             }
         }
+    }
+
+    #playDeleteTaskAnimation() {
+        this.#taskCard.classList.add("removed");
+        this.#taskCard.style.transition = `300ms`;
     }
 }

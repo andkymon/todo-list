@@ -269,6 +269,10 @@ main {
     opacity: 1;
 }
 
+.task.removed {
+    opacity: 0;
+}
+
 .task-checkbox {
     height: var(--small-button-size);
     width: var(--small-button-size);
