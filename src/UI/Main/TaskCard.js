@@ -11,6 +11,7 @@ export class TaskCard {
     #projectIndex;
     
     #taskCheckbox;
+    #infoButton;
     #starButton;
     #editButton;
     #deleteButton;
@@ -77,6 +78,7 @@ export class TaskCard {
         }
         //Assign buttons to these variables as it will be accessed by the methods below
         this.#taskCheckbox = buttonList[0];
+        this.#infoButton = buttonList[1];
         this.#starButton = buttonList[2];
         this.#editButton = buttonList[3];
         this.#deleteButton = buttonList[4];
@@ -158,6 +160,10 @@ export class TaskCard {
             this.#taskCheckboxEventHandler();
         });
 
+        this.#infoButton.addEventListener("click", () => {
+            this.#infoButtonEventHandler();
+        });
+
         this.#starButton.addEventListener("click", () => {
             this.#starButtonEventHandler();
         });
@@ -179,17 +185,20 @@ export class TaskCard {
 
         if (taskCheckboxInnerCheckbox.checked === false) {
             this.#taskCheckbox.classList.remove("checked");
+            this.#isComplete = false;
             PubSub.publish("taskCompleted", [false, this.#projectIndex, taskIndex]);
         } else {
             this.#taskCheckbox.classList.add("checked");
+            this.#isComplete = true;
             PubSub.publish("taskCompleted", [true, this.#projectIndex, taskIndex]);
         }
     }
-    /*
+    
     #infoButtonEventHandler = () => {
-        InfoDialog.showModal();
+        //Publish this topic to open the edit task dialog 
+        PubSub.publish("taskInfoDialogOpened", [this.#taskName, this.#taskDescription, this.#taskDueDate, this.#isPriority, this.#isComplete]);
     }
-    */
+    
 
     #editButtonEventHandler = () => {
         this.#taskCard.classList.add("clicked");
@@ -207,9 +216,11 @@ export class TaskCard {
 
         if (starButtonInnerCheckbox.checked === false) {
             this.#starButton.classList.remove("checked");
+            this.#isPriority = false;
             PubSub.publish("taskStarred", [false, this.#projectIndex, taskIndex]);
         } else {
             this.#starButton.classList.add("checked");
+            this.#isPriority = true;
             PubSub.publish("taskStarred", [true, this.#projectIndex, taskIndex]);
         }
     }

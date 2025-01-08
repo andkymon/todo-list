@@ -7,6 +7,7 @@ import { Main } from './UI/Main/Main.js';
 import { TaskDialog } from './UI/Dialogs/TaskDialog.js';
 import { EditTaskDialog } from './UI/Dialogs/EditTaskDialog.js';
 import { EditProjectDialog } from './UI/Dialogs/EditProjectDialog.js';
+import { TaskInfoDialog } from './UI/Dialogs/TaskInfoDialog.js';
 
 
 NavToggle.init();
