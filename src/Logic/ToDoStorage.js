@@ -11,11 +11,21 @@ export const ToDoStorage = (function() {
     PubSub.subscribe("taskAdded", (msg, taskInfoArray) => {
         addTask(...taskInfoArray);
     });
-    PubSub.subscribe("taskCompleted", (msg, [isComplete, projectIndex, taskindex]) => {
-        projects[projectIndex].tasks[taskindex].isComplete = isComplete;
+    PubSub.subscribe("taskCompleted", (msg, [isComplete, projectIndex, taskIndex]) => {
+        const task = projects[projectIndex].tasks[taskIndex];
+        task.isComplete = isComplete;
     });
-    PubSub.subscribe("taskStarred", (msg, [isPriority, projectIndex, taskindex]) => {
-        projects[projectIndex].tasks[taskindex].isPriority = isPriority;
+    PubSub.subscribe("taskStarred", (msg, [isPriority, projectIndex, taskIndex]) => {
+        const task = projects[projectIndex].tasks[taskIndex];
+        task.isPriority = isPriority;
+    });
+    PubSub.subscribe("taskEdited", (msg, [name, description, dueDate, projectIndex, taskIndex]) => {
+        const task = projects[projectIndex].tasks[taskIndex];
+        task.name = name;
+        task.description = description;
+        task.dueDate = dueDate;
+        //Sort projects by date after task edit, in case date has been changed
+        ProjectSort.sortByDate(projects[projectIndex]);
     });
     PubSub.subscribe("taskDeleted", (msg, [projectIndex, taskIndex]) => {
         removeTask(projectIndex, taskIndex);

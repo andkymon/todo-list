@@ -9,9 +9,10 @@ export class TaskCard {
     #projectIndex;
     #isPriority;
 
-    #buttonList = [];
     #taskCheckbox;
     #starButton;
+    #editButton;
+    #deleteButton;
     
     constructor(isComplete, taskName, dueDate, isPriority, projectIndex) {
         this.#isComplete = isComplete;
@@ -58,6 +59,7 @@ export class TaskCard {
     }
 
     #createTaskButtons() {
+        const buttonList = [];
         const buttonClassList = ["task-checkbox", "task-info", "star", "edit", "delete", "small-button"];
         
         for (let i = 0; i < 5; i++) {
@@ -69,15 +71,17 @@ export class TaskCard {
                 button.classList.add(buttonClassList[buttonClassList.length - 1]);
             }
             button.classList.add(buttonClassList[i]);
-            this.#buttonList.push(button);
+            buttonList.push(button);
         }
         //Assign buttons to these variables as it will be accessed by the methods below
-        this.#taskCheckbox = this.#buttonList[0];
-        this.#starButton = this.#buttonList[2];
+        this.#taskCheckbox = buttonList[0];
+        this.#starButton = buttonList[2];
+        this.#editButton = buttonList[3];
+        this.#deleteButton = buttonList[4];
 
         this.#setCheckboxStatuses();
         this.#addTaskButtonClickEventHandlers();
-        return this.#buttonList;
+        return buttonList;
     }
 
     #createTaskSpans() {
@@ -152,14 +156,16 @@ export class TaskCard {
             this.#taskCheckboxEventHandler();
         });
 
-        const starButton = this.#buttonList[2];
-        starButton.addEventListener("click", () => {
+        this.#starButton.addEventListener("click", () => {
             this.#starButtonEventHandler();
         });
 
-        const deleteButton = this.#buttonList[4];
-        deleteButton.addEventListener("click", () => {
-            this.#deleteTaskButtonClickEventHandler();
+        this.#editButton.addEventListener("click", () => {
+            this.#editButtonEventHandler();
+        });
+
+        this.#deleteButton.addEventListener("click", () => {
+            this.#deleteTaskButtonEventHandler();
         });
     }
     
@@ -181,12 +187,16 @@ export class TaskCard {
     #infoButtonEventHandler = () => {
         InfoDialog.showModal();
     }
+    */
 
     #editButtonEventHandler = () => {
-        EditDialog.showModal();
+        this.#taskCard.classList.add("clicked");
+        const taskIndex = this.#getClickedTaskCardIndex();
+        //Publish this topic to open the edit task dialog 
+        PubSub.publish("editTaskDialogOpened", [this.#projectIndex, taskIndex]);
     }
 
-    */
+    
     #starButtonEventHandler = () => {
         //Default checkbox inside task checkbox button
         const starButtonInnerCheckbox = this.#starButton.firstChild;
@@ -202,7 +212,7 @@ export class TaskCard {
         }
     }
 
-    #deleteTaskButtonClickEventHandler = () => {
+    #deleteTaskButtonEventHandler = () => {
         if (confirm(`Delete ${this.#taskName}?`) === true) {
             this.#taskCard.classList.add("clicked");
             //Inform subscribers that a task has been deleted and pass the project index and task index of the deleted task

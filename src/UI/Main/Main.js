@@ -8,8 +8,12 @@ export const Main = (function () {
         navButtonIndex = index;
         updateTaskDisplay();
     });
-    //Display a new task card when a task is added to selected project
+    //Update task display when a task is added 
     PubSub.subscribe("taskAdded", (msg, data) => {
+        updateTaskDisplay();
+    });
+    //Update task display when a task is edited
+    PubSub.subscribe("taskEdited", (msg, data) => {
         updateTaskDisplay();
     });
 
