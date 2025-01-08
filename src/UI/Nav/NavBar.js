@@ -8,6 +8,11 @@ export const NavBar = (function () {
     PubSub.subscribe("projectEdited", (msg, [projectName, projectIndex]) => {
         renameProject(projectName, projectIndex);
     });
+    let projectsCopy;
+    // Subscribe to the "projectsInitialized" event
+    document.addEventListener("projectsInitialized", (event) => {
+        projectsCopy = event.detail;
+    });
 
     /*
         <div class="button-wrapper">
@@ -171,6 +176,7 @@ export const NavBar = (function () {
     function init() {
         initializeAllTasksButton();
         initializeAddProjectButton(); 
+        updateProjectDisplay();
     }   
 
     function initializeAllTasksButton() {
@@ -190,9 +196,19 @@ export const NavBar = (function () {
             PubSub.publish("projectDialogOpened", null);
         });
     }
+
+    function updateProjectDisplay() {
+        //If no copy of projects has been received, then no projects need to be displayed upon initialization
+        if (!projectsCopy) {
+            return;
+        } else {
+            for (const project of projectsCopy) {
+                displayProject(project.name);
+            }
+        }
+    }
     
     return {
-        getSelectedNavButtonIndex,
         init
     };
 })();
