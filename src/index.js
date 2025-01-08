@@ -9,7 +9,6 @@ import { EditTaskDialog } from './UI/Dialogs/EditTaskDialog.js';
 import { EditProjectDialog } from './UI/Dialogs/EditProjectDialog.js';
 import { TaskInfoDialog } from './UI/Dialogs/TaskInfoDialog.js';
 
-
 ToDoStorage.init();
 NavToggle.init();
 NavBar.init();
