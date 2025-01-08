@@ -1,5 +1,3 @@
-import PubSub from 'pubsub-js'
-
 export const NavBar = (function () {
     //transition time in ms, used for add and delete transitions
     const transitionTime = 300; 
