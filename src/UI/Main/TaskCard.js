@@ -3,13 +3,21 @@ import { Main } from './Main.js';
 import { NavBar } from '../Nav/NavBar.js';
 
 export class TaskCard {
+    #isComplete;
     #taskName;
     #dueDate;
     #projectIndex;
+    #isPriority;
 
-    constructor(taskName, dueDate, projectIndex) {
+    #buttonList = [];
+    #taskCheckbox;
+    #starButton;
+    
+    constructor(isComplete, taskName, dueDate, isPriority, projectIndex) {
+        this.#isComplete = isComplete;
         this.#taskName = taskName;
         this.#dueDate = dueDate;
+        this.#isPriority = isPriority;
         this.#projectIndex = projectIndex;
     }
 
@@ -26,18 +34,18 @@ export class TaskCard {
     */
 
     //Accessed by event listeners
-    taskCard = document.createElement("div");
+    #taskCard = document.createElement("div");
 
     displayTask() {
         const main = document.querySelector("main");
         const taskElements = this.#createTaskElements();
         
         for (const taskElement of taskElements) {
-            this.taskCard.append(taskElement);
+            this.#taskCard.append(taskElement);
         }
 
-        this.taskCard.classList.add("task");
-        main.append(this.taskCard);
+        this.#taskCard.classList.add("task");
+        main.append(this.#taskCard);
     }
 
     #createTaskElements() {
@@ -48,8 +56,6 @@ export class TaskCard {
     
         return taskElements; // Return the modified array
     }
-
-    #buttonList = [];
 
     #createTaskButtons() {
         const buttonClassList = ["task-checkbox", "task-info", "star", "edit", "delete", "small-button"];
@@ -65,7 +71,12 @@ export class TaskCard {
             button.classList.add(buttonClassList[i]);
             this.#buttonList.push(button);
         }
-        this.addTaskButtonClickEventHandlers();
+        //Assign buttons to these variables as it will be accessed by the methods below
+        this.#taskCheckbox = this.#buttonList[0];
+        this.#starButton = this.#buttonList[2];
+
+        this.#setCheckboxStatuses();
+        this.#addTaskButtonClickEventHandlers();
         return this.#buttonList;
     }
 
@@ -116,10 +127,28 @@ export class TaskCard {
         }
     }
 
+    #setCheckboxStatuses() {
+        this.#setTaskCompletionStatus();
+        this.#setTaskPriorityStatus();
+    }
+
+    #setTaskCompletionStatus() {
+        if (this.#isComplete === true) {
+            this.#taskCheckbox.firstChild.checked = true;
+            this.#taskCheckbox.classList.add("checked");
+        }
+    }
+
+    #setTaskPriorityStatus() {
+        if (this.#isPriority === true) {
+            this.#starButton.firstChild.checked = true;
+            this.#starButton.classList.add("checked");
+        }
+    }
+
     //Add task button click event handlers
-    addTaskButtonClickEventHandlers() {
-        const taskCheckbox = this.#buttonList[0];
-        taskCheckbox.addEventListener("click", () => {
+    #addTaskButtonClickEventHandlers() {
+        this.#taskCheckbox.addEventListener("click", () => {
             this.#taskCheckboxEventHandler();
         });
 
@@ -136,15 +165,15 @@ export class TaskCard {
     
     #taskCheckboxEventHandler = () => {
         //Default checkbox inside task checkbox button
-        const taskCheckboxInnerCheckbox = this.#buttonList[0].firstChild;
-        this.taskCard.classList.add("clicked");
+        const taskCheckboxInnerCheckbox = this.#taskCheckbox.firstChild;
+        this.#taskCard.classList.add("clicked");
         const taskIndex = this.#getClickedTaskCardIndex();
 
         if (taskCheckboxInnerCheckbox.checked === false) {
-            this.#buttonList[0].classList.remove("checked");
+            this.#taskCheckbox.classList.remove("checked");
             PubSub.publish("taskCompleted", [false, this.#projectIndex, taskIndex]);
         } else {
-            this.#buttonList[0].classList.add("checked");
+            this.#taskCheckbox.classList.add("checked");
             PubSub.publish("taskCompleted", [true, this.#projectIndex, taskIndex]);
         }
     }
@@ -160,26 +189,26 @@ export class TaskCard {
     */
     #starButtonEventHandler = () => {
         //Default checkbox inside task checkbox button
-        const starButtonInnerCheckbox = this.#buttonList[2].firstChild;
-        this.taskCard.classList.add("clicked");
+        const starButtonInnerCheckbox = this.#starButton.firstChild;
+        this.#taskCard.classList.add("clicked");
         const taskIndex = this.#getClickedTaskCardIndex();
 
         if (starButtonInnerCheckbox.checked === false) {
-            this.#buttonList[2].classList.remove("checked");
+            this.#starButton.classList.remove("checked");
             PubSub.publish("taskStarred", [false, this.#projectIndex, taskIndex]);
         } else {
-            this.#buttonList[2].classList.add("checked");
+            this.#starButton.classList.add("checked");
             PubSub.publish("taskStarred", [true, this.#projectIndex, taskIndex]);
         }
     }
 
     #deleteTaskButtonClickEventHandler = () => {
         if (confirm(`Delete ${this.#taskName}?`) === true) {
-            this.taskCard.classList.add("clicked");
+            this.#taskCard.classList.add("clicked");
             //Inform subscribers that a task has been deleted and pass the project index and task index of the deleted task
             const taskIndex = this.#getClickedTaskCardIndex();
             PubSub.publish("taskDeleted", [this.#projectIndex, taskIndex]);
-            this.taskCard.remove();
+            this.#taskCard.remove();
         }
     }
 

@@ -38,7 +38,7 @@ export const Main = (function () {
                 for (const [projectIndex, project] of allProjects.entries()) {
                     generateProjectHeading(project.name);
                     for (const task of project.tasks) {
-                        const taskCard = new TaskCard(task.name, task.dueDate, projectIndex); //TODO
+                        const taskCard = new TaskCard(task.isComplete, task.name, task.dueDate, task.isPriority, projectIndex); //TODO
                         taskCard.displayTask();
                     }
                 }     
@@ -47,7 +47,7 @@ export const Main = (function () {
             } else { //For Project Nav Buttons
                 const projectIndex = navButtonIndex;
                 for (const task of allProjects[projectIndex].tasks) {
-                    const taskCard = new TaskCard(task.name, task.dueDate, projectIndex); //TODO
+                    const taskCard = new TaskCard(task.isComplete, task.name, task.dueDate, task.isPriority, projectIndex); //TODO
                     taskCard.displayTask();
                 }
                 //Enable task addition for project buttons
@@ -72,7 +72,7 @@ export const Main = (function () {
     function generateNoTasksSpans() {
         const projectHeadings = document.querySelectorAll("main h3");
         const mainh2Wrapper = document.querySelector("main .h2-wrapper");
-        
+
         // Loop through project headings
         for (const projectHeading of projectHeadings) {
             const span = document.createElement("span");
