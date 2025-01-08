@@ -77,9 +77,21 @@ export const Main = (function () {
             }
             //Indicate 'No Tasks' when a project has no tasks
             generateNoTasksSpans()
+            //Wait 5ms for page to load before playing transition
+            setTimeout(() => {
+                playUpdateTaskDisplayTransition();
+            }, 5);
             // Unsubscribe to prevent multiple subscriptions
             PubSub.unsubscribe(token);
         });
+    }
+
+    function playUpdateTaskDisplayTransition() {
+        const tasks = document.querySelectorAll(".task");
+        console.log(tasks);
+        for (const task of tasks) {
+            task.classList.add("displayed");
+        }
     }
 
     function generateProjectHeading(projectName) {
