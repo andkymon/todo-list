@@ -233,6 +233,7 @@ export class TaskCard {
         if (confirm(`Delete ${this.#taskName}?`) === true) {
             const transitionTime = 300; //transition time in ms
             //Inform subscribers that a task has been deleted and pass the project index and task index of the deleted task
+            this.#taskCard.classList.add("clicked");
             const taskIndex = this.#getClickedTaskCardIndex();
             PubSub.publish("taskDeleted", [this.#projectIndex, taskIndex]);
             this.#playDeleteTaskAnimation();
