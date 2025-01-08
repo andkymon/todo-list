@@ -5,9 +5,6 @@ import PubSub from 'pubsub-js'
 
 export const EditTaskDialog = (function () {
     const editTaskDialog = new Dialog("#edit-task-dialog");
-    let taskName;
-    let taskDescription;
-    let taskDate;
     let projectIndex;
     let taskIndex;
 
