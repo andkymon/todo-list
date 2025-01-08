@@ -16,6 +16,24 @@ export const Main = (function () {
     PubSub.subscribe("taskEdited", (msg, data) => {
         updateTaskDisplay();
     });
+    //Update task display when a project is added and 'All Tasks' tab is selected
+    PubSub.subscribe("projectAdded", (msg, data) => {
+        if (navButtonIndex === -1) {
+            updateTaskDisplay();
+        }
+    });
+    //Update task display when a project is edited and 'All Tasks' tab is selected
+    PubSub.subscribe("projectEdited", (msg, data) => {
+        if (navButtonIndex === -1) {
+            updateTaskDisplay();
+        }
+    });
+    //Update task display when a project is deleted and 'All Tasks' tab is selected
+    PubSub.subscribe("projectDeleted", (msg, data) => {
+        if (navButtonIndex === -1) {
+            updateTaskDisplay();
+        }
+    });
 
     function updateTaskDisplay() {
         clearTaskDisplay();
