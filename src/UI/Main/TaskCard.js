@@ -1,6 +1,3 @@
-import PubSub from 'pubsub-js'
-import { Main } from './Main.js';
-import { NavBar } from '../Nav/NavBar.js';
 import { format } from "date-fns";
 
 export class TaskCard {
@@ -190,25 +187,41 @@ export class TaskCard {
         if (taskCheckboxInnerCheckbox.checked === false) {
             this.#taskCheckbox.classList.remove("checked");
             this.#isComplete = false;
-            PubSub.publish("taskCompleted", [false, this.#projectIndex, taskIndex]);
+            //Dispatch a custom event to mark the task as incomplete
+            document.dispatchEvent(new CustomEvent("taskCompleted", {
+                detail: [false, this.#projectIndex, taskIndex]
+            }));
         } else {
             this.#taskCheckbox.classList.add("checked");
             this.#isComplete = true;
-            PubSub.publish("taskCompleted", [true, this.#projectIndex, taskIndex]);
+            //Dispatch a custom event to mark the task as completed
+            document.dispatchEvent(new CustomEvent("taskCompleted", {
+                detail: [true, this.#projectIndex, taskIndex]
+            }));
         }
     }
     
     #infoButtonEventHandler = () => {
-        //Publish this topic to open the edit task dialog 
-        PubSub.publish("taskInfoDialogOpened", [this.#taskName, this.#taskDescription, this.#taskDueDateFormatted, this.#isPriority, this.#isComplete]);
+        //Dispatch a custom event to open the edit task dialog
+        document.dispatchEvent(new CustomEvent("taskInfoDialogOpened", {
+            detail: [this.#taskName, this.#taskDescription, this.#taskDueDateFormatted, this.#isPriority, this.#isComplete]
+        }));
     }
     
 
     #editButtonEventHandler = () => {
         this.#taskCard.classList.add("clicked");
         const taskIndex = this.#getClickedTaskCardIndex();
-        //Publish this topic to open the edit task dialog, date formatted to "YYYY-MM-DD" for input[type="date"] to recognize 
-        PubSub.publish("editTaskDialogOpened", [this.#taskName, this.#taskDescription, format(this.#taskDueDate, "yyyy-MM-dd"), this.#projectIndex, taskIndex]);
+        // Dispatch a custom event to open the edit task dialog
+        document.dispatchEvent(new CustomEvent("editTaskDialogOpened", {
+            detail: [
+                this.#taskName,
+                this.#taskDescription,
+                format(this.#taskDueDate, "yyyy-MM-dd"), //Formatting the date for input[type="date"]
+                this.#projectIndex,
+                taskIndex
+            ]
+        }));
     }
 
     
@@ -221,21 +234,29 @@ export class TaskCard {
         if (starButtonInnerCheckbox.checked === false) {
             this.#starButton.classList.remove("checked");
             this.#isPriority = false;
-            PubSub.publish("taskStarred", [false, this.#projectIndex, taskIndex]);
+            // Dispatch a custom event to mark the task as low priority
+            document.dispatchEvent(new CustomEvent("taskStarred", {
+                detail: [false, this.#projectIndex, taskIndex]
+            }));
         } else {
             this.#starButton.classList.add("checked");
             this.#isPriority = true;
-            PubSub.publish("taskStarred", [true, this.#projectIndex, taskIndex]);
+            // Dispatch a custom event to mark the task as high priority
+            document.dispatchEvent(new CustomEvent("taskStarred", {
+                detail: [true, this.#projectIndex, taskIndex]
+            }));
         }
     }
 
     #deleteTaskButtonEventHandler = () => {
         if (confirm(`Delete ${this.#taskName}?`) === true) {
             const transitionTime = 300; //transition time in ms
-            //Inform subscribers that a task has been deleted and pass the project index and task index of the deleted task
+            //Dispatch event that a task has been deleted and pass the project index and task index of the deleted task
             this.#taskCard.classList.add("clicked");
             const taskIndex = this.#getClickedTaskCardIndex();
-            PubSub.publish("taskDeleted", [this.#projectIndex, taskIndex]);
+            document.dispatchEvent(new CustomEvent("taskDeleted", {
+                detail: [this.#projectIndex, taskIndex]
+            }));
             this.#playDeleteTaskAnimation();
             //Wait for transition to finish before removing the deleted task from the display
             setTimeout(() => {

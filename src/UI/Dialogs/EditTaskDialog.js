@@ -1,17 +1,20 @@
 import { Dialog } from './Dialog.js';
 import { InputValidator } from '../../Utils/InputValidator.js';
 import { InvalidStyling } from '../../Utils/InvalidStyling.js';
-import PubSub from 'pubsub-js'
 
 export const EditTaskDialog = (function () {
     const editTaskDialog = new Dialog("#edit-task-dialog");
     let projectIndex;
     let taskIndex;
 
-    PubSub.subscribe("editTaskDialogOpened", (msg, [name, description, dueDate, projectIndexValue, taskIndexValue]) => {
+    document.addEventListener("editTaskDialogOpened", (event) => {
+        const [name, description, dueDate, projectIndexValue, taskIndexValue] = event.detail;
+    
+        //Set the project and task indices
         projectIndex = projectIndexValue;
         taskIndex = taskIndexValue;
-
+    
+        //Show the dialog and set input values
         editTaskDialog.showDialog();
         setInputValues(name, description, dueDate);
     });
@@ -50,7 +53,9 @@ export const EditTaskDialog = (function () {
         }
         if (inputIsInvalid === true) return;
     
-        PubSub.publish("taskEdited", [name, description, dueDate, projectIndex, taskIndex]);
+        document.dispatchEvent(new CustomEvent("taskEdited", { detail: 
+            [name, description, dueDate, projectIndex, taskIndex] 
+        }));
         editTaskDialog.clearInputs();
         editTaskDialog.hideDialog();
     }

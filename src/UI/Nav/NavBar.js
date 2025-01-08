@@ -5,15 +5,19 @@ export const NavBar = (function () {
     const transitionTime = 300; 
 
     //Display project in NavBar as a nav button when a project is added
-    PubSub.subscribe("projectAdded", (msg, projectName) => {
+    document.addEventListener("projectAdded", (event) => {
+        const projectName = event.detail;  
         displayProject(projectName);
         playAddProjectTransition();
     });
-    PubSub.subscribe("projectEdited", (msg, [projectName, projectIndex]) => {
+
+    //Edit project when it's renamed
+    document.addEventListener("projectEdited", (event) => {
+        const [projectName, projectIndex] = event.detail;  
         renameProject(projectName, projectIndex);
     });
     let projectsCopy;
-    // Subscribe to the "projectsInitialized" event
+    //Subscribe to the "projectsInitialized" event
     document.addEventListener("projectsInitialized", (event) => {
         projectsCopy = event.detail;
     });
@@ -94,15 +98,20 @@ export const NavBar = (function () {
         resetNavButtonStyles();
         navButton.classList.add("selected");
         disableSelectedButton();
-        //Publish topic for Main to update displayed tasks based on currently selected nav button
-        PubSub.publish("navButtonClicked", getSelectedNavButtonIndex());
+        //Dispatch custom event for Main to update displayed tasks based on currently selected nav button
+        document.dispatchEvent(new CustomEvent("navButtonClicked", {
+            detail: getSelectedNavButtonIndex()  //Passing the selected nav button index in the event detail
+        }));
     }
 
     function editProjectButtonEventHandler(editButton) {
         editButton.classList.add("clicked");
         const projectIndex = getEditedProjectButtonIndex();
         const projectName = getEditedProjectButtonName(projectIndex);
-        PubSub.publish("editProjectDialogOpened" , [projectName, projectIndex]);
+        //Dispatch custom event to open the edit project dialog
+        document.dispatchEvent(new CustomEvent("editProjectDialogOpened", {
+            detail: [projectName, projectIndex]  //Passing projectName and projectIndex in the event detail
+        }));
     }
 
     function deleteProjectButtonEventHandler(deleteButton) {
@@ -115,8 +124,10 @@ export const NavBar = (function () {
             //Wait for transition to finish before announcing project deletion and removing its respective button wrapper
             setTimeout(() => {
                 const projectIndex = getDeletedProjectButtonIndex();
-                //Inform subscribers that a project has been deleted and pass the index of the deleted project
-                PubSub.publish("projectDeleted", projectIndex);
+                //Dispatch custom event to inform that a project has been deleted
+                document.dispatchEvent(new CustomEvent("projectDeleted", {
+                    detail: projectIndex  //Passing projectIndex in the event detail
+                }));
                 buttonWrapper.remove();
             }, transitionTime);
         }
@@ -206,8 +217,8 @@ export const NavBar = (function () {
         //#add-project button initialization
         const addProjectButton = document.querySelector("#add-project");
         addProjectButton.addEventListener("click", () => {
-            //Publish this topic to open the add project dialog 
-            PubSub.publish("projectDialogOpened", null);
+            //Dispatch custom event to open the add project dialog
+            document.dispatchEvent(new CustomEvent("projectDialogOpened"));
         });
     }
 

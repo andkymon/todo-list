@@ -1,18 +1,19 @@
 import { Dialog } from './Dialog.js';
 import { InputValidator } from '../../Utils/InputValidator.js';
 import { InvalidStyling } from '../../Utils/InvalidStyling.js';
-import PubSub from 'pubsub-js'
 
 export const EditProjectDialog = (function () {
     const editProjectDialog = new Dialog("#edit-project-dialog");
     let projectIndex;
-    //Show dialog when a button publishes this topic
-    PubSub.subscribe("editProjectDialogOpened", (msg, [name, projectIndexValue]) => {
+
+    document.addEventListener("editProjectDialogOpened", (event) => {
+        const [name, projectIndexValue] = event.detail;
         projectIndex = projectIndexValue;
 
+        //Show the dialog and set input values
         editProjectDialog.showDialog();
         setInputValues(name);
-    })
+    });
 
     const editProjectNameInput = document.querySelector("#edit-project-name-input"); 
 
@@ -27,8 +28,8 @@ export const EditProjectDialog = (function () {
             InvalidStyling.showValidationError(editProjectNameInput, "name");
             return;
         }
-        //Publish topic for ToDoStorage to add a new project using the input value
-        PubSub.publish("projectEdited", [name, projectIndex]);
+        //Dispatch event for ToDoStorage to add a new project using the input value
+        document.dispatchEvent(new CustomEvent("projectEdited", { detail: [name, projectIndex] }));
         editProjectDialog.clearInputs();
         editProjectDialog.hideDialog();
     }

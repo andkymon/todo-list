@@ -1,14 +1,13 @@
 import { Dialog } from './Dialog.js';
 import { InputValidator } from '../../Utils/InputValidator.js';
 import { InvalidStyling } from '../../Utils/InvalidStyling.js';
-import PubSub from 'pubsub-js'
 
 export const ProjectDialog = (function () {
     const projectDialog = new Dialog("#project-dialog");
-    //Show dialog when a button publishes this topic
-    PubSub.subscribe("projectDialogOpened", (msg, data) => {
+    //Show dialog when a button triggers this event
+    document.addEventListener("projectDialogOpened", () => {
         projectDialog.showDialog();
-    })
+    });
 
     function addProject() {
         const projectNameInput = document.querySelector("#project-name-input"); 
@@ -19,7 +18,7 @@ export const ProjectDialog = (function () {
             return;
         }
         //Publish topic for ToDoStorage to add a new project using the input value
-        PubSub.publish("projectAdded", name);
+        document.dispatchEvent(new CustomEvent("projectAdded", { detail: name }));
         projectDialog.clearInputs();
         projectDialog.hideDialog();
     }

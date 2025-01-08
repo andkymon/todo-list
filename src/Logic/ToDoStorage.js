@@ -1,7 +1,6 @@
 import { Task } from './Task.js';
 import { Project } from './Project.js';
 import { InputValidator } from '../Utils/InputValidator.js';
-import PubSub from 'pubsub-js'
 import { ProjectSort } from '../Utils/ProjectSort.js';
 
 export const ToDoStorage = (function() {
@@ -24,49 +23,67 @@ export const ToDoStorage = (function() {
         document.dispatchEvent(projectsInitialized); 
     }
 
-    //Topic subscriptions
-    PubSub.subscribe("taskAdded", (msg, taskInfoArray) => {
+    // Custom Event Listeners
+    document.addEventListener("taskAdded", (event) => {
+        const taskInfoArray = event.detail;
         addTask(...taskInfoArray);
         saveProjectsToLocalStorage();
     });
-    PubSub.subscribe("taskCompleted", (msg, [isComplete, projectIndex, taskIndex]) => {
+
+    document.addEventListener("taskCompleted", (event) => {
+        const [isComplete, projectIndex, taskIndex] = event.detail;
         const task = projects[projectIndex].tasks[taskIndex];
         task.isComplete = isComplete;
         saveProjectsToLocalStorage();
     });
-    PubSub.subscribe("taskStarred", (msg, [isPriority, projectIndex, taskIndex]) => {
+
+    document.addEventListener("taskStarred", (event) => {
+        const [isPriority, projectIndex, taskIndex] = event.detail;
         const task = projects[projectIndex].tasks[taskIndex];
         task.isPriority = isPriority;
         saveProjectsToLocalStorage();
     });
-    PubSub.subscribe("taskEdited", (msg, [name, description, dueDate, projectIndex, taskIndex]) => {
+
+    document.addEventListener("taskEdited", (event) => {
+        const [name, description, dueDate, projectIndex, taskIndex] = event.detail;
         const task = projects[projectIndex].tasks[taskIndex];
         task.name = name;
         task.description = description;
         task.dueDate = dueDate;
-        //Sort projects by date after task edit, in case date has been changed
+        // Sort projects by date after task edit, in case date has been changed
         ProjectSort.sortByDate(projects[projectIndex]);
         saveProjectsToLocalStorage();
     });
-    PubSub.subscribe("taskDeleted", (msg, [projectIndex, taskIndex]) => {
+
+    document.addEventListener("taskDeleted", (event) => {
+        const [projectIndex, taskIndex] = event.detail;
         removeTask(projectIndex, taskIndex);
         saveProjectsToLocalStorage();
     });
-    PubSub.subscribe("projectAdded", (msg, projectName) => {
+
+    document.addEventListener("projectAdded", (event) => {
+        const projectName = event.detail;
         addProject(projectName);
         saveProjectsToLocalStorage();
     });
-    PubSub.subscribe("projectEdited", (msg, [projectName, projectIndex]) => {
+
+    document.addEventListener("projectEdited", (event) => {
+        const [projectName, projectIndex] = event.detail;
         const project = projects[projectIndex];
         project.name = projectName;
         saveProjectsToLocalStorage();
     });
-    PubSub.subscribe("projectDeleted", (msg, deletedProjectIndex) => {
+
+    document.addEventListener("projectDeleted", (event) => {
+        const deletedProjectIndex = event.detail;
         removeProject(deletedProjectIndex);
         saveProjectsToLocalStorage();
     });
-    PubSub.subscribe("getProjects", (msg, data) => {
-        PubSub.publish("projects", getProjects());  //Publish the list of todos when requested
+
+    document.addEventListener("getProjects", () => {
+        // Publish the list of todos when requested
+        const projectsData = getProjects();
+        document.dispatchEvent(new CustomEvent("projects", { detail: projectsData }));
     });
 
     function initializeProjects(projectsCopy) {

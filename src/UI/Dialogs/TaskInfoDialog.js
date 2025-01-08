@@ -1,12 +1,10 @@
 import { Dialog } from './Dialog.js';
-import { InputValidator } from '../../Utils/InputValidator.js';
-import { InvalidStyling } from '../../Utils/InvalidStyling.js';
-import PubSub from 'pubsub-js'
 
 export const TaskInfoDialog = (function () {
     const taskInfoDialog = new Dialog("#task-info-dialog");
 
-    PubSub.subscribe("taskInfoDialogOpened", (msg, [name, description, dueDate, isPriority, isComplete]) => {
+    document.addEventListener("taskInfoDialogOpened", (event) => {
+        const [name, description, dueDate, isPriority, isComplete] = event.detail;
         taskInfoDialog.showDialog();
         setTaskInfoValues(name, description, dueDate, isPriority, isComplete);
     });

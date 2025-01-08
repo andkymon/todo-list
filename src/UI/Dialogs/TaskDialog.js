@@ -1,16 +1,17 @@
 import { Dialog } from './Dialog.js';
 import { InputValidator } from '../../Utils/InputValidator.js';
 import { InvalidStyling } from '../../Utils/InvalidStyling.js';
-import PubSub from 'pubsub-js'
 
 export const TaskDialog = (function () {
     const taskDialog = new Dialog("#task-dialog");
     let projectIndex;
 
-    PubSub.subscribe("taskDialogOpened", (msg, data) => {
+    //Show dialog when a button triggers this event
+    document.addEventListener("taskDialogOpened", () => {
         taskDialog.showDialog();
-    })
-    PubSub.subscribe("navButtonClicked", (msg, selectedNavButtonIndex) => {
+    });
+    document.addEventListener("navButtonClicked", (event) => {
+        const selectedNavButtonIndex = event.detail;
         projectIndex = selectedNavButtonIndex;
     });
 
@@ -38,7 +39,9 @@ export const TaskDialog = (function () {
         }
         if (inputIsInvalid === true) return;
     
-        PubSub.publish("taskAdded", [name, description, dueDate, projectIndex]);
+        document.dispatchEvent(new CustomEvent("taskAdded", {
+            detail:[name, description, dueDate, projectIndex]
+        }));
         taskDialog.clearInputs();
         taskDialog.hideDialog();
     }
