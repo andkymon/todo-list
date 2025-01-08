@@ -53,6 +53,8 @@ export const Main = (function () {
                 //Enable task addition for project buttons
                 showAddTaskButton();
             }
+            //Indicate 'No Tasks' when a project has no tasks
+            generateNoTasksSpans()
             // Unsubscribe to prevent multiple subscriptions
             PubSub.unsubscribe(token);
         });
@@ -67,23 +69,30 @@ export const Main = (function () {
     }
 
     //Indicate 'No Tasks' when a project has no tasks
-    /*
     function generateNoTasksSpans() {
         const projectHeadings = document.querySelectorAll("main h3");
         const mainh2Wrapper = document.querySelector("main .h2-wrapper");
-        const span = document.createElement("span");
-        span.textContent = "No Tasks.";
-
+        console.log(mainh2Wrapper.nextSibling);
+    
+        // Loop through project headings
         for (const projectHeading of projectHeadings) {
-            if (!projectHeading.nextSibling || projectHeading.nextSibling.tagName === "H3") {
+            const span = document.createElement("span");
+            span.textContent = "No Tasks.";
+    
+            // If the next sibling is missing or another heading
+            if (!projectHeading.nextElementSibling || projectHeading.nextSibling.tagName === "H3") {
                 projectHeading.after(span);
-            } 
+            }
         }
-        if (!mainh2Wrapper.nextSibling) {
+    
+        // Check for mainh2Wrapper after all headings
+        if (!mainh2Wrapper.nextElementSibling) {
+            const span = document.createElement("span");
+            span.textContent = "No Tasks.";
             mainh2Wrapper.after(span);
         }
     }
-    */
+    
 
     const addTaskButton = document.querySelector("main #add-task");
 
