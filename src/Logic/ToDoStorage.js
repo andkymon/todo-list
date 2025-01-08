@@ -33,6 +33,11 @@ export const ToDoStorage = (function() {
     PubSub.subscribe("projectAdded", (msg, projectName) => {
         addProject(projectName);
     });
+    PubSub.subscribe("projectEdited", (msg, [projectName, projectIndex]) => {
+        const project = projects[projectIndex];
+        project.name = projectName;
+        console.log(projects);
+    });
     PubSub.subscribe("projectDeleted", (msg, deletedProjectIndex) => {
         removeProject(deletedProjectIndex);
     });

@@ -6,6 +6,7 @@ import { ProjectDialog } from './UI/Dialogs/ProjectDialog.js';
 import { Main } from './UI/Main/Main.js';
 import { TaskDialog } from './UI/Dialogs/TaskDialog.js';
 import { EditTaskDialog } from './UI/Dialogs/EditTaskDialog.js';
+import { EditProjectDialog } from './UI/Dialogs/EditProjectDialog.js';
 
 
 NavToggle.init();
@@ -14,6 +15,7 @@ ProjectDialog.init();
 Main.init();
 TaskDialog.init();
 EditTaskDialog.init();
+EditProjectDialog.init();
 
 
 

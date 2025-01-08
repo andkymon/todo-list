@@ -5,6 +5,9 @@ export const NavBar = (function () {
     PubSub.subscribe("projectAdded", (msg, projectName) => {
         displayProject(projectName);
     });
+    PubSub.subscribe("projectEdited", (msg, [projectName, projectIndex]) => {
+        renameProject(projectName, projectIndex);
+    });
 
     /*
         <div class="button-wrapper">
@@ -15,13 +18,23 @@ export const NavBar = (function () {
 
     function displayProject(projectName) {
         const projectButton = createProjectButton(projectName);
+        const editButton = createEditButton();
         const deleteButton = createDeleteButton();
         const buttonWrapper = document.createElement("div");
         const nav = document.querySelector("nav");
         
         buttonWrapper.classList.add("button-wrapper");
-        buttonWrapper.append(projectButton, deleteButton);
+        buttonWrapper.append(projectButton, editButton, deleteButton);
         nav.append(buttonWrapper);
+    }
+
+    function renameProject(projectName, projectIndex) {
+        const projectButtons = document.querySelectorAll("nav > .button-wrapper:not(#all-tasks) > .nav-button"); //'All Tasks' nav button cannot be edited
+        for (const [projectButtonIndex, projectButton] of projectButtons.entries()) {
+            if (projectButtonIndex === projectIndex) {
+                projectButton.textContent = projectName;
+            }
+        }
     }
 
     function createProjectButton(projectName) {
@@ -36,12 +49,22 @@ export const NavBar = (function () {
         return projectButton;
     }
 
+    function createEditButton() {
+        const editButton = document.createElement("button");
+
+        editButton.classList.add("small-button", "edit");
+        editButton.addEventListener("click", () => {
+            editProjectButtonEventHandler(editButton);
+        });
+        return editButton;
+    }
+
     function createDeleteButton() {
         const deleteButton = document.createElement("button");
 
         deleteButton.classList.add("small-button", "delete");
         deleteButton.addEventListener("click", () => {
-            deleteProjectButtonClickEventHandler(deleteButton);
+            deleteProjectButtonEventHandler(deleteButton);
         });
 
         return deleteButton;
@@ -55,7 +78,14 @@ export const NavBar = (function () {
         PubSub.publish("navButtonClicked", getSelectedNavButtonIndex());
     }
 
-    function deleteProjectButtonClickEventHandler(deleteButton) {
+    function editProjectButtonEventHandler(editButton) {
+        editButton.classList.add("clicked");
+        const projectIndex = getEditedProjectButtonIndex();
+        const projectName = getEditedProjectButtonName(projectIndex);
+        PubSub.publish("editProjectDialogOpened" , [projectName, projectIndex]);
+    }
+
+    function deleteProjectButtonEventHandler(deleteButton) {
         const transitionTime = 300; //transition time in ms
         const buttonWrapper = deleteButton.parentElement;
         const projectName = buttonWrapper.firstChild.textContent;
@@ -65,8 +95,9 @@ export const NavBar = (function () {
             playDeleteProjectTransition(buttonWrapper, transitionTime);
             //Wait for transition to finish before announcing project deletion and removing its respective button wrapper
             setTimeout(() => {
+                const projectIndex = getDeletedProjectButtonIndex();
                 //Inform subscribers that a project has been deleted and pass the index of the deleted project
-                PubSub.publish("projectDeleted", getDeletedProjectButtonIndex());
+                PubSub.publish("projectDeleted", projectIndex);
                 buttonWrapper.remove();
             }, transitionTime);
         }
@@ -84,6 +115,26 @@ export const NavBar = (function () {
         const navButtons = document.querySelectorAll(".nav-button");
         for (const navButton of navButtons) {
             navButton.disabled = navButton.classList.contains("selected");
+        }
+    }
+
+    function getEditedProjectButtonName(projectIndex) {
+        const projectButtons = document.querySelectorAll("nav > .button-wrapper:not(#all-tasks) > .nav-button"); //'All Tasks' nav button cannot be edited
+        for (const [projectButtonIndex, projectButton] of projectButtons.entries()) {
+            if (projectButtonIndex === projectIndex) {
+                return projectButton.textContent;
+            }
+        }
+    }
+
+    function getEditedProjectButtonIndex() {
+        const editButtons = document.querySelectorAll("nav .edit"); //'All Tasks' nav button cannot be deleted
+        for (const [editButtonIndex, editButton] of editButtons.entries()) {
+            if (editButton.classList.contains("clicked")) {
+                //Remove click status once editButtonIndex is to be returned
+                editButton.classList.remove("clicked");
+                return editButtonIndex;
+            }
         }
     }
     //Selects the 'All Tasks' nav button if currently selected project is deleted
