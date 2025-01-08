@@ -72,8 +72,7 @@ export const Main = (function () {
     function generateNoTasksSpans() {
         const projectHeadings = document.querySelectorAll("main h3");
         const mainh2Wrapper = document.querySelector("main .h2-wrapper");
-        console.log(mainh2Wrapper.nextSibling);
-    
+        
         // Loop through project headings
         for (const projectHeading of projectHeadings) {
             const span = document.createElement("span");
