@@ -1,11 +1,13 @@
 import PubSub from 'pubsub-js'
 import { Main } from './Main.js';
 import { NavBar } from '../Nav/NavBar.js';
+import { format } from "date-fns";
 
 export class TaskCard {
     #taskName;
     #taskDescription;
     #taskDueDate;
+    #taskDueDateFormatted
     #isPriority;
     #isComplete;
     #projectIndex;
@@ -20,6 +22,7 @@ export class TaskCard {
         this.#taskName = taskName;
         this.#taskDescription = taskDescription;
         this.#taskDueDate = taskDueDate;
+        this.#taskDueDateFormatted = format(taskDueDate, "iiii, PP");
         this.#isPriority = isPriority;
         this.#isComplete = isComplete;
         this.#projectIndex = projectIndex;
@@ -91,7 +94,7 @@ export class TaskCard {
     #createTaskSpans() {
         const spanList = [];
         const spanClassList = ["task-name", "due-date"];
-        const spanTextContent = [this.#taskName, this.#taskDueDate.toDateString()];
+        const spanTextContent = [this.#taskName, this.#taskDueDateFormatted];
 
         for (let i = 0; i < 2; i++) {
             const span = document.createElement("span");
@@ -196,15 +199,15 @@ export class TaskCard {
     
     #infoButtonEventHandler = () => {
         //Publish this topic to open the edit task dialog 
-        PubSub.publish("taskInfoDialogOpened", [this.#taskName, this.#taskDescription, this.#taskDueDate, this.#isPriority, this.#isComplete]);
+        PubSub.publish("taskInfoDialogOpened", [this.#taskName, this.#taskDescription, this.#taskDueDateFormatted, this.#isPriority, this.#isComplete]);
     }
     
 
     #editButtonEventHandler = () => {
         this.#taskCard.classList.add("clicked");
         const taskIndex = this.#getClickedTaskCardIndex();
-        //Publish this topic to open the edit task dialog 
-        PubSub.publish("editTaskDialogOpened", [this.#taskName, this.#taskDescription, this.#taskDueDate, this.#projectIndex, taskIndex]);
+        //Publish this topic to open the edit task dialog, date formatted to "YYYY-MM-DD" for input[type="date"] to recognize 
+        PubSub.publish("editTaskDialogOpened", [this.#taskName, this.#taskDescription, format(this.#taskDueDate, "yyyy-MM-dd"), this.#projectIndex, taskIndex]);
     }
 
     
