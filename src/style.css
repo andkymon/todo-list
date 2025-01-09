@@ -67,7 +67,7 @@ body {
     grid-template-areas: 
         "header header"
         "nav main";
-    grid-template-rows: 120px 1fr; 
+    grid-template-rows: 80px 1fr; 
     grid-template-columns: 360px 1fr;
     transition: 0.3s;
     background-color: var(--main-bg-color);
@@ -82,7 +82,7 @@ h1, h2, h3 {
 }
 
 h1 {
-    font-size: 4rem;
+    font-size: 3rem;
 }
 
 h2 {
